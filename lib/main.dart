@@ -7,7 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:clock_in/i18n/app_translation.dart';
 import 'package:clock_in/pages/root/root_binding.dart';
 import 'package:clock_in/pages/root/root_page.dart';
-import 'package:clock_in/services/isar_service.dart';
 
 void main() async {
   await _initServices();
@@ -21,7 +20,7 @@ void main() async {
 /// 里面的执行顺序不能变, 否则会出错
 Future _initServices() async {
   await Get.putAsync(() async => await GetStorage.init(), permanent: true);
-  await Get.putAsync(() async => IsarService.instance);
+  // await Get.putAsync(() async => IsarService.instance);
 }
 
 void _otherConfigs() {

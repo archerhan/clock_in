@@ -9,7 +9,6 @@ import 'package:clock_in/pages/task/task_page.dart';
 import 'package:clock_in/pages/chart/chart_page.dart';
 import 'package:clock_in/pages/root/root_controller.dart';
 import 'package:clock_in/pages/setting/setting_page.dart';
-import 'package:vibration/vibration.dart';
 
 class RootPage extends GetView<RootController> {
   const RootPage({super.key});
