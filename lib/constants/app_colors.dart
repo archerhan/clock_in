@@ -6,6 +6,7 @@ class AppColors {
   static const brightBlue = Color(0xff0047cc); // 亮蓝色
   static const mainWhite = Color(0xffffffff); //纯白
   static const mainBlack = Color(0xff000000); //纯黑
+  static const bgColor = Color(0xffeeeeee);
   static const mainTitle333 = Color(0xff333333); //主标题
   static const subtitle666 = Color(0xff666666); //副标题
   static const grey999 = Color(0xff999999); //副标题(次级)

@@ -8,13 +8,28 @@ class ZHCN {
     "common_cancel": "取消",
     "common_today": "今日",
     "common_done": "完成",
-    // 近期记账
-    "accounts_expenses": "支出",
-    "accounts_income": "收入",
-    "accounts_balance": "结余:",
-    "accounts_more_analyze": "更多分析>>",
-    // 类别
-    "category_setting": "类别设置",
+
+    // 今日
+    "Mon": "一",
+    "Tues": "二",
+    "Wed": "三",
+    "Thurs": "四",
+    "Fri": "五",
+    "Sat": "六",
+    "Sun": "日",
+
+    "jan": "一月",
+    "feb": "二月",
+    "mar": "三月",
+    "apr": "四月",
+    "may": "五月",
+    "jun": "六月",
+    "jul": "七月",
+    "aug": "八月",
+    "sep": "九月",
+    "oct": "十月",
+    "nov": "十一月",
+    "dec": "十二月",
 
     // Icon名字
     "business_cable": "数据线",

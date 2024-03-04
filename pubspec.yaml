@@ -25,6 +25,7 @@ dependencies:
   flutter_local_notifications: ^16.3.2
   flutter_heatmap_calendar: ^1.0.5
   sqflite: ^2.3.2
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:
