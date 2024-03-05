@@ -1,4 +1,4 @@
 abstract class BaseDao {
   tableName();
-  createTable();
+  createTableSql();
 }

@@ -9,10 +9,10 @@ class TaskDao implements BaseDao {
   }
 
   @override
-  createTable() {
+  createTableSql() {
     return '''
     CREATE TABLE task_table (
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       taskName TEXT,
       icon TEXT,
       plan TEXT,

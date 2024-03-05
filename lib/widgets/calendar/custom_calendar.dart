@@ -1,4 +1,5 @@
 import 'package:clock_in/constants/app_colors.dart';
+import 'package:clock_in/utils/datetime_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,10 +64,17 @@ class CustomCalendar extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.all(3),
           decoration: BoxDecoration(
-            color:
-                day.day % 2 == 0 ? AppColors.bgColor : AppColors.primaryYellow,
+            color: DateTimeUtil.isToday(day)
+                ? AppColors.bgColor
+                : day.day % 2 == 0
+                    ? AppColors.bgColor
+                    : AppColors.primaryYellow,
             shape: BoxShape.rectangle,
-            border: Border.all(color: AppColors.primaryYellow, width: 4),
+            border: Border.all(
+                color: DateTimeUtil.isToday(day)
+                    ? AppColors.primaryBlue
+                    : AppColors.primaryYellow,
+                width: 4),
           ),
           child: Center(
             child: Text(
