@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/today_page.dart';
-import 'package:clock_in/pages/task/task_page.dart';
+import 'package:clock_in/pages/reward/reward_page.dart';
 import 'package:clock_in/pages/chart/chart_page.dart';
 import 'package:clock_in/pages/root/root_controller.dart';
 import 'package:clock_in/pages/setting/setting_page.dart';
@@ -21,8 +21,8 @@ class RootPage extends GetView<RootController> {
             index: controller.activeIndex.value,
             children: const [
               TodayPage(),
-              PropertyPage(),
-              TaskPage(),
+              RewardPage(),
+              ChartPage(),
               SettingPage()
             ],
           )),
