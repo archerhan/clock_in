@@ -24,6 +24,7 @@ Future _initServices() async {
 }
 
 void _otherConfigs() {
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
