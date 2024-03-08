@@ -1,12 +1,14 @@
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/pages/today/task_record_model.dart';
+import 'package:clock_in/pages/today/create_task/create_task_binding.dart';
+import 'package:clock_in/pages/today/create_task/create_task_page.dart';
+import 'package:clock_in/pages/today/today/task_record_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/calendar/custom_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
-import 'package:clock_in/pages/today/today_controller.dart';
+import 'package:clock_in/pages/today/today/today_controller.dart';
 
 class TodayPage extends GetView<TodayController> {
   const TodayPage({super.key});
@@ -16,6 +18,18 @@ class TodayPage extends GetView<TodayController> {
     return Scaffold(
       appBar: CustomAppBar(
         title: Text("懒猫打卡".tr),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.to(const CreateTaskPage(), binding: CreateTaskBinding());
+            },
+            icon: const Icon(
+              Icons.add,
+              size: 30,
+            ),
+          ),
+          const SizedBox(width: 20)
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -32,15 +46,17 @@ class TodayPage extends GetView<TodayController> {
   }
 
   Widget _taskListView() {
-    return Obx(() => ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return _taskItem(controller.taskRecords[index]);
-          },
-          itemCount: controller.taskRecords.length,
-          itemExtent: 80.h,
-        ));
+    return Obx(
+      () => ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return _taskItem(controller.taskRecords[index]);
+        },
+        itemCount: controller.taskRecords.length,
+        itemExtent: 100.h,
+      ),
+    );
   }
 
   Widget _taskItem(TaskRecordModel taskRecordModel) {
@@ -52,7 +68,8 @@ class TodayPage extends GetView<TodayController> {
         margin: EdgeInsets.only(bottom: 15.h),
         decoration: BoxDecoration(
           color: taskRecordModel.color != null
-              ? Color(int.parse(taskRecordModel.color!, radix: 16)).withOpacity(0.2)
+              ? Color(int.parse(taskRecordModel.color!, radix: 16))
+                  .withOpacity(0.2)
               : AppColors.primaryBlue.withOpacity(0.2),
           // boxShadow: [
           //   BoxShadow(

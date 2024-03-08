@@ -2,6 +2,8 @@ import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/utils/custom_clipper.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
+import 'package:clock_in/widgets/line_chart/line_chart.dart';
+import 'package:clock_in/widgets/pie_chart/pie_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -14,15 +16,35 @@ class ChartPage extends GetView<ChartController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: Text("统计"),
+        title: const Text("统计"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             _numberCardHorizontalView(),
+            _title("全年打卡热度"),
             _heatMap(),
+            _title("每周打卡统计"),
+            const CustomLineChart(),
+            _title("任务打卡分布"),
+            const MyPieChart(),
+            _title("已获得的奖励"),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _title(String title) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      child: Text(
+        title,
+        style: TextStyle(
+            color: AppColors.mainTitle333,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w900),
       ),
     );
   }
@@ -121,8 +143,8 @@ class ChartPage extends GetView<ChartController> {
       defaultColor: AppColors.dividerEEE,
       showText: false,
       scrollable: true,
-      colorTipHelper: [Text("少"), Text("多")],
-      colorsets: {
+      colorTipHelper: const [Text("少"), Text("多")],
+      colorsets: const {
         7: Colors.green,
       },
       weekStartsWith: 1,

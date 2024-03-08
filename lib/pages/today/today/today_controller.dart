@@ -1,5 +1,5 @@
 import 'package:clock_in/constants/assets.gen.dart';
-import 'package:clock_in/pages/today/task_record_model.dart';
+import 'package:clock_in/pages/today/today/task_record_model.dart';
 import 'package:clock_in/utils/random_material_color.dart';
 import 'package:get/get.dart';
 

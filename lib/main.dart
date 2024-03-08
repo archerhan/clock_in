@@ -7,11 +7,17 @@ import 'package:get_storage/get_storage.dart';
 import 'package:clock_in/i18n/app_translation.dart';
 import 'package:clock_in/pages/root/root_binding.dart';
 import 'package:clock_in/pages/root/root_page.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await _initServices();
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  initializeDateFormatting('zh', null).then(
+    (_) => runApp(
+      const MyApp(),
+    ),
+  );
+
   _otherConfigs();
 }
 
@@ -24,7 +30,6 @@ Future _initServices() async {
 }
 
 void _otherConfigs() {
-
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -48,10 +53,18 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         enableLog: false,
         translationsKeys: AppTranslation.translations,
-        locale: Get.deviceLocale,
+        locale: Get.locale,
         defaultTransition: Transition.cupertino,
         popGesture: Get.isPopGestureEnable,
         fallbackLocale: const Locale('zh', 'CN'),
+      //   localizationsDelegates: const [
+      //   GlobalCupertinoLocalizations.delegate,
+      //   GlobalMaterialLocalizations.delegate,
+      // ],
+      //   supportedLocales: const [
+      //     Locale('zh'),
+      //     Locale('en'),
+      //   ],
         initialBinding: RootBinding(),
         home: const RootPage(),
         navigatorObservers: [BotToastNavigatorObserver()],

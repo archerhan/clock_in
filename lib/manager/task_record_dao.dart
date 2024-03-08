@@ -1,6 +1,6 @@
 import 'package:clock_in/manager/base_dao.dart';
 import 'package:clock_in/manager/db_manager.dart';
-import 'package:clock_in/pages/today/task_record_model.dart';
+import 'package:clock_in/pages/today/today/task_record_model.dart';
 
 class TaskRecordDao extends BaseDao {
   @override
