@@ -1,13 +1,19 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
+import 'package:clock_in/pages/today/create_task/icons_page.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
-import 'package:clock_in/widgets/date_picker/date_picker_view.dart';
 import 'package:clock_in/widgets/dialog/date_picker_dialog.dart';
+import 'package:clock_in/widgets/dialog/days_picker_dialog.dart';
+import 'package:clock_in/widgets/dialog/number_picker_dialog.dart';
+import 'package:clock_in/widgets/dialog/weekday_select_dialog.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:clock_in/widgets/textfield/custom_textfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 
 class CreateTaskPage extends GetView<CreateTaskController> {
@@ -17,7 +23,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: Text("创建任务"),
+        title: const Text("创建任务"),
       ),
       body: GestureDetector(
         onTap: () {
@@ -27,6 +33,8 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           child: Column(
             children: [
               _basicInfo(),
+              _notificationInfo(),
+              _iconSlogan(),
             ],
           ),
         ),
@@ -46,74 +54,121 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                 blurRadius: 7,
                 offset: const Offset(0, 3))
           ]),
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
       // height: 300.h,
       child: Column(
         children: [
-          _inputField(Icons.text_snippet_outlined, "任务名称"),
+          _inputField(Icons.text_snippet_outlined, "任务名称",
+              controller.taskNameTextController),
           const HorizontalDivider(),
           Obx(() => _valueSelection(
                 Icons.today,
                 "开始日期",
                 DateTimeUtil.formatDate(controller.selectedStartDate.value),
                 onTap: () {
-                  showCustomDateTimeDialog(
-                      showType: DatePickerShowType.ymd,
-                      onOKTap: (date) {
-                        controller.selectedStartDate.value =
-                            DateTime.parse(date);
-                      });
+                  CustomDatePickerDialog.showDatePicker(
+                      Get.context!,
+                      (p0) => controller.selectedStartDate.value =
+                          p0 ?? DateTime.now());
                 },
               )),
           const HorizontalDivider(),
           Obx(() => _valueSelection(
                 Icons.date_range_outlined,
                 "持续时间",
-                "${controller.duration.value}天",
+                controller.duration.value == 0
+                    ? "永远"
+                    : "${controller.duration.value}天",
                 onTap: () {
-                  showCustomDateTimeDialog(
-                      showType: DatePickerShowType.ymd,
-                      onOKTap: (date) {
-                        controller.selectedStartDate.value =
-                            DateTime.parse(date);
-                      });
+                  CustomDaysPickerDialog.showDaysPicker(Get.context!,
+                      (p0) => controller.duration.value = p0 ?? 0);
                 },
               )),
           const HorizontalDivider(),
-          Obx(() => _valueSelection(
-                Icons.event_repeat_outlined,
-                "重复",
-                controller.repeatValue.value,
-                onTap: () {
-                  showCustomDateTimeDialog(
-                      showType: DatePickerShowType.ymd,
-                      onOKTap: (date) {
-                        controller.selectedStartDate.value =
-                            DateTime.parse(date);
-                      });
-                },
-              )),
-          const HorizontalDivider(),
-          Obx(() => _valueSelection(
-                Icons.checklist_outlined,
-                "打卡频率",
-                controller.checkCountPerDay.value.toString(),
-                onTap: () {
-                  showCustomDateTimeDialog(
-                      showType: DatePickerShowType.ymd,
-                      onOKTap: (date) {
-                        controller.selectedStartDate.value =
-                            DateTime.parse(date);
-                      });
-                },
-              )),
+          Obx(
+            () => _valueSelection(
+              Icons.event_repeat_outlined,
+              "重复",
+              controller.repeatValue.isEmpty
+                  ? "不重复"
+                  : controller.repeatValue
+                      .map((e) => DateTimeUtil.getWeekName(e))
+                      .join("、"),
+              onTap: () {
+                WeekdaySelectDialog.showMultiSelect(Get.context!, (p0) {
+                  controller.repeatValue.value = p0;
+                }, initSelectedValues: controller.repeatValue.toList());
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _inputField(IconData icon, String title) {
+  Widget _notificationInfo() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3))
+          ]),
+      margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: Column(
+        children: [
+          Obx(
+            () => _valueSelection(
+              Icons.checklist_outlined,
+              "打卡频率",
+              "${controller.checkCountPerDay.value}次/天",
+              onTap: () {
+                CustomNumberPickerDialog.showCheckCountPicker(Get.context!,
+                    (p0) => controller.checkCountPerDay.value = p0 ?? 1);
+              },
+            ),
+          ),
+          const HorizontalDivider(),
+          Obx(() => _notificationSection(
+              controller.notificationIsOn.value ? "通知已开启" : "通知未开启")),
+        ],
+      ),
+    );
+  }
+
+  Widget _iconSlogan() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3))
+          ]),
+      margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: Column(
+        children: [
+          _inputField(Icons.sports_mma_outlined, "想一句口号吧!",
+              controller.sloganTextController),
+          const HorizontalDivider(),
+          _iconField(),
+        ],
+      ),
+    );
+  }
+
+  Widget _inputField(
+      IconData icon, String title, TextEditingController controller) {
     return SizedBox(
       height: 60.h,
       child: Row(
@@ -126,7 +181,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           const SizedBox(width: 8),
           Expanded(
               child: CustomTextField(
-            controller: controller.taskNameTextController,
+            controller: controller,
             hintText: title,
           ))
         ],
@@ -137,6 +192,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
   Widget _valueSelection(IconData icon, String title, String selectedValue,
       {Function()? onTap}) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: SizedBox(
         height: 60.h,
@@ -155,14 +211,94 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold),
             ),
-            const Spacer(),
-            Text(
+            Expanded(
+                child: AutoSizeText(
               selectedValue,
+              maxLines: 1,
+              textAlign: TextAlign.end,
               style: TextStyle(
                   color: AppColors.primaryBlue,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold),
+            )),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+              color: AppColors.primaryBlue,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _notificationSection(String title) {
+    return SizedBox(
+      height: 60.h,
+      child: Row(
+        children: [
+          Icon(
+            Icons.notification_add_outlined,
+            size: 28.w,
+            color: AppColors.subtitle666,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: TextStyle(
+                color: AppColors.subtitle666,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          Obx(
+            () => CupertinoSwitch(
+              value: controller.notificationIsOn.value,
+              onChanged: (value) {
+                Vibrate.feedback(FeedbackType.medium);
+                controller.notificationIsOn.value = value;
+              },
+              activeColor: Colors.green,
             ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _iconField() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        Get.to(const IconsPage());
+      },
+      child: SizedBox(
+        height: 60.h,
+        child: Row(
+          children: [
+            Icon(
+              Icons.sports_mma_outlined,
+              size: 28.w,
+              color: AppColors.subtitle666,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "选择图标",
+              style: TextStyle(
+                  color: AppColors.subtitle666,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold),
+            ),
+            const Spacer(),
+            Obx(() =>
+                controller.selectedIcon.value.assetPath?.isNotEmpty == true
+                    ? Image.asset(
+                        controller.selectedIcon.value.assetPath!,
+                        width: 30.w,
+                        height: 30.w,
+                        fit: BoxFit.contain,
+                      )
+                    : SizedBox(width: 30.w, height: 30.w)),
             const Icon(
               Icons.arrow_forward_ios,
               size: 20,

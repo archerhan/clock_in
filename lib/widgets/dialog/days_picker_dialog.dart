@@ -1,14 +1,25 @@
+import 'dart:ffi';
+
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:get/get.dart';
 
-class CustomDatePickerDialog {
+class CustomDaysPickerDialog {
+  static List<int> days = [
+    365,
+    90,
+    60,
+    30,
+    21,
+    10,
+    7,
+    ...List<int>.generate(101, (index) => index)
+  ];
+
   /// 圆角背景
-  static void showDatePicker(
-      BuildContext context, Function(DateTime?) onConfirm) {
+  static void showDaysPicker(BuildContext context, Function(int?) onConfirm) {
     var picker = Picker(
         backgroundColor: Colors.transparent,
         headerDecoration: BoxDecoration(
@@ -18,14 +29,22 @@ class CustomDatePickerDialog {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10.r),
                 topRight: Radius.circular(10.r))),
-        adapter: DateTimePickerAdapter(
-            type: PickerDateTimeType.kYMD,
-            isNumberMonth: true,
-            yearSuffix: "年",
-            monthSuffix: "月",
-            daySuffix: "日"),
+        adapter: PickerDataAdapter(
+          data: days.map((e) {
+            return PickerItem(
+                text: Text(
+                  e == 0 ? "永远" : "$e天",
+                  style: TextStyle(
+                      color: AppColors.grey999,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600),
+                ),
+                value: e);
+          }).toList(),
+        ),
+        selecteds: [7],
         title: Text(
-          "请选择日期",
+          "请选择任务坚持的天数",
           style: TextStyle(
               color: AppColors.subtitle666,
               fontSize: 18.sp,
@@ -38,7 +57,7 @@ class CustomDatePickerDialog {
             fontSize: 18.sp,
             fontWeight: FontWeight.w500),
         onConfirm: (Picker picker, List value) {
-          onConfirm((picker.adapter as DateTimePickerAdapter).value);
+          onConfirm(days[value.first]);
         },
         onSelect: (Picker picker, int index, List<int> selected) {
           Vibrate.feedback(FeedbackType.selection);
@@ -50,7 +69,6 @@ class CustomDatePickerDialog {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
           child: Container(
-            height: Get.height * 0.3,
             child: view,
           ));
     });

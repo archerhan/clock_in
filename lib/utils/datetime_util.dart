@@ -43,6 +43,11 @@ class DateTimeUtil {
     return weekday[dateTime.weekday - 1];
   }
 
+    static String getWeekName(int weekNum) {
+    var weekday = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+    return weekday[weekNum - 1];
+  }
+
   static int getCurrentMonthDays(DateTime dateTime) {
     var year = dateTime.year;
     var month = dateTime.month;

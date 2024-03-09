@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -57,14 +58,15 @@ class MyApp extends StatelessWidget {
         defaultTransition: Transition.cupertino,
         popGesture: Get.isPopGestureEnable,
         fallbackLocale: const Locale('zh', 'CN'),
-      //   localizationsDelegates: const [
-      //   GlobalCupertinoLocalizations.delegate,
-      //   GlobalMaterialLocalizations.delegate,
-      // ],
-      //   supportedLocales: const [
-      //     Locale('zh'),
-      //     Locale('en'),
-      //   ],
+        // localizationsDelegates: const [
+          // PickerLocalizationsDelegate.delegate
+          // GlobalCupertinoLocalizations.delegate,
+          // GlobalMaterialLocalizations.delegate,
+        // ],
+        //   supportedLocales: const [
+        //     Locale('zh'),
+        //     Locale('en'),
+        //   ],
         initialBinding: RootBinding(),
         home: const RootPage(),
         navigatorObservers: [BotToastNavigatorObserver()],
