@@ -2,8 +2,6 @@ import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/reward/reward_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/reward/reward_controller.dart';
@@ -15,7 +13,7 @@ class RewardPage extends GetView<RewardController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: Text("奖励"),
+        title: const Text("奖励"),
       ),
       body: SingleChildScrollView(
         child: Column(

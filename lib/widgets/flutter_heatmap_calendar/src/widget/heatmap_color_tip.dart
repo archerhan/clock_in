@@ -36,14 +36,14 @@ class HeatMapColorTip extends StatelessWidget {
   final double? size;
 
   const HeatMapColorTip({
-    Key? key,
+    super.key,
     required this.colorMode,
     this.colorsets,
     this.leftWidget,
     this.rightWidget,
     this.containerCount,
     this.size,
-  }) : super(key: key);
+  });
 
   /// It returns the List of tip container.
   ///

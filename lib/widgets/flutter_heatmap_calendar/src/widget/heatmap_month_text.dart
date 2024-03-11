@@ -19,13 +19,13 @@ class HeatMapMonthText extends StatelessWidget {
   final EdgeInsets? margin;
 
   const HeatMapMonthText({
-    Key? key,
+    super.key,
     this.firstDayInfos,
     this.fontSize,
     this.fontColor,
     this.size,
     this.margin,
-  }) : super(key: key);
+  });
 
   /// The list of every month labels and fitted space.
   List<Widget> _labels() {

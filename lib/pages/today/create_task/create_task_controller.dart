@@ -14,8 +14,8 @@ class CreateTaskController extends GetxController {
   var checkCountPerDay = 1.obs;
   var notificationIsOn = false.obs;
   var sloganTextController = TextEditingController();
-  var selectedIcon = IconAssetModel().obs;
-  var iconList = <IconAssetModel>[].obs;
+  var selectedIcon = IconAssetModel("", false).obs;
+  var iconList = <IconCategoryModel>[].obs;
   @override
   void onInit() {
     loadIcons();
@@ -26,21 +26,50 @@ class CreateTaskController extends GetxController {
   Future<void> loadIcons() async {
     String jsonString = await rootBundle.loadString(Assets.json.icons);
     var jsonData = jsonDecode(jsonString);
-    var data = <IconAssetModel>[];
-    for (var iconPath in jsonData["iconPath"]) {
-      data.add(IconAssetModel(assetPath: iconPath, name: ""));
+    var data = <IconCategoryModel>[];
+    for (var category in jsonData["allIcons"]) {
+      data.add(IconCategoryModel.fromJson(category));
     }
     iconList.value = data;
   }
 
   void selectIcon(IconAssetModel iconAssetModel) {
     selectedIcon.value = iconAssetModel;
-    iconList.value = iconList.map<IconAssetModel>((element) {
-      element.isSelected = false;
-      if (element.assetPath == iconAssetModel.assetPath) {
-        element.isSelected = true;
+    for (var category in iconList) {
+      for (var icon in category.iconAssets) {
+        icon.isSelected = false;
+        if (icon.assetPath == iconAssetModel.assetPath) {
+          icon.isSelected = true;
+        }
       }
-      return element;
-    }).toList();
+    }
+    iconList.refresh();
+  }
+
+  String getCategoryNameBy(IconCategory category) {
+    switch (category) {
+      case IconCategory.business:
+        return "商务";
+      case IconCategory.entertainment:
+        return "娱乐";
+      case IconCategory.family:
+        return "家庭";
+      case IconCategory.food:
+        return "饮食";
+      case IconCategory.income:
+        return "收入";
+      case IconCategory.medical:
+        return "医疗";
+      case IconCategory.shopping:
+        return "购物";
+      case IconCategory.skill:
+        return "技能";
+      case IconCategory.sport:
+        return "运动";
+      case IconCategory.traffic:
+        return "交通";
+      case IconCategory.others:
+        return "其他";
+    }
   }
 }

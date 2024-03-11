@@ -79,7 +79,7 @@ class HeatMapColumn extends StatelessWidget {
   final int numDays;
 
   HeatMapColumn({
-    Key? key,
+    super.key,
     required this.startDate,
     required this.endDate,
     required this.weekStartsWith,
@@ -155,8 +155,7 @@ class HeatMapColumn extends StatelessWidget {
                     width: size ?? 42,
                     height: size ?? 42),
               )
-            : [],
-        super(key: key);
+            : [];
 
   @override
   Widget build(BuildContext context) {

@@ -71,7 +71,7 @@ class HeatMapCalendarRow extends StatelessWidget {
   final Function(DateTime)? onClick;
 
   HeatMapCalendarRow({
-    Key? key,
+    super.key,
     required this.startDate,
     required this.endDate,
     required this.weekStartsWith,
@@ -160,8 +160,7 @@ class HeatMapCalendarRow extends StatelessWidget {
                               datasets?[DateTime(startDate.year, startDate.month, startDate.day + i - ((startDate.weekday - 1) % 7))])
                       : null,
                 ),
-        ),
-        super(key: key);
+        );
 
   @override
   Widget build(BuildContext context) {

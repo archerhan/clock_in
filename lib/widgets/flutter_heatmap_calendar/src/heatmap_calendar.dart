@@ -94,7 +94,7 @@ class HeatMapCalendar extends StatefulWidget {
   final int weekStartsWith;
 
   const HeatMapCalendar({
-    Key? key,
+    super.key,
     required this.colorsets,
     this.colorMode = ColorMode.opacity,
     this.defaultColor,
@@ -116,7 +116,7 @@ class HeatMapCalendar extends StatefulWidget {
     this.colorTipCount,
     this.colorTipSize,
     this.weekStartsWith = 7,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _HeatMapCalendar();

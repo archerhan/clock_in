@@ -49,7 +49,7 @@ class CustomDatePickerDialog {
           // color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
-          child: Container(
+          child: SizedBox(
             height: Get.height * 0.3,
             child: view,
           ));

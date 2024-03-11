@@ -67,7 +67,7 @@ class HeatMapCalendarPage extends StatelessWidget {
   final Function(DateTime)? onClick;
 
   HeatMapCalendarPage({
-    Key? key,
+    super.key,
     required this.baseDate,
     required this.weekStartsWith,
     required this.colorMode,
@@ -83,8 +83,7 @@ class HeatMapCalendarPage extends StatelessWidget {
     this.onClick,
   })  : separatedDate = DateUtil.separatedMonth(baseDate, weekStartsWith),
         maxValue = DatasetsUtil.getMaxValue(
-            DatasetsUtil.filterMonth(datasets, baseDate)),
-        super(key: key);
+            DatasetsUtil.filterMonth(datasets, baseDate));
 
   @override
   Widget build(BuildContext context) {

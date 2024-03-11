@@ -2,7 +2,9 @@ import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
 import 'package:clock_in/pages/today/create_task/icons_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
+import 'package:clock_in/widgets/header/section_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
@@ -16,13 +18,23 @@ class IconsPage extends GetView<CreateTaskController> {
       appBar: CustomAppBar(
         title: const Text("选择图标"),
       ),
-      body: _iconListView(),
+      body: _iconCategoryList(),
     );
   }
 
-  Widget _iconListView() {
+  Widget _iconCategoryList() {
+    return Obx(() => ListView.builder(
+          shrinkWrap: true,
+          itemCount: controller.iconList.length,
+          itemBuilder: (_, index) {
+            return _iconGridView(controller.iconList[index]);
+          },
+        ));
+  }
+
+  Widget _iconGridView(IconCategoryModel iconCategoryModel) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       decoration: BoxDecoration(
           color: AppColors.mainWhite,
           borderRadius: BorderRadius.circular(10.r),
@@ -33,15 +45,22 @@ class IconsPage extends GetView<CreateTaskController> {
                 blurRadius: 7,
                 offset: const Offset(0, 3))
           ]),
-      child: Obx(() => GridView.builder(
+      child: Column(
+        children: [
+          SectionTitle(controller.getCategoryNameBy(iconCategoryModel.category))
+              .paddingSymmetric(horizontal: 10.w),
+          GridView.builder(
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 5),
             itemBuilder: (_, index) {
-              return _iconItem(controller.iconList[index]);
+              return _iconItem(iconCategoryModel.iconAssets[index]);
             },
-            itemCount: controller.iconList.length,
-          )),
+            itemCount: iconCategoryModel.iconAssets.length,
+          )
+        ],
+      ),
     );
   }
 
@@ -75,11 +94,6 @@ class IconsPage extends GetView<CreateTaskController> {
           ),
         ),
         SizedBox(height: 8.h),
-        if (iconAssetModel.name?.isNotEmpty == true)
-          Text(
-            iconAssetModel.name!.tr,
-            style: TextStyle(color: AppColors.mainTitle333, fontSize: 13.sp),
-          )
       ],
     );
   }

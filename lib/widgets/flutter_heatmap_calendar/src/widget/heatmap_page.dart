@@ -89,7 +89,7 @@ class HeatMapPage extends StatelessWidget {
   final int weekStartsWith;
 
   HeatMapPage({
-    Key? key,
+    super.key,
     required this.colorMode,
     required this.startDate,
     required this.endDate,
@@ -106,8 +106,7 @@ class HeatMapPage extends StatelessWidget {
     this.showText,
     this.weekStartsWith = 7,
   })  : _dateDifferent = endDate.difference(startDate).inDays,
-        maxValue = DatasetsUtil.getMaxValue(datasets),
-        super(key: key);
+        maxValue = DatasetsUtil.getMaxValue(datasets);
 
   /// Get [HeatMapColumn] from [startDate] to [endDate].
   List<Widget> _heatmapColumnList(BuildContext context) {

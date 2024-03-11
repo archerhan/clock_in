@@ -17,13 +17,13 @@ class HeatMapWeekText extends StatelessWidget {
   final List<String> weekDayLabels;
 
   const HeatMapWeekText({
-    Key? key,
+    super.key,
     this.margin,
     this.fontSize,
     this.size,
     this.fontColor,
     required this.weekDayLabels,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

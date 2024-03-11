@@ -12,7 +12,7 @@ class SectionTitle extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 2.w,
+          width: 4.w,
           height: 20.w,
           decoration: const BoxDecoration(
               color: AppColors.primaryYellow, shape: BoxShape.rectangle),
