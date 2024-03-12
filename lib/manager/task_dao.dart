@@ -22,21 +22,22 @@ class TaskDao implements BaseDao {
       remindTime TEXT,
       slogan TEXT,
       isActive INTEGER,
+      sort INTEGER,
+      color TEXT,
       createDT TEXT,
-      updateDT TEXT,
-      sort INTEGER
+      updateDT TEXT
     )
     ''';
   }
   // 插入taskModel
   Future<int> insertTask(TaskModel taskModel) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     return await db.insert(tableName(), taskModel.toJson());
   }
 
   // 查询所有taskModel
   Future<List<TaskModel>> queryAllTask() async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     List<Map<String, dynamic>> maps = await db.query(tableName());
     return List.generate(maps.length, (i) {
       return TaskModel.fromJson(maps[i]);
@@ -45,7 +46,7 @@ class TaskDao implements BaseDao {
 
   // 查询指定taskModel
   Future<TaskModel?> queryTask(int id) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     List<Map<String, dynamic>> maps = await db.query(tableName(), where: 'id = ?', whereArgs: [id]);
     if (maps.isNotEmpty) {
       return TaskModel.fromJson(maps.first);
@@ -55,13 +56,13 @@ class TaskDao implements BaseDao {
 
   // 更新taskModel
   Future<int> updateTask(TaskModel taskModel) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     return await db.update(tableName(), taskModel.toJson(), where: 'id = ?', whereArgs: [taskModel.id]);
   }
 
   // 删除taskModel
   Future<int> deleteTask(int id) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     return await db.delete(tableName(), where: 'id = ?', whereArgs: [id]);
   }
 

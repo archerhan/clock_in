@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:get/get.dart';
 
 class CustomDatePickerDialog {
   /// 圆角背景

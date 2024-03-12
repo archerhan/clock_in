@@ -28,6 +28,7 @@ class CreateTaskController extends GetxController {
   ];
   var selectedNotificationTime = "".obs;
   var sloganTextController = TextEditingController();
+  var selectedColor = "".obs;
   var selectedIcon = IconAssetModel("", false).obs;
   var iconList = <IconCategoryModel>[].obs;
 

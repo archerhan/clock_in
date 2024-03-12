@@ -26,13 +26,13 @@ class TaskRecordDao extends BaseDao {
 
   // 插入taskRecordModel
   Future<int> insertTaskRecord(TaskRecordModel taskRecordModel) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     return await db.insert(tableName(), taskRecordModel.toJson());
   }
 
   // 查询所有taskRecordModel
   Future<List<TaskRecordModel>> queryAllTaskRecord() async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     List<Map<String, dynamic>> maps = await db.query(tableName());
     return List.generate(maps.length, (i) {
       return TaskRecordModel.fromJson(maps[i]);
@@ -41,7 +41,7 @@ class TaskRecordDao extends BaseDao {
 
   // 查询指定taskRecordModel
   Future<TaskRecordModel?> queryTaskRecord(int id) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     List<Map<String, dynamic>> maps = await db.query(tableName(), where: 'id = ?', whereArgs: [id]);
     if (maps.isNotEmpty) {
       return TaskRecordModel.fromJson(maps.first);
@@ -51,13 +51,13 @@ class TaskRecordDao extends BaseDao {
 
   // 更新taskRecordModel
   Future<int> updateTaskRecord(TaskRecordModel taskRecordModel) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     return await db.update(tableName(), taskRecordModel.toJson(), where: 'id = ?', whereArgs: [taskRecordModel.id]);
   }
 
   // 删除taskRecordModel
   Future<int> deleteTaskRecord(int id) async {
-    var db = await DBManager.getInstance().getDatabase;
+    var db = await DBManager.instance.database;
     return await db.delete(tableName(), where: 'id = ?', whereArgs: [id]);
   }
 

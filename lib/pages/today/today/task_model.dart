@@ -4,23 +4,23 @@ class TaskModel {
   String? taskName;
   // 图标
   String? icon;
-  // 计划 1-1；7-7；x-7;x-30
+  // 计划 1-7, 周一到周日,英文分好隔开(1;2;4;6)
   String? plan;
   //  持续时间，0:永远
   int? durationDays;
   // 开始日期
   String? beginDate;
-  // 每日打卡次数
+  // 每日打卡次数,1-24
   int? checkCount;
-  // 提醒时间, 每日可多次打卡
+  // 提醒时间, 每日可多次打卡,例:0-08:00;1-12:00;2-18:00
   String? remindTime;
   // 口号
   String? slogan;
-  // 是否激活
+  // 是否开启
   int? isActive;
-  // 创建时间
+  // 创建时间赋值后不更新
   String? createDT;
-  // 更新时间
+  // 更新时间,每次更新都更新
   String? updateDT;
   // 排序
   int? sort;

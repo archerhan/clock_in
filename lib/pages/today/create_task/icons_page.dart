@@ -35,6 +35,7 @@ class IconsPage extends GetView<CreateTaskController> {
   Widget _iconGridView(IconCategoryModel iconCategoryModel) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      padding: EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
           color: AppColors.mainWhite,
           borderRadius: BorderRadius.circular(10.r),
@@ -53,7 +54,7 @@ class IconsPage extends GetView<CreateTaskController> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5),
+                crossAxisCount: 6),
             itemBuilder: (_, index) {
               return _iconItem(iconCategoryModel.iconAssets[index]);
             },
@@ -65,36 +66,31 @@ class IconsPage extends GetView<CreateTaskController> {
   }
 
   Widget _iconItem(IconAssetModel iconAssetModel) {
-    return Column(
-      children: [
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            controller.selectIcon(iconAssetModel);
-            Get.back();
-          },
-          child: Container(
-            padding: EdgeInsets.all(5.r),
-            decoration: BoxDecoration(
-                color: iconAssetModel.isSelected == true
-                    ? AppColors.primaryYellow.withOpacity(0.7)
-                    : AppColors.mainWhite,
-                borderRadius: BorderRadius.circular(8.r)),
-            child: iconAssetModel.assetPath?.isNotEmpty == true
-                ? Image.asset(
-                    iconAssetModel.assetPath!,
-                    width: 50.w,
-                    height: 50.w,
-                    fit: BoxFit.contain,
-                  )
-                : SizedBox(
-                    width: 50.w,
-                    height: 50.w,
-                  ),
-          ),
-        ),
-        SizedBox(height: 8.h),
-      ],
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        controller.selectIcon(iconAssetModel);
+        Get.back();
+      },
+      child: Container(
+        padding: EdgeInsets.all(5.r),
+        decoration: BoxDecoration(
+            color: iconAssetModel.isSelected == true
+                ? AppColors.primaryYellow.withOpacity(0.7)
+                : AppColors.mainWhite,
+            borderRadius: BorderRadius.circular(8.r)),
+        child: iconAssetModel.assetPath.isNotEmpty == true
+            ? Image.asset(
+                iconAssetModel.assetPath,
+                width: 40.w,
+                height: 40.w,
+                fit: BoxFit.contain,
+              )
+            : SizedBox(
+                width: 40.w,
+                height: 40.w,
+              ),
+      ),
     );
   }
 }

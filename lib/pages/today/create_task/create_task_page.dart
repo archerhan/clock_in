@@ -1,22 +1,19 @@
-import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
 import 'package:clock_in/pages/today/create_task/icons_page.dart';
 import 'package:clock_in/utils/datetime_util.dart';
-import 'package:clock_in/utils/random_material_color.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
-import 'package:clock_in/widgets/dialog/date_picker_dialog.dart';
-import 'package:clock_in/widgets/dialog/days_picker_dialog.dart';
-import 'package:clock_in/widgets/dialog/notification_time_picker_dialog.dart';
-import 'package:clock_in/widgets/dialog/number_picker_dialog.dart';
-import 'package:clock_in/widgets/dialog/weekday_select_dialog.dart';
+import 'package:clock_in/widgets/dialog/color_picker.dart';
+import 'package:clock_in/widgets/dialog/date_picker.dart';
+import 'package:clock_in/widgets/dialog/days_picker.dart';
+import 'package:clock_in/widgets/dialog/notification_time_picker.dart';
+import 'package:clock_in/widgets/dialog/number_picker.dart';
+import 'package:clock_in/widgets/dialog/weekday_select.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:clock_in/widgets/textfield/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
@@ -171,6 +168,8 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           _inputField(Icons.sports_mma_outlined, "想一句口号吧!",
               controller.sloganTextController),
           const HorizontalDivider(),
+          _colorField(),
+          const HorizontalDivider(),
           _iconField(),
         ],
       ),
@@ -287,6 +286,49 @@ class CreateTaskPage extends GetView<CreateTaskController> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _colorField() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        ColorPicker.showColorPicker(
+            Get.context!, (p0) => controller.selectedColor.value = p0);
+      },
+      child: SizedBox(
+        height: 60.h,
+        child: Row(
+          children: [
+            Icon(
+              Icons.palette_outlined,
+              size: 28.w,
+              color: AppColors.subtitle666,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "选择卡片背景色",
+              style: TextStyle(
+                  color: AppColors.subtitle666,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold),
+            ),
+            const Spacer(),
+            Obx(() => controller.selectedColor.value.isNotEmpty == true
+                ? CircleAvatar(
+                    backgroundColor: Color(int.parse(
+                            controller.selectedColor.value,
+                            radix: 16))
+                        .withOpacity(0.2))
+                : const SizedBox()),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+              color: AppColors.primaryBlue,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -415,28 +457,5 @@ class CreateTaskPage extends GetView<CreateTaskController> {
         ),
       )
     ]);
-    // return RawChip(
-    //   selectedColor: AppColors.primaryBlue,
-    //   label: Text(
-    //     title,
-    //     style: TextStyle(
-    //         color: AppColors.subtitle666,
-    //         fontSize: 14.sp,
-    //         fontWeight: FontWeight.w400),
-    //   ),
-    //   onPressed: () {
-    //     NotificationTimePickerDialog.showNotificationDayDialog(Get.context!,
-    //         (p0) {
-    //       controller.selectedNotificationTime.value =
-    //           p0 ?? controller.initialNotificationTime;
-    //       controller.notificationTimes[index] =
-    //           p0 ?? controller.initialNotificationTime;
-    //     });
-    //   },
-    //   onDeleted: () {
-    //     controller.removeNotificationTime(title);
-    //   },
-    //   deleteIcon: const Icon(Icons.close, size: 18),
-    // );
   }
 }
