@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CustomTextField extends TextField {
   CustomTextField({
     super.key,
-    required TextEditingController super.controller,
+    required TextEditingController controller,
     String? hintText,
     TextStyle? textStyle,
     TextAlign? textAlign,
@@ -16,6 +16,7 @@ class CustomTextField extends TextField {
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold),
           textAlign: textAlign ?? TextAlign.start,
+          controller: controller,
           decoration: InputDecoration(
             hintStyle: TextStyle(
                 color: AppColors.grey999,

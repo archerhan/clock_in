@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clock_in/manager/task_dao.dart';
 import 'package:clock_in/manager/task_record_dao.dart';
+import 'package:clock_in/utils/logger_util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -23,6 +24,7 @@ class DBManager {
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
+    logger.d("数据库路径:$path");
     return await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
   }

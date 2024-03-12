@@ -1,21 +1,35 @@
 import 'dart:convert';
 
 import 'package:clock_in/constants/assets.gen.dart';
+import 'package:clock_in/manager/task_dao.dart';
 import 'package:clock_in/pages/today/create_task/icons_model.dart';
+import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/utils/random_material_color.dart';
+import 'package:clock_in/utils/toast_util.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
 
 class CreateTaskController extends GetxController {
-  var taskNameTextController = TextEditingController();
+  // 任务名称
+  final taskNameTextController = TextEditingController();
+  // 开始时间
   var selectedStartDate = DateTime.now().obs;
+  // 持续时间 0为永远
   var duration = 0.obs;
+  // 重复 0为每天
   var repeatValue = <int>[].obs;
+  // 每日打卡次数
   var checkCountPerDay = 1.obs;
+  // 是否开启提醒
   var notificationIsOn = false.obs;
+  // 提醒时间,数组用;隔开
   var notificationTimes = <String>[].obs;
+  // 初始提醒时间
   final initialNotificationTime = "0-08:30";
+  // 提醒时间列表
   final notificationTuples = const [
     Tuple2(0, "每天"),
     Tuple2(1, "周一"),
@@ -26,16 +40,49 @@ class CreateTaskController extends GetxController {
     Tuple2(6, "周六"),
     Tuple2(7, "周日"),
   ];
+  // 选择的提醒时间
   var selectedNotificationTime = "".obs;
-  var sloganTextController = TextEditingController();
+  // 口号
+  final sloganTextController = TextEditingController();
+  // 选择的颜色
   var selectedColor = "".obs;
+  // 选择的图标
   var selectedIcon = IconAssetModel("", false).obs;
+  // 图标列表
   var iconList = <IconCategoryModel>[].obs;
 
   @override
   void onInit() {
     loadIcons();
+    selectedColor.value = RandomMaterialColor.getRandomColorValue();
     super.onInit();
+  }
+
+  Future<void> createTask() async {
+    if (taskNameTextController.text.isEmpty) {
+      showToast("请填写任务名称");
+      return;
+    }
+    if (selectedIcon.value.assetPath.isEmpty) {
+      showToast("请选择图标");
+      return;
+    }
+    final task = TaskModel(
+        taskName: taskNameTextController.text,
+        icon: selectedIcon.value.assetPath,
+        plan: repeatValue.join(";"),
+        durationDays: duration.value,
+        beginDate: DateFormat('yyyy-MM-dd').format(selectedStartDate.value),
+        checkCount: checkCountPerDay.value,
+        remindTime: notificationTimes.join(";"),
+        slogan: sloganTextController.text,
+        isActive: 1,
+        sort: 0,
+        color: selectedColor.value,
+        createDT: DateTime.now().toString(),
+        updateDT: DateTime.now().toString());
+    await TaskDao().insertTask(task);
+    Get.back();
   }
 
   // 加载本地json数据

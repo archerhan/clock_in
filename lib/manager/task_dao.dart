@@ -1,6 +1,7 @@
 import 'package:clock_in/manager/base_dao.dart';
 import 'package:clock_in/manager/db_manager.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/utils/logger_util.dart';
 
 class TaskDao implements BaseDao {
   @override
@@ -29,11 +30,20 @@ class TaskDao implements BaseDao {
     )
     ''';
   }
-  // 插入taskModel
-  Future<int> insertTask(TaskModel taskModel) async {
-    var db = await DBManager.instance.database;
-    return await db.insert(tableName(), taskModel.toJson());
-  }
+
+// 插入taskModel
+Future<int> insertTask(TaskModel taskModel) async {
+  var db = await DBManager.instance.database;
+  int id = await db.insert(tableName(), taskModel.toJson());
+
+  // 更新sort字段为id
+  Map<String, dynamic> row = {
+    'sort' : id,
+  };
+  await db.update(tableName(), row, where: 'id = ?', whereArgs: [id]);
+
+  return id;
+}
 
   // 查询所有taskModel
   Future<List<TaskModel>> queryAllTask() async {
@@ -47,7 +57,8 @@ class TaskDao implements BaseDao {
   // 查询指定taskModel
   Future<TaskModel?> queryTask(int id) async {
     var db = await DBManager.instance.database;
-    List<Map<String, dynamic>> maps = await db.query(tableName(), where: 'id = ?', whereArgs: [id]);
+    List<Map<String, dynamic>> maps =
+        await db.query(tableName(), where: 'id = ?', whereArgs: [id]);
     if (maps.isNotEmpty) {
       return TaskModel.fromJson(maps.first);
     }
@@ -57,7 +68,8 @@ class TaskDao implements BaseDao {
   // 更新taskModel
   Future<int> updateTask(TaskModel taskModel) async {
     var db = await DBManager.instance.database;
-    return await db.update(tableName(), taskModel.toJson(), where: 'id = ?', whereArgs: [taskModel.id]);
+    return await db.update(tableName(), taskModel.toJson(),
+        where: 'id = ?', whereArgs: [taskModel.id]);
   }
 
   // 删除taskModel
@@ -65,5 +77,4 @@ class TaskDao implements BaseDao {
     var db = await DBManager.instance.database;
     return await db.delete(tableName(), where: 'id = ?', whereArgs: [id]);
   }
-
 }

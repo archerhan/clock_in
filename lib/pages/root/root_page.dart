@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/today/today_page.dart';
-import 'package:clock_in/pages/reward/reward_page.dart';
 import 'package:clock_in/pages/chart/chart_page.dart';
 import 'package:clock_in/pages/root/root_controller.dart';
 import 'package:clock_in/pages/setting/setting_page.dart';
@@ -36,7 +35,7 @@ class RootPage extends GetView<RootController> {
               color: AppColors.greyCCC, offset: Offset(0, -3), blurRadius: 24),
           safeAreaValues: const SafeAreaValues(bottom: true),
           icons: const [
-            CupertinoIcons.today,
+            CupertinoIcons.text_badge_checkmark,
             // CupertinoIcons.settings_solid,
             CupertinoIcons.chart_pie,
             CupertinoIcons.settings_solid,

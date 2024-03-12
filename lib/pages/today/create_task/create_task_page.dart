@@ -4,6 +4,7 @@ import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
 import 'package:clock_in/pages/today/create_task/icons_page.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
+import 'package:clock_in/widgets/buttons/ok%20_button.dart';
 import 'package:clock_in/widgets/dialog/color_picker.dart';
 import 'package:clock_in/widgets/dialog/date_picker.dart';
 import 'package:clock_in/widgets/dialog/days_picker.dart';
@@ -37,6 +38,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
               _basicInfo(),
               _notificationInfo(),
               _iconSlogan(),
+              OKButton(title: "创建", onPressed: () => controller.createTask())
             ],
           ),
         ),
@@ -91,9 +93,10 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           Obx(
             () => _valueSelection(
               Icons.event_repeat_outlined,
-              "重复",
-              controller.repeatValue.isEmpty
-                  ? "不重复"
+              "任务执行日",
+              (controller.repeatValue.isEmpty ||
+                      controller.repeatValue.length >= 7)
+                  ? "每天"
                   : controller.repeatValue
                       .map((e) => DateTimeUtil.getWeekName(e))
                       .join("、"),
@@ -266,8 +269,8 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                     controller.addNotificationTime(
                         controller.initialNotificationTime);
                   },
-                  icon: Icon(Icons.add),
-                  label: Text("通知时间"))
+                  icon: const Icon(Icons.add),
+                  label: const Text("通知时间"))
               : const SizedBox()),
           Obx(
             () => CupertinoSwitch(
@@ -357,15 +360,14 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                   fontWeight: FontWeight.bold),
             ),
             const Spacer(),
-            Obx(() =>
-                controller.selectedIcon.value.assetPath?.isNotEmpty == true
-                    ? Image.asset(
-                        controller.selectedIcon.value.assetPath!,
-                        width: 30.w,
-                        height: 30.w,
-                        fit: BoxFit.contain,
-                      )
-                    : SizedBox(width: 30.w, height: 30.w)),
+            Obx(() => controller.selectedIcon.value.assetPath.isNotEmpty == true
+                ? Image.asset(
+                    controller.selectedIcon.value.assetPath,
+                    width: 30.w,
+                    height: 30.w,
+                    fit: BoxFit.contain,
+                  )
+                : SizedBox(width: 30.w, height: 30.w)),
             const Icon(
               Icons.arrow_forward_ios,
               size: 20,

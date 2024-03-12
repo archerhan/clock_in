@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:clock_in/manager/db_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +31,8 @@ Future _initServices() async {
 }
 
 void _otherConfigs() {
+  DBManager.instance.database;
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -58,9 +61,9 @@ class MyApp extends StatelessWidget {
         popGesture: Get.isPopGestureEnable,
         fallbackLocale: const Locale('zh', 'CN'),
         // localizationsDelegates: const [
-          // PickerLocalizationsDelegate.delegate
-          // GlobalCupertinoLocalizations.delegate,
-          // GlobalMaterialLocalizations.delegate,
+        // PickerLocalizationsDelegate.delegate
+        // GlobalCupertinoLocalizations.delegate,
+        // GlobalMaterialLocalizations.delegate,
         // ],
         //   supportedLocales: const [
         //     Locale('zh'),
