@@ -19,6 +19,7 @@ class CustomDaysPickerDialog {
   /// 圆角背景
   static void showDaysPicker(BuildContext context, Function(int?) onConfirm) {
     var picker = Picker(
+        height: 200.h,
         backgroundColor: Colors.transparent,
         headerDecoration: BoxDecoration(
             color: AppColors.mainWhite,

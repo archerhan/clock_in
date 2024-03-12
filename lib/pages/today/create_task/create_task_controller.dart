@@ -5,6 +5,7 @@ import 'package:clock_in/pages/today/create_task/icons_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:tuple/tuple.dart';
 
 class CreateTaskController extends GetxController {
   var taskNameTextController = TextEditingController();
@@ -13,9 +14,23 @@ class CreateTaskController extends GetxController {
   var repeatValue = <int>[].obs;
   var checkCountPerDay = 1.obs;
   var notificationIsOn = false.obs;
+  var notificationTimes = <String>[].obs;
+  final initialNotificationTime = "0-08:30";
+  final notificationTuples = const [
+    Tuple2(0, "每天"),
+    Tuple2(1, "周一"),
+    Tuple2(2, "周二"),
+    Tuple2(3, "周三"),
+    Tuple2(4, "周四"),
+    Tuple2(5, "周五"),
+    Tuple2(6, "周六"),
+    Tuple2(7, "周日"),
+  ];
+  var selectedNotificationTime = "".obs;
   var sloganTextController = TextEditingController();
   var selectedIcon = IconAssetModel("", false).obs;
   var iconList = <IconCategoryModel>[].obs;
+
   @override
   void onInit() {
     loadIcons();
@@ -44,6 +59,38 @@ class CreateTaskController extends GetxController {
       }
     }
     iconList.refresh();
+  }
+
+  void addNotificationTime(String time) {
+    notificationTimes.add(time);
+  }
+
+  void removeNotificationTime(int index) {
+    notificationTimes.removeAt(index);
+    if (notificationTimes.isEmpty) {
+      notificationIsOn.value = false;
+    }
+  }
+
+  String getNotificationDayName(int day) {
+    switch (day) {
+      case 1:
+        return "周一";
+      case 2:
+        return "周二";
+      case 3:
+        return "周三";
+      case 4:
+        return "周四";
+      case 5:
+        return "周五";
+      case 6:
+        return "周六";
+      case 7:
+        return "周日";
+      default:
+        return "每天";
+    }
   }
 
   String getCategoryNameBy(IconCategory category) {

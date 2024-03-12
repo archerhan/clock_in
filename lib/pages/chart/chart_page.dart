@@ -28,7 +28,7 @@ class ChartPage extends GetView<ChartController> {
             const CustomLineChart(),
             _title("任务打卡分布"),
             const MyPieChart(),
-            _title("已获得的奖励"),
+            // _title("已获得的奖励"),
           ],
         ),
       ),

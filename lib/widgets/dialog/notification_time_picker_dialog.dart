@@ -3,13 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:tuple/tuple.dart';
 
-class CustomNumberPickerDialog {
-  static List<int> hours = List<int>.generate(24, (index) => index + 1);
+class NotificationTimePickerDialog {
+  // 通知时间
+  static const notificationTuples = <Tuple2>[
+    Tuple2(0, "每天"),
+    Tuple2(1, "周一"),
+    Tuple2(2, "周二"),
+    Tuple2(3, "周三"),
+    Tuple2(4, "周四"),
+    Tuple2(5, "周五"),
+    Tuple2(6, "周六"),
+    Tuple2(7, "周日"),
+  ];
+  // 周一到周日, 0为每天
+  static final notificationDays = [
+    ["每天", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+    List.generate(23, (index) => (index + 1).toString().padLeft(2, "0")),
+    List.generate(60, (index) => (index).toString().padLeft(2, "0"))
+  ];
 
-  /// 圆角背景
-  static void showCheckCountPicker(
-      BuildContext context, Function(int?) onConfirm) {
+  static void showNotificationDayDialog(
+      BuildContext context, Function(String?) onConfirm) {
     var picker = Picker(
         height: 200.h,
         backgroundColor: Colors.transparent,
@@ -21,21 +37,12 @@ class CustomNumberPickerDialog {
                 topLeft: Radius.circular(10.r),
                 topRight: Radius.circular(10.r))),
         adapter: PickerDataAdapter(
-          data: hours.map((e) {
-            return PickerItem(
-                text: Text(
-                  "$e次",
-                  style: TextStyle(
-                      color: AppColors.grey999,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600),
-                ),
-                value: e);
-          }).toList(),
+          pickerData: notificationDays,
+          isArray: true,
         ),
-        selecteds: [0],
+        selecteds: [0, 7, 30],
         title: Text(
-          "请选择每天的打卡次数",
+          "请选择提醒时间",
           style: TextStyle(
               color: AppColors.subtitle666,
               fontSize: 18.sp,
@@ -48,7 +55,13 @@ class CustomNumberPickerDialog {
             fontSize: 18.sp,
             fontWeight: FontWeight.w500),
         onConfirm: (Picker picker, List value) {
-          onConfirm(hours[value.first]);
+          final selectedList = picker.getSelectedValues();
+          final day = notificationTuples
+              .firstWhere((element) => element.item2 == selectedList[0])
+              .item1;
+          final value =
+              "$day-${selectedList[1].toString().padLeft(2, "0")}:${selectedList[2].toString().padLeft(2, "0")}";
+          onConfirm(value);
         },
         onSelect: (Picker picker, int index, List<int> selected) {
           Vibrate.feedback(FeedbackType.selection);

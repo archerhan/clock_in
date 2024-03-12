@@ -10,6 +10,7 @@ class CustomDatePickerDialog {
   static void showDatePicker(
       BuildContext context, Function(DateTime?) onConfirm) {
     var picker = Picker(
+        height: 200.h,
         backgroundColor: Colors.transparent,
         headerDecoration: BoxDecoration(
             color: AppColors.mainWhite,
@@ -49,10 +50,7 @@ class CustomDatePickerDialog {
           // color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
-          child: SizedBox(
-            height: Get.height * 0.3,
-            child: view,
-          ));
+          child: view);
     });
   }
 }

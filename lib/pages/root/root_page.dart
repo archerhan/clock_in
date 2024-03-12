@@ -21,7 +21,7 @@ class RootPage extends GetView<RootController> {
             index: controller.activeIndex.value,
             children: const [
               TodayPage(),
-              RewardPage(),
+              // RewardPage(),
               ChartPage(),
               SettingPage()
             ],
@@ -36,10 +36,10 @@ class RootPage extends GetView<RootController> {
               color: AppColors.greyCCC, offset: Offset(0, -3), blurRadius: 24),
           safeAreaValues: const SafeAreaValues(bottom: true),
           icons: const [
-            CupertinoIcons.news_solid,
+            CupertinoIcons.today,
+            // CupertinoIcons.settings_solid,
+            CupertinoIcons.chart_pie,
             CupertinoIcons.settings_solid,
-            CupertinoIcons.memories,
-            CupertinoIcons.calendar,
           ],
           iconSize: 40,
           activeColor: AppColors.primaryBlue,

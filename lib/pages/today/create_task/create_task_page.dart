@@ -1,17 +1,22 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
 import 'package:clock_in/pages/today/create_task/icons_page.dart';
 import 'package:clock_in/utils/datetime_util.dart';
+import 'package:clock_in/utils/random_material_color.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/dialog/date_picker_dialog.dart';
 import 'package:clock_in/widgets/dialog/days_picker_dialog.dart';
+import 'package:clock_in/widgets/dialog/notification_time_picker_dialog.dart';
 import 'package:clock_in/widgets/dialog/number_picker_dialog.dart';
 import 'package:clock_in/widgets/dialog/weekday_select_dialog.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:clock_in/widgets/textfield/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
@@ -122,6 +127,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
       margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Obx(
             () => _valueSelection(
@@ -137,6 +143,10 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           const HorizontalDivider(),
           Obx(() => _notificationSection(
               controller.notificationIsOn.value ? "通知已开启" : "通知未开启")),
+          Obx(() => controller.notificationIsOn.value
+              ? const HorizontalDivider()
+              : const SizedBox()),
+          _notificationTime(),
         ],
       ),
     );
@@ -251,12 +261,27 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                 fontWeight: FontWeight.bold),
           ),
           const Spacer(),
+          Obx(() => controller.notificationIsOn.value
+              ? TextButton.icon(
+                  onPressed: () {
+                    controller.addNotificationTime(
+                        controller.initialNotificationTime);
+                  },
+                  icon: Icon(Icons.add),
+                  label: Text("通知时间"))
+              : const SizedBox()),
           Obx(
             () => CupertinoSwitch(
               value: controller.notificationIsOn.value,
               onChanged: (value) {
                 Vibrate.feedback(FeedbackType.medium);
                 controller.notificationIsOn.value = value;
+                if (value) {
+                  controller
+                      .addNotificationTime(controller.initialNotificationTime);
+                } else {
+                  controller.notificationTimes.clear();
+                }
               },
               activeColor: Colors.green,
             ),
@@ -308,5 +333,110 @@ class CreateTaskPage extends GetView<CreateTaskController> {
         ),
       ),
     );
+  }
+
+  /// 通知时间
+  Widget _notificationTime() {
+    return AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        child: Obx(
+          () => MediaQuery.removePadding(
+              removeTop: true,
+              removeBottom: true,
+              context: Get.context!,
+              child: GridView.builder(
+                padding: EdgeInsets.symmetric(
+                    vertical: controller.notificationIsOn.value ? 10.h : 0),
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3, childAspectRatio: 4),
+                // gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                //     maxCrossAxisExtent: 200, childAspectRatio: 3),
+                shrinkWrap: true,
+                itemCount: controller.notificationTimes.length,
+                itemBuilder: (context, index) {
+                  final day = NotificationTimePickerDialog.notificationTuples
+                      .firstWhere((day) =>
+                          day.item1.toString() ==
+                          controller.notificationTimes[index].split("-").first)
+                      .item2;
+                  final time =
+                      controller.notificationTimes[index].split("-").last;
+                  return _timeItem("$day $time", index);
+                },
+              )),
+        ));
+  }
+
+  Widget _timeItem(String title, int index) {
+    return Row(children: [
+      // 内容
+      GestureDetector(
+        onTap: () {
+          NotificationTimePickerDialog.showNotificationDayDialog(Get.context!,
+              (p0) {
+            controller.selectedNotificationTime.value =
+                p0 ?? controller.initialNotificationTime;
+            controller.notificationTimes[index] =
+                p0 ?? controller.initialNotificationTime;
+          });
+        },
+        child: Container(
+          height: 28,
+          padding: const EdgeInsets.all(5),
+          decoration: const BoxDecoration(
+            color: AppColors.bgColor,
+            borderRadius: BorderRadius.all(Radius.circular(6)),
+          ),
+          child: Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                  color: AppColors.subtitle666,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400),
+            ),
+          ),
+        ),
+      ),
+      // 关闭
+      GestureDetector(
+        onTap: () {
+          controller.removeNotificationTime(index);
+        },
+        child: Container(
+          height: 28,
+          padding: const EdgeInsets.all(5),
+          decoration: const BoxDecoration(
+            color: AppColors.bgColor,
+            borderRadius: BorderRadius.all(Radius.circular(6)),
+          ),
+          child: const Icon(Icons.close, size: 18),
+        ),
+      )
+    ]);
+    // return RawChip(
+    //   selectedColor: AppColors.primaryBlue,
+    //   label: Text(
+    //     title,
+    //     style: TextStyle(
+    //         color: AppColors.subtitle666,
+    //         fontSize: 14.sp,
+    //         fontWeight: FontWeight.w400),
+    //   ),
+    //   onPressed: () {
+    //     NotificationTimePickerDialog.showNotificationDayDialog(Get.context!,
+    //         (p0) {
+    //       controller.selectedNotificationTime.value =
+    //           p0 ?? controller.initialNotificationTime;
+    //       controller.notificationTimes[index] =
+    //           p0 ?? controller.initialNotificationTime;
+    //     });
+    //   },
+    //   onDeleted: () {
+    //     controller.removeNotificationTime(title);
+    //   },
+    //   deleteIcon: const Icon(Icons.close, size: 18),
+    // );
   }
 }
