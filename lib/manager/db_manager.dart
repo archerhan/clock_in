@@ -9,7 +9,7 @@ import 'package:path/path.dart';
 
 class DBManager {
   static const _databaseName = "ClockIn.db";
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 2;
 
   DBManager._privateConstructor();
   static final DBManager instance = DBManager._privateConstructor();
@@ -25,13 +25,30 @@ class DBManager {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     logger.d("数据库路径:$path");
-    return await openDatabase(path,
+    final db = await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
+    // addColumnIfNotExists(db, TaskDao().tableName(), columnName, columnType)
+    return db;
   }
 
   // 创建表
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(TaskDao().createTableSql());
-    await db.execute(TaskRecordDao().createTableSql());
+  }
+
+  void addColumnIfNotExists(Database db, String tableName, String columnName,
+      String columnType) async {
+    // 获取表的信息
+    List<Map> columns = await db.rawQuery('PRAGMA table_info($tableName)');
+
+    // 检查字段是否已存在
+    bool isExists =
+        columns.indexWhere((Map column) => column['name'] == columnName) != -1;
+
+    // 如果字段不存在，添加新的字段
+    if (!isExists) {
+      await db
+          .execute('ALTER TABLE $tableName ADD COLUMN $columnName $columnType');
+    }
   }
 }

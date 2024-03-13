@@ -1,7 +1,6 @@
 import 'package:clock_in/manager/base_dao.dart';
 import 'package:clock_in/manager/db_manager.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
-import 'package:clock_in/utils/logger_util.dart';
 
 class TaskDao implements BaseDao {
   @override
@@ -25,6 +24,8 @@ class TaskDao implements BaseDao {
       isActive INTEGER,
       sort INTEGER,
       color TEXT,
+      rewardId INTEGER,
+      records TEXT,
       createDT TEXT,
       updateDT TEXT
     )
