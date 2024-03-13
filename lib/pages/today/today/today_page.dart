@@ -1,6 +1,8 @@
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/create_task/create_task_binding.dart';
 import 'package:clock_in/pages/today/create_task/create_task_page.dart';
+import 'package:clock_in/pages/today/task_list/task_list_binding.dart';
+import 'package:clock_in/pages/today/task_list/task_list_page.dart';
 import 'package:clock_in/pages/today/today/task_record_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/calendar/custom_calendar.dart';
@@ -18,14 +20,23 @@ class TodayPage extends GetView<TodayController> {
     return Scaffold(
       appBar: CustomAppBar(
         title: Text("懒猫打卡".tr),
+        leading: IconButton(
+          onPressed: () {
+            Get.to(const TaskListPage(), binding: TaskListBinding());
+          },
+          icon: Icon(
+            Icons.format_list_bulleted_outlined,
+            size: 30.w,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
               Get.to(const CreateTaskPage(), binding: CreateTaskBinding());
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.add,
-              size: 30,
+              size: 30.w,
             ),
           ),
           const SizedBox(width: 20)
