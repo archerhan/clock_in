@@ -24,7 +24,9 @@ class TaskListPage extends GetView<TaskListController> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(const CreateTaskPage(), binding: CreateTaskBinding());
+              Get.to(const CreateTaskPage(), binding: CreateTaskBinding())?.then((value) {
+                controller.loadAllTask();
+              });
             },
             icon: Icon(
               Icons.add,
@@ -115,7 +117,7 @@ class TaskListPage extends GetView<TaskListController> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "金城江卡掉了随机发读书卡;冷风机啊打扫房间撒电联客户金飞达设计开发哈萨",
+                          taskModel.slogan ?? "",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

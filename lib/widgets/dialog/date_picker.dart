@@ -7,9 +7,11 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 class CustomDatePickerDialog {
   /// 圆角背景
   static void showDatePicker(
-      BuildContext context, Function(DateTime?) onConfirm) {
+      BuildContext context, Function(DateTime?) onConfirm,
+      {DateTime? selected}) {
     var picker = Picker(
         height: 200.h,
+        itemExtent: 32.h,
         backgroundColor: Colors.transparent,
         headerDecoration: BoxDecoration(
             color: AppColors.mainWhite,
@@ -20,6 +22,7 @@ class CustomDatePickerDialog {
                 topRight: Radius.circular(10.r))),
         adapter: DateTimePickerAdapter(
             type: PickerDateTimeType.kYMD,
+            value: selected ?? DateTime.now(),
             isNumberMonth: true,
             yearSuffix: "年",
             monthSuffix: "月",

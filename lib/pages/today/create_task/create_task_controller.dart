@@ -100,7 +100,6 @@ class CreateTaskController extends GetxController {
     } else {
       await TaskDao().insertTask(task);
     }
-    await Get.find<TaskListController>().loadAllTask();
     Get.back();
   }
 

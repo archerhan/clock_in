@@ -9,8 +9,10 @@ class CustomNumberPickerDialog {
 
   /// 圆角背景
   static void showCheckCountPicker(
-      BuildContext context, Function(int?) onConfirm) {
+      BuildContext context, Function(int?) onConfirm,
+      {int? selected}) {
     var picker = Picker(
+        itemExtent: 32.h,
         height: 200.h,
         backgroundColor: Colors.transparent,
         headerDecoration: BoxDecoration(
@@ -33,7 +35,7 @@ class CustomNumberPickerDialog {
                 value: e);
           }).toList(),
         ),
-        selecteds: [0],
+        selecteds: selected != null ? [hours.indexOf(selected)] : [0],
         title: Text(
           "请选择每天的打卡次数",
           style: TextStyle(

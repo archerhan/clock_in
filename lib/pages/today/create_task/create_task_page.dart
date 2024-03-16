@@ -31,8 +31,9 @@ class CreateTaskPage extends GetView<CreateTaskController> {
         title: Text(controller.isCreateTask ? "创建任务" : "编辑任务"),
       ),
       body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          FocusScope.of(context).unfocus();
         },
         child: SingleChildScrollView(
           child: Column(
@@ -41,6 +42,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
               _notificationInfo(),
               _iconSlogan(),
               _buttons(),
+              SizedBox(height: 40.h),
             ],
           ),
         ),
@@ -76,7 +78,8 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                   CustomDatePickerDialog.showDatePicker(
                       Get.context!,
                       (p0) => controller.selectedStartDate.value =
-                          p0 ?? DateTime.now());
+                          p0 ?? DateTime.now(),
+                      selected: controller.selectedStartDate.value);
                 },
               )),
           const HorizontalDivider(),
@@ -87,8 +90,9 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                     ? "永远"
                     : "${controller.duration.value}天",
                 onTap: () {
-                  CustomDaysPickerDialog.showDaysPicker(Get.context!,
-                      (p0) => controller.duration.value = p0 ?? 0);
+                  CustomDaysPickerDialog.showDaysPicker(
+                      Get.context!, (p0) => controller.duration.value = p0 ?? 0,
+                      selected: controller.duration.value);
                 },
               )),
           const HorizontalDivider(),
@@ -138,7 +142,8 @@ class CreateTaskPage extends GetView<CreateTaskController> {
               "${controller.checkCountPerDay.value}次/天",
               onTap: () {
                 CustomNumberPickerDialog.showCheckCountPicker(Get.context!,
-                    (p0) => controller.checkCountPerDay.value = p0 ?? 1);
+                    (p0) => controller.checkCountPerDay.value = p0 ?? 1,
+                    selected: controller.checkCountPerDay.value);
               },
             ),
           ),
@@ -412,7 +417,10 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                     vertical: controller.notificationIsOn.value ? 10.h : 0),
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, childAspectRatio: 4),
+                    crossAxisCount: 3,
+                    childAspectRatio: 4,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 10),
                 shrinkWrap: true,
                 itemCount: controller.notificationTimes.length,
                 itemBuilder: (context, index) {
@@ -430,52 +438,53 @@ class CreateTaskPage extends GetView<CreateTaskController> {
   }
 
   Widget _timeItem(String title, int index) {
-    return Row(children: [
-      // 内容
-      GestureDetector(
-        onTap: () {
-          NotificationTimePickerDialog.showNotificationDayDialog(Get.context!,
-              (p0) {
-            controller.selectedNotificationTime.value =
-                p0 ?? controller.initialNotificationTime;
-            controller.notificationTimes[index] =
-                p0 ?? controller.initialNotificationTime;
-          });
-        },
-        child: Container(
-          height: 28,
-          padding: const EdgeInsets.all(5),
-          decoration: const BoxDecoration(
-            color: AppColors.bgColor,
-            borderRadius: BorderRadius.all(Radius.circular(6)),
-          ),
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                  color: AppColors.subtitle666,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400),
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.bgColor,
+        borderRadius: BorderRadius.all(Radius.circular(6)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                NotificationTimePickerDialog.showNotificationDayDialog(
+                    Get.context!, (p0) {
+                  controller.selectedNotificationTime.value =
+                      p0 ?? controller.initialNotificationTime;
+                  controller.notificationTimes[index] =
+                      p0 ?? controller.initialNotificationTime;
+                });
+              },
+              child: Text(
+                title,
+                style: TextStyle(
+                    color: AppColors.subtitle666,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400),
+              ).paddingOnly(left: 5.w),
             ),
           ),
-        ),
+          GestureDetector(
+            onTap: () {
+              controller.removeNotificationTime(index);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+              decoration: const BoxDecoration(
+                color: AppColors.bgColor,
+                // borderRadius: BorderRadius.all(Radius.circular(6)),
+              ),
+              child: Icon(
+                Icons.close,
+                size: 14.sp,
+              ),
+            ),
+          )
+        ],
       ),
-      // 关闭
-      GestureDetector(
-        onTap: () {
-          controller.removeNotificationTime(index);
-        },
-        child: Container(
-          height: 28,
-          padding: const EdgeInsets.all(5),
-          decoration: const BoxDecoration(
-            color: AppColors.bgColor,
-            borderRadius: BorderRadius.all(Radius.circular(6)),
-          ),
-          child: const Icon(Icons.close, size: 18),
-        ),
-      )
-    ]);
+    );
   }
 
   Widget _buttons() {
@@ -492,11 +501,22 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                 onPressed: () {
                   AwesomeDialog(
                     context: Get.context!,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                    bodyHeaderDistance: 40.h,
                     dialogType: DialogType.warning,
                     animType: AnimType.bottomSlide,
-                    title: "确定要删除任务吗?",
+                    title: "确定要删除任务吗?\n",
+                    titleTextStyle: TextStyle(
+                        color: AppColors.mainTitle333,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold),
                     desc: "删除后将无法恢复, 关联的打卡记录数据也将一并删除, 请谨慎操作!",
+                    descTextStyle: TextStyle(
+                        color: AppColors.subtitle666, fontSize: 16.sp),
                     btnCancelText: "取消",
+                    buttonsTextStyle:
+                        TextStyle(color: AppColors.mainWhite, fontSize: 16.sp),
                     btnCancelColor: AppColors.textGreen,
                     btnOkColor: AppColors.textRed,
                     btnOkText: "删除",
@@ -514,8 +534,8 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           ),
         Expanded(
           child: GestureDetector(
-            onTap: () {
-              controller.createTask();
+            onTap: () async {
+              await controller.createTask();
             },
             child:
                 OKButton(title: "完成", onPressed: () => controller.createTask()),

@@ -17,8 +17,10 @@ class CustomDaysPickerDialog {
   ];
 
   /// 圆角背景
-  static void showDaysPicker(BuildContext context, Function(int?) onConfirm) {
+  static void showDaysPicker(BuildContext context, Function(int?) onConfirm,
+      {int? selected}) {
     var picker = Picker(
+        itemExtent: 32.h,
         height: 200.h,
         backgroundColor: Colors.transparent,
         headerDecoration: BoxDecoration(
@@ -41,7 +43,7 @@ class CustomDaysPickerDialog {
                 value: e);
           }).toList(),
         ),
-        selecteds: [7],
+        selecteds: selected != null ? [days.indexOf(selected)] : [7],
         title: Text(
           "请选择任务坚持的天数",
           style: TextStyle(
