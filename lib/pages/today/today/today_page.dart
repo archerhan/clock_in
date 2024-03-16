@@ -82,13 +82,6 @@ class TodayPage extends GetView<TodayController> {
               ? Color(int.parse(taskRecordModel.color!, radix: 16))
                   .withOpacity(0.2)
               : AppColors.primaryBlue.withOpacity(0.2),
-          // boxShadow: [
-          //   BoxShadow(
-          //       color: randomColor.withOpacity(0.2),
-          //       blurRadius: 5.r,
-          //       offset: const Offset(3, 3),
-          //       spreadRadius: 1.r)
-          // ],
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(

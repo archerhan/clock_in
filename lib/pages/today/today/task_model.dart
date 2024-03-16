@@ -40,7 +40,8 @@ class TaskModel {
       this.isActive,
       this.createDT,
       this.updateDT,
-      this.sort,this.color});
+      this.sort,
+      this.color});
 
   TaskModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -75,6 +76,7 @@ class TaskModel {
     data['updateDT'] = updateDT;
     data['sort'] = sort;
     data['color'] = color;
+    data.removeWhere((key, value) => value == null);
     return data;
   }
 }

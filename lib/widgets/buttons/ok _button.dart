@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class OKButton extends StatelessWidget {
   final String title;
   final Function()? onPressed;
-  const OKButton({required this.title, this.onPressed, super.key});
+  final Color? backgroundColor;
+  const OKButton(
+      {required this.title, this.onPressed, this.backgroundColor, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class OKButton extends StatelessWidget {
       child: Container(
         height: 50.h,
         decoration: BoxDecoration(
-            color: AppColors.primaryBlue,
+            color: backgroundColor ?? AppColors.primaryBlue,
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(

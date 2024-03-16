@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
 import 'package:clock_in/pages/today/create_task/icons_page.dart';
 import 'package:clock_in/utils/datetime_util.dart';
+import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/buttons/ok%20_button.dart';
 import 'package:clock_in/widgets/dialog/color_picker.dart';
@@ -26,7 +28,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: const Text("创建任务"),
+        title: Text(controller.isCreateTask ? "创建任务" : "编辑任务"),
       ),
       body: GestureDetector(
         onTap: () {
@@ -38,7 +40,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
               _basicInfo(),
               _notificationInfo(),
               _iconSlogan(),
-              OKButton(title: "创建", onPressed: () => controller.createTask())
+              _buttons(),
             ],
           ),
         ),
@@ -146,7 +148,9 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           Obx(() => controller.notificationIsOn.value
               ? const HorizontalDivider()
               : const SizedBox()),
-          _notificationTime(),
+          Obx(() => controller.notificationTimes.isNotEmpty
+              ? _notificationTime()
+              : const SizedBox()),
         ],
       ),
     );
@@ -168,8 +172,14 @@ class CreateTaskPage extends GetView<CreateTaskController> {
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Column(
         children: [
-          _inputField(Icons.sports_mma_outlined, "想一句口号吧!",
-              controller.sloganTextController),
+          _inputField(
+            Icons.sports_mma_outlined,
+            "想一句口号吧!",
+            controller.sloganTextController,
+            action: () {
+              controller.sloganTextController.text = controller.shortPhases();
+            },
+          ),
           const HorizontalDivider(),
           _colorField(),
           const HorizontalDivider(),
@@ -180,7 +190,8 @@ class CreateTaskPage extends GetView<CreateTaskController> {
   }
 
   Widget _inputField(
-      IconData icon, String title, TextEditingController controller) {
+      IconData icon, String title, TextEditingController controller,
+      {Function()? action}) {
     return SizedBox(
       height: 60.h,
       child: Row(
@@ -195,7 +206,15 @@ class CreateTaskPage extends GetView<CreateTaskController> {
               child: CustomTextField(
             controller: controller,
             hintText: title,
-          ))
+          )),
+          if (action != null)
+            TextButton(
+                onPressed: action,
+                child: Text(
+                  "换一句",
+                  style:
+                      TextStyle(color: AppColors.primaryBlue, fontSize: 12.sp),
+                )),
         ],
       ),
     );
@@ -394,8 +413,6 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3, childAspectRatio: 4),
-                // gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                //     maxCrossAxisExtent: 200, childAspectRatio: 3),
                 shrinkWrap: true,
                 itemCount: controller.notificationTimes.length,
                 itemBuilder: (context, index) {
@@ -459,5 +476,52 @@ class CreateTaskPage extends GetView<CreateTaskController> {
         ),
       )
     ]);
+  }
+
+  Widget _buttons() {
+    return Row(
+      children: [
+        if (!controller.isCreateTask)
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: OKButton(
+                title: "删除",
+                onPressed: () {
+                  AwesomeDialog(
+                    context: Get.context!,
+                    dialogType: DialogType.warning,
+                    animType: AnimType.bottomSlide,
+                    title: "确定要删除任务吗?",
+                    desc: "删除后将无法恢复, 关联的打卡记录数据也将一并删除, 请谨慎操作!",
+                    btnCancelText: "取消",
+                    btnCancelColor: AppColors.textGreen,
+                    btnOkColor: AppColors.textRed,
+                    btnOkText: "删除",
+                    btnCancelOnPress: () {},
+                    btnOkOnPress: () async {
+                      await controller.deleteTask();
+                      Get.back();
+                      showToast("任务已删除!");
+                    },
+                  ).show();
+                },
+                backgroundColor: AppColors.warningRed,
+              ),
+            ),
+          ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              controller.createTask();
+            },
+            child:
+                OKButton(title: "完成", onPressed: () => controller.createTask()),
+          ),
+        ),
+      ],
+    );
   }
 }
