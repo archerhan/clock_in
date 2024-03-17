@@ -28,6 +28,7 @@ class NotificationTimePickerDialog {
       BuildContext context, Function(String?) onConfirm) {
     var picker = Picker(
         height: 200.h,
+        itemExtent: 32.h,
         backgroundColor: Colors.transparent,
         headerDecoration: BoxDecoration(
             color: AppColors.mainWhite,

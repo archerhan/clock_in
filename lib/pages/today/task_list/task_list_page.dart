@@ -24,7 +24,8 @@ class TaskListPage extends GetView<TaskListController> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(const CreateTaskPage(), binding: CreateTaskBinding())?.then((value) {
+              Get.to(const CreateTaskPage(), binding: CreateTaskBinding())
+                  ?.then((value) {
                 controller.loadAllTask();
               });
             },
@@ -146,12 +147,18 @@ class TaskListPage extends GetView<TaskListController> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _numTextWidget("10", "已持续",
+                    _numTextWidget(
+                        (taskModel.grandTotal ?? 0).toString(), "已持续",
                         secondaryText: taskModel.durationDays == 0
                             ? "/∞"
                             : "/${taskModel.durationDays}天"),
-                    _numTextWidget("8", "最长持续", secondaryText: "天"),
-                    _numTextWidget("4", "本月已打卡", secondaryText: "天"),
+                    _numTextWidget(
+                        (taskModel.continuousDays ?? 0).toString(), "最长持续",
+                        secondaryText: "天"),
+                    _numTextWidget(
+                        (taskModel.monthTotal ?? 0).toString(),
+                        "本月已打卡",
+                        secondaryText: "天"),
                   ]),
             ),
             const HorizontalDivider(),

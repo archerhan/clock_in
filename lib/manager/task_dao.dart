@@ -11,7 +11,7 @@ class TaskDao implements BaseDao {
   @override
   createTableSql() {
     return '''
-    CREATE TABLE task_table (
+    CREATE TABLE ${tableName()} (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       taskName TEXT,
       icon TEXT,
@@ -22,29 +22,30 @@ class TaskDao implements BaseDao {
       remindTime TEXT,
       slogan TEXT,
       isActive INTEGER,
+      createDT TEXT,
+      updateDT TEXT,
       sort INTEGER,
       color TEXT,
-      rewardId INTEGER,
       records TEXT,
-      createDT TEXT,
-      updateDT TEXT
+      grandTotal INTEGER,
+      continuousDays INTEGER
     )
     ''';
   }
 
 // 插入taskModel
-Future<int> insertTask(TaskModel taskModel) async {
-  var db = await DBManager.instance.database;
-  int id = await db.insert(tableName(), taskModel.toJson());
+  Future<int> insertTask(TaskModel taskModel) async {
+    var db = await DBManager.instance.database;
+    int id = await db.insert(tableName(), taskModel.toJson());
 
-  // 更新sort字段为id
-  Map<String, dynamic> row = {
-    'sort' : id,
-  };
-  await db.update(tableName(), row, where: 'id = ?', whereArgs: [id]);
+    // 更新sort字段为id
+    Map<String, dynamic> row = {
+      'sort': id,
+    };
+    await db.update(tableName(), row, where: 'id = ?', whereArgs: [id]);
 
-  return id;
-}
+    return id;
+  }
 
   // 查询所有taskModel
   Future<List<TaskModel>> queryAllTask() async {

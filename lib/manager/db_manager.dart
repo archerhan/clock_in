@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clock_in/manager/check_record_dao.dart';
 import 'package:clock_in/manager/task_dao.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,6 +34,7 @@ class DBManager {
   // 创建表
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(TaskDao().createTableSql());
+    await db.execute(CheckRecordDao().createTableSql());
   }
 
   void addColumnIfNotExists(Database db, String tableName, String columnName,

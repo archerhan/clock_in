@@ -3,7 +3,7 @@ import 'package:clock_in/pages/today/create_task/create_task_binding.dart';
 import 'package:clock_in/pages/today/create_task/create_task_page.dart';
 import 'package:clock_in/pages/today/task_list/task_list_binding.dart';
 import 'package:clock_in/pages/today/task_list/task_list_page.dart';
-import 'package:clock_in/pages/today/today/task_record_model.dart';
+import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/calendar/custom_calendar.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,9 @@ class TodayPage extends GetView<TodayController> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(const CreateTaskPage(), binding: CreateTaskBinding());
+              Get.to(const CreateTaskPage(), binding: CreateTaskBinding())?.then((value) {
+                controller.loadTodayTasks();
+              });
             },
             icon: Icon(
               Icons.add,
@@ -62,15 +64,15 @@ class TodayPage extends GetView<TodayController> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          return _taskItem(controller.taskRecords[index]);
+          return _taskItem(controller.todayTasks[index]);
         },
-        itemCount: controller.taskRecords.length,
+        itemCount: controller.todayTasks.length,
         itemExtent: 100.h,
       ),
     );
   }
 
-  Widget _taskItem(TaskRecordModel taskRecordModel) {
+  Widget _taskItem(TaskModel taskModel) {
     return GestureDetector(
       onTap: () {
         Vibrate.feedback(FeedbackType.medium);
@@ -78,18 +80,17 @@ class TodayPage extends GetView<TodayController> {
       child: Container(
         margin: EdgeInsets.only(bottom: 15.h),
         decoration: BoxDecoration(
-          color: taskRecordModel.color != null
-              ? Color(int.parse(taskRecordModel.color!, radix: 16))
-                  .withOpacity(0.2)
+          color: taskModel.color != null
+              ? Color(int.parse(taskModel.color!, radix: 16)).withOpacity(0.2)
               : AppColors.primaryBlue.withOpacity(0.2),
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(
           children: [
             const SizedBox(width: 20),
-            if (taskRecordModel.icon != null)
+            if (taskModel.icon != null)
               Image.asset(
-                taskRecordModel.icon!,
+                taskModel.icon!,
                 width: 40,
                 height: 40,
                 fit: BoxFit.contain,
@@ -100,7 +101,7 @@ class TodayPage extends GetView<TodayController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  taskRecordModel.taskName ?? "",
+                  taskModel.taskName ?? "",
                   maxLines: 1,
                   style: TextStyle(
                     color: AppColors.mainTitle333,
@@ -109,7 +110,7 @@ class TodayPage extends GetView<TodayController> {
                   ),
                 ),
                 Text(
-                  taskRecordModel.slogan ?? "",
+                  taskModel.slogan ?? "",
                   style: TextStyle(
                     color: AppColors.subtitle666,
                     fontSize: 14.sp,
@@ -118,7 +119,7 @@ class TodayPage extends GetView<TodayController> {
               ],
             ),
             const Spacer(),
-            _checkBox(taskRecordModel),
+            _checkBox(taskModel),
             const SizedBox(width: 20),
           ],
         ),
@@ -126,10 +127,10 @@ class TodayPage extends GetView<TodayController> {
     );
   }
 
-  Widget _checkBox(TaskRecordModel taskRecordModel) {
+  Widget _checkBox(TaskModel taskModel) {
     return GestureDetector(
       onTap: () {
-        controller.onTaskItemTapped(taskRecordModel);
+        controller.checkTask(taskModel);
         Vibrate.feedback(FeedbackType.medium);
       },
       child: Container(
@@ -140,17 +141,15 @@ class TodayPage extends GetView<TodayController> {
           color: AppColors.primaryBlue,
           borderRadius: BorderRadius.circular(8.r),
         ),
-        child: taskRecordModel.checkCount == taskRecordModel.totalCheckCount
+        child: taskModel.checkCount == taskModel.checkCount
             ? Icon(
-                taskRecordModel.checkCount! > 0
+                taskModel.checkCount! > 0
                     ? Icons.check
                     : Icons.check_box_outline_blank,
                 color: Colors.white,
               )
             : Text(
-                taskRecordModel.checkCount == 0
-                    ? ""
-                    : "${taskRecordModel.checkCount}",
+                taskModel.checkCount == 0 ? "" : "${taskModel.checkCount}",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 12.sp,
