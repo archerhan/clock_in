@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/pages/today/create_task/create_task_binding.dart';
 import 'package:clock_in/pages/today/create_task/create_task_page.dart';
@@ -6,7 +7,9 @@ import 'package:clock_in/pages/today/task_list/task_list_page.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/calendar/custom_calendar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
@@ -22,7 +25,10 @@ class TodayPage extends GetView<TodayController> {
         title: Text("懒猫打卡".tr),
         leading: IconButton(
           onPressed: () {
-            Get.to(const TaskListPage(), binding: TaskListBinding());
+            Get.to(const TaskListPage(), binding: TaskListBinding())
+                ?.then((value) {
+              controller.loadTodayTasks();
+            });
           },
           icon: Icon(
             Icons.format_list_bulleted_outlined,
@@ -32,7 +38,8 @@ class TodayPage extends GetView<TodayController> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(const CreateTaskPage(), binding: CreateTaskBinding())?.then((value) {
+              Get.to(const CreateTaskPage(), binding: CreateTaskBinding())
+                  ?.then((value) {
                 controller.loadTodayTasks();
               });
             },
@@ -75,7 +82,8 @@ class TodayPage extends GetView<TodayController> {
   Widget _taskItem(TaskModel taskModel) {
     return GestureDetector(
       onTap: () {
-        Vibrate.feedback(FeedbackType.medium);
+        Vibrate.feedback(FeedbackType.success);
+        controller.checkTask(taskModel);
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 15.h),
@@ -91,34 +99,41 @@ class TodayPage extends GetView<TodayController> {
             if (taskModel.icon != null)
               Image.asset(
                 taskModel.icon!,
-                width: 40,
-                height: 40,
+                width: 40.w,
+                height: 40.w,
                 fit: BoxFit.contain,
               ),
             const SizedBox(width: 10),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  taskModel.taskName ?? "",
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: AppColors.mainTitle333,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    taskModel.taskName ?? "",
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: AppColors.mainTitle333,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  taskModel.slogan ?? "",
-                  style: TextStyle(
-                    color: AppColors.subtitle666,
-                    fontSize: 14.sp,
+                  Row(
+                    children: [
+                      Expanded(
+                          child: AutoSizeText(
+                        taskModel.slogan ?? "",
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: AppColors.subtitle666,
+                          fontSize: 14.sp,
+                        ),
+                      ))
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const Spacer(),
             _checkBox(taskModel),
             const SizedBox(width: 20),
           ],
@@ -128,34 +143,38 @@ class TodayPage extends GetView<TodayController> {
   }
 
   Widget _checkBox(TaskModel taskModel) {
-    return GestureDetector(
-      onTap: () {
-        controller.checkTask(taskModel);
-        Vibrate.feedback(FeedbackType.medium);
-      },
-      child: Container(
-        width: 30,
-        height: 30,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.primaryBlue,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: taskModel.checkCount == taskModel.checkCount
-            ? Icon(
-                taskModel.checkCount! > 0
-                    ? Icons.check
-                    : Icons.check_box_outline_blank,
-                color: Colors.white,
-              )
-            : Text(
-                taskModel.checkCount == 0 ? "" : "${taskModel.checkCount}",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold),
-              ),
+    final todayTaskModel = taskModel.recordsData?.firstWhere(
+        (element) => element.date == controller.today.toString().split(' ')[0],
+        orElse: () => CheckRecordModel());
+    return Container(
+      width: 30.w,
+      height: 30.w,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: AppColors.mainWhite,
+        borderRadius: BorderRadius.circular(8.r),
       ),
+      child: taskModel.checkCount == todayTaskModel?.checkCount
+          ? Icon(
+              taskModel.checkCount! > 0
+                  ? Icons.check
+                  : Icons.check_box_outline_blank,
+              color:
+                  Color(int.parse(taskModel.color!, radix: 16)).withOpacity(1),
+              size: 28.w,
+            ).animate().scale(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.bounceInOut)
+          : Text(
+              todayTaskModel?.checkCount == 0
+                  ? ""
+                  : "${todayTaskModel?.checkCount}/${taskModel.checkCount}",
+              style: TextStyle(
+                  color: Color(int.parse(taskModel.color!, radix: 16))
+                      .withOpacity(1),
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold),
+            ),
     );
   }
 }

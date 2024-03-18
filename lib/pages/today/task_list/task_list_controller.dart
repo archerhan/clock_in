@@ -53,7 +53,7 @@ class TaskListController extends GetxController {
     if (records == null || records.isEmpty) {
       return 0;
     }
-    var recordList = records.split(",");
+    var recordList = records.split(";");
     var count = 0;
     for (var record in recordList) {
       if (record.isNotEmpty) {

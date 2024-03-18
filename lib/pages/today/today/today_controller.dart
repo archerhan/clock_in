@@ -43,13 +43,29 @@ class TodayController extends GetxController {
             (element.plan?.contains(weekday.toString()) == true ||
                 element.plan?.isEmpty == true))
         .toList();
+    // 按sort排序
+    tasks.sort((a, b) => a.sort!.compareTo(b.sort!));
     logger.d("今日任务: ${tasks.map((e) => e.taskName).toList()}");
     // 生成打卡记录
     for (var task in tasks) {
       await generateCheckRecord(task);
+      task.recordsData = await getCheckRecords(task);
     }
     logger.d("全部任务生成打卡记录完成");
     todayTasks.value = tasks;
+  }
+
+  // 获取当前任务的所有打卡记录
+  Future<List<CheckRecordModel>> getCheckRecords(TaskModel task) async {
+    var records = task.records?.isNotEmpty == true ? task.records!.split(";") : [];
+    var recordList = <CheckRecordModel>[];
+    for (var record in records) {
+      var recordModel = await CheckRecordDao().queryCheckRecord(int.parse(record));
+      if (recordModel != null) {
+        recordList.add(recordModel);
+      }
+    }
+    return recordList;
   }
 
   /// 根据任务生成打卡记录
@@ -113,6 +129,7 @@ class TodayController extends GetxController {
     task.grandTotal = grandTotal;
     task.continuousDays = continuousDays;
     await TaskDao().updateTask(task);
+    await loadTodayTasks();
   }
 
   /// 计算最长连续打卡天数

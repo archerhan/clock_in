@@ -43,6 +43,9 @@ class TaskModel {
   /// 打卡记录, 存CheckRecordModel的id,分号隔开,例:1;2;5;66
   String? records;
 
+  /// 只有在取的时候才赋值
+  List<CheckRecordModel>? recordsData;
+
   /// 累计打卡天数
   int? grandTotal;
 
