@@ -5,9 +5,9 @@ import 'package:clock_in/pages/today/create_task/create_task_page.dart';
 import 'package:clock_in/pages/today/task_list/task_list_binding.dart';
 import 'package:clock_in/pages/today/task_list/task_list_page.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/utils/datetime_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/calendar/custom_calendar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,8 +55,19 @@ class TodayPage extends GetView<TodayController> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            CustomCalendar(controller.today, controller.calendarFirstDay,
-                controller.calendarLastDay),
+            Obx(() => CustomCalendar(
+                  controller.selectedDay.value,
+                  controller.calendarFirstDay,
+                  controller.calendarLastDay,
+                  onDaySelected: (selectedDay, focusDay) {
+                    controller.selectedDay.value = selectedDay;
+                    controller.loadTodayTasks();
+                  },
+                  onPageChanged: (selectedDay, focusDay) {
+                    controller.selectedDay.value = selectedDay;
+                    controller.loadTodayTasks();
+                  },
+                )),
             const SizedBox(height: 10),
             _taskListView()
           ],
@@ -144,7 +155,8 @@ class TodayPage extends GetView<TodayController> {
 
   Widget _checkBox(TaskModel taskModel) {
     final todayTaskModel = taskModel.recordsData?.firstWhere(
-        (element) => element.date == controller.today.toString().split(' ')[0],
+        (element) =>
+            element.date == controller.selectedDay.toString().split(' ')[0],
         orElse: () => CheckRecordModel());
     return Container(
       width: 30.w,

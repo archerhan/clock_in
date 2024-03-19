@@ -82,4 +82,15 @@ class DateTimeUtil {
     return DateFormat('yyyy年M月d日').format(date);
   }
 
+  // 获取当周的全部日期
+  static List<DateTime> getWeekDays(DateTime dateTime) {
+    var list = <DateTime>[];
+    var weekDay = dateTime.weekday;
+    var monday = dateTime.subtract(Duration(days: weekDay - 1));
+    for (var i = 0; i < 7; i++) {
+      list.add(monday.add(Duration(days: i)));
+    }
+    return list;
+  }
+
 }

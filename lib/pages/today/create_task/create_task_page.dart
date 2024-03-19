@@ -459,9 +459,10 @@ class CreateTaskPage extends GetView<CreateTaskController> {
               },
               child: Text(
                 title,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: AppColors.subtitle666,
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w400),
               ).paddingOnly(left: 5.w),
             ),

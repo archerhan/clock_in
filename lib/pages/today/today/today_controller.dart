@@ -5,13 +5,12 @@ import 'package:clock_in/utils/logger_util.dart';
 import 'package:get/get.dart';
 
 class TodayController extends GetxController {
-  var today = DateTime.now();
+  var selectedDay = DateTime.now().obs;
   // 往前推三个月的第一天
   var calendarFirstDay =
       DateTime(DateTime.now().year, DateTime.now().month - 3, 1);
   // 获取当月最后一天
-  var calendarLastDay =
-      DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
+  var calendarLastDay = DateTime.now();
 
   var todayTasks = <TaskModel>[].obs;
 
@@ -34,12 +33,12 @@ class TodayController extends GetxController {
   Future loadTodayTasks() async {
     var taskDao = TaskDao();
     var allTasks = await taskDao.queryAllTask();
-    final weekday = today.weekday;
+    final weekday = selectedDay.value.weekday;
     var tasks = allTasks
         .where((element) =>
             element.isActive == 1 &&
             element.beginDate != null &&
-            DateTime.parse(element.beginDate!).isBefore(today) &&
+            DateTime.parse(element.beginDate!).isBefore(selectedDay.value) &&
             (element.plan?.contains(weekday.toString()) == true ||
                 element.plan?.isEmpty == true))
         .toList();
@@ -55,12 +54,47 @@ class TodayController extends GetxController {
     todayTasks.value = tasks;
   }
 
+  // 获取当天所有任务是否有打卡记录
+  // 输入DateTime, 输出Future<bool>
+  // 1. 遍历所有任务
+  // 2. 获取每个任务的打卡记录
+  // 3. 只有打卡记录的checkCount > 0时, 才返回true
+  Future<bool> hasCheckRecord(DateTime date) async {
+    var taskDao = TaskDao();
+    var allTasks = await taskDao.queryAllTask();
+    final weekday = date.weekday;
+    var tasks = allTasks
+        .where((element) =>
+            element.isActive == 1 &&
+            element.beginDate != null &&
+            DateTime.parse(element.beginDate!).isBefore(date) &&
+            (element.plan?.contains(weekday.toString()) == true ||
+                element.plan?.isEmpty == true))
+        .toList();
+    for (var task in tasks) {
+      var records = task.records?.isNotEmpty == true ? task.records!.split(";") : [];
+      for (var record in records) {
+        var recordModel = await CheckRecordDao().queryCheckRecord(int.parse(record));
+        if (recordModel?.checkCount != 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+
+
+
   // 获取当前任务的所有打卡记录
   Future<List<CheckRecordModel>> getCheckRecords(TaskModel task) async {
-    var records = task.records?.isNotEmpty == true ? task.records!.split(";") : [];
+    var records =
+        task.records?.isNotEmpty == true ? task.records!.split(";") : [];
     var recordList = <CheckRecordModel>[];
     for (var record in records) {
-      var recordModel = await CheckRecordDao().queryCheckRecord(int.parse(record));
+      var recordModel =
+          await CheckRecordDao().queryCheckRecord(int.parse(record));
       if (recordModel != null) {
         recordList.add(recordModel);
       }
@@ -76,7 +110,7 @@ class TodayController extends GetxController {
     var records =
         task.records?.isNotEmpty == true ? task.records!.split(";") : [];
     var dateSet = <String>{};
-    var todayDateString = today.toString().split(' ')[0];
+    var todayDateString = selectedDay.toString().split(' ')[0];
     for (var record in records) {
       var recordModel =
           await CheckRecordDao().queryCheckRecord(int.parse(record));
