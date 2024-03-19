@@ -4,7 +4,11 @@ import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:clock_in/widgets/line_chart/line_chart.dart';
 import 'package:clock_in/widgets/pie_chart/pie_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/chart/chart_controller.dart';
@@ -54,19 +58,46 @@ class ChartPage extends GetView<ChartController> {
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       height: 200.h,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _numberCard(Icons.format_list_numbered, Colors.amber, "任务数", "3"),
-          _numberCard(
-              Icons.calendar_month_rounded, Colors.lightGreen, "打卡天数", "12"),
-          _numberCard(Icons.dynamic_feed, Colors.lightBlue, "最长连续", "10"),
+          Expanded(
+            child: FlipCard(
+                frontWidget: _numberCard(
+                  Icons.format_list_numbered,
+                  Colors.amber,
+                  "任务数",
+                  "3",
+                  onTap: () {
+                    controller.taskNumCon.flipcard();
+                  },
+                ),
+                backWidget: _numberCard(
+                  Icons.format_list_numbered,
+                  Colors.amber,
+                  "任务数",
+                  "3",
+                  onTap: () => controller.taskNumCon.flipcard(),
+                ),
+                controller: controller.taskNumCon,
+                rotateSide: RotateSide.left),
+          ),
+          Expanded(
+            child: _numberCard(Icons.calendar_month_rounded, Colors.lightGreen,
+                "最长打卡天数", "12"),
+          ),
+          Expanded(
+            child: _numberCard(
+                Icons.dynamic_feed, Colors.lightBlue, "单任务最长连续", "10"),
+          ),
         ],
       ),
     );
   }
 
-  Widget _numberCard(IconData icon, Color color, String title, String number) {
-    return Expanded(
+  Widget _numberCard(IconData icon, Color color, String title, String number,
+      {Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         decoration: BoxDecoration(
@@ -103,8 +134,8 @@ class ChartPage extends GetView<ChartController> {
               child: ClipPath(
                 clipper: MyTriangleClipper(),
                 child: Container(
-                  width: (Get.width.w - 80.w) / 4,
-                  height: (Get.width.w - 80.w) / 4,
+                  width: 70.w,
+                  height: 70.w,
                   decoration: BoxDecoration(
                       color: color,
                       borderRadius:

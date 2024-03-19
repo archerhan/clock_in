@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:clock_in/manager/check_record_dao.dart';
 import 'package:clock_in/manager/task_dao.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
@@ -16,7 +18,7 @@ class TodayController extends GetxController {
 
   @override
   void onInit() {
-    loadTodayTasks();
+    loadSelectDayTasks();
     super.onInit();
   }
 
@@ -30,7 +32,7 @@ class TodayController extends GetxController {
   /// 3. beginDate < today
   /// 4. weekDay in plan
   /// 5. task is not completed
-  Future loadTodayTasks() async {
+  Future loadSelectDayTasks() async {
     var taskDao = TaskDao();
     var allTasks = await taskDao.queryAllTask();
     final weekday = selectedDay.value.weekday;
@@ -72,9 +74,11 @@ class TodayController extends GetxController {
                 element.plan?.isEmpty == true))
         .toList();
     for (var task in tasks) {
-      var records = task.records?.isNotEmpty == true ? task.records!.split(";") : [];
+      var records =
+          task.records?.isNotEmpty == true ? task.records!.split(";") : [];
       for (var record in records) {
-        var recordModel = await CheckRecordDao().queryCheckRecord(int.parse(record));
+        var recordModel =
+            await CheckRecordDao().queryCheckRecord(int.parse(record));
         if (recordModel?.checkCount != 0) {
           return true;
         }
@@ -82,10 +86,6 @@ class TodayController extends GetxController {
     }
     return false;
   }
-
-
-
-
 
   // 获取当前任务的所有打卡记录
   Future<List<CheckRecordModel>> getCheckRecords(TaskModel task) async {
@@ -137,54 +137,54 @@ class TodayController extends GetxController {
   /// 2. 更新task的grandTotal字段
   /// 3. 更新task的continuousDays字段
   Future checkTask(TaskModel task) async {
-    var records = task.records!.split(";");
-    var dateSet = <String>{};
-    for (var record in records) {
-      var recordModel =
-          await CheckRecordDao().queryCheckRecord(int.parse(record));
-      if (recordModel?.date != null) {
-        dateSet.add(recordModel!.date!);
-      }
-    }
+    logger.d("开始打卡${task.taskName}...");
+    var recordsList = task.recordsData ?? [];
+
+    // var records = task.records!.split(";");
+    // for (var record in records) {
+    //   var recordModel =
+    //       await CheckRecordDao().queryCheckRecord(int.parse(record));
+    //   if (recordModel != null) {
+    //     recordsList.add(recordModel);
+    //   }
+    // }
+    logger.d("获取今日打卡记录...");
+    var todayRecord = recordsList.firstWhere(
+        (element) => element.date == selectedDay.value.toString().split(' ')[0],
+        orElse: () => CheckRecordModel());
     var checkCount = 0;
-    for (var date in dateSet) {
-      var recordModel = await CheckRecordDao()
-          .queryCheckRecordByDate(task.id!, DateTime.parse(date));
-      if (recordModel?.checkCount == task.checkCount) {
-        checkCount = 0;
-      } else {
-        checkCount = recordModel!.checkCount! + 1;
-      }
-      recordModel!.checkCount = checkCount;
-      await CheckRecordDao().updateCheckRecord(recordModel);
+    if (todayRecord.checkCount! >= task.checkCount!) {
+      checkCount = 0;
+    } else {
+      checkCount = todayRecord.checkCount! + 1;
     }
-    var grandTotal = dateSet.length;
-    var continuousDays = calculateMaxContinuousDays(dateSet);
+    todayRecord.checkCount = checkCount;
+    await CheckRecordDao().updateCheckRecord(todayRecord);
+
+    var grandTotal = recordsList.length;
+    var continuousDays = calculateMaxContinuousDays(recordsList);
     task.grandTotal = grandTotal;
     task.continuousDays = continuousDays;
     await TaskDao().updateTask(task);
-    await loadTodayTasks();
+    await loadSelectDayTasks();
   }
 
   /// 计算最长连续打卡天数
-  int calculateMaxContinuousDays(Set<String> dateSet) {
-    var dateList = dateSet.toList();
+  int calculateMaxContinuousDays(List<CheckRecordModel> records) {
+    var dateList = records.where((element) => element.checkCount != 0).map((e) {
+      return DateTime.parse(e.date!);
+    }).toList();
     dateList.sort((a, b) => a.compareTo(b));
-    var continuousDays =
-        1; // Start from 1 as a single day is also a continuous period
-    var maxContinuousDays = 1;
-    for (var i = 0; i < dateList.length - 1; i++) {
-      var date1 = DateTime.parse(dateList[i]);
-      var date2 = DateTime.parse(dateList[i + 1]);
-      if (date2.difference(date1).inDays == 1) {
-        continuousDays++;
-        if (continuousDays > maxContinuousDays) {
-          maxContinuousDays = continuousDays;
-        }
-      } else {
-        continuousDays = 1; // Reset if dates are not continuous
+    int maxStreak = 1;
+    int currentStreak = 1;
+    for (int i = 1; i < dateList.length; i++) {
+      if (dateList[i].difference(dateList[i - 1]).inDays == 1) {
+        currentStreak++;
+      } else if (dateList[i] != dateList[i - 1]) {
+        currentStreak = 1;
       }
+      maxStreak = max(maxStreak, currentStreak);
     }
-    return maxContinuousDays;
+    return maxStreak;
   }
 }

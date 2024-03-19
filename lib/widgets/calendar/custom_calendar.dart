@@ -25,7 +25,7 @@ class CustomCalendar extends StatelessWidget {
       pageJumpingEnabled: true,
       headerVisible: false,
       availableGestures: AvailableGestures.horizontalSwipe,
-      calendarFormat: CalendarFormat.week,
+      calendarFormat: CalendarFormat.twoWeeks,
       startingDayOfWeek: StartingDayOfWeek.monday,
       daysOfWeekStyle: _weekStyle(),
       daysOfWeekHeight: 28.h,

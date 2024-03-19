@@ -5,7 +5,6 @@ import 'package:clock_in/pages/today/create_task/create_task_page.dart';
 import 'package:clock_in/pages/today/task_list/task_list_binding.dart';
 import 'package:clock_in/pages/today/task_list/task_list_page.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
-import 'package:clock_in/utils/datetime_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/calendar/custom_calendar.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,7 @@ class TodayPage extends GetView<TodayController> {
           onPressed: () {
             Get.to(const TaskListPage(), binding: TaskListBinding())
                 ?.then((value) {
-              controller.loadTodayTasks();
+              controller.loadSelectDayTasks();
             });
           },
           icon: Icon(
@@ -40,7 +39,7 @@ class TodayPage extends GetView<TodayController> {
             onPressed: () {
               Get.to(const CreateTaskPage(), binding: CreateTaskBinding())
                   ?.then((value) {
-                controller.loadTodayTasks();
+                controller.loadSelectDayTasks();
               });
             },
             icon: Icon(
@@ -61,11 +60,11 @@ class TodayPage extends GetView<TodayController> {
                   controller.calendarLastDay,
                   onDaySelected: (selectedDay, focusDay) {
                     controller.selectedDay.value = selectedDay;
-                    controller.loadTodayTasks();
+                    controller.loadSelectDayTasks();
                   },
                   onPageChanged: (selectedDay, focusDay) {
                     controller.selectedDay.value = selectedDay;
-                    controller.loadTodayTasks();
+                    controller.loadSelectDayTasks();
                   },
                 )),
             const SizedBox(height: 10),
@@ -91,64 +90,58 @@ class TodayPage extends GetView<TodayController> {
   }
 
   Widget _taskItem(TaskModel taskModel) {
-    return GestureDetector(
-      onTap: () {
-        Vibrate.feedback(FeedbackType.success);
-        controller.checkTask(taskModel);
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 15.h),
-        decoration: BoxDecoration(
-          color: taskModel.color != null
-              ? Color(int.parse(taskModel.color!, radix: 16)).withOpacity(0.2)
-              : AppColors.primaryBlue.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Row(
-          children: [
-            const SizedBox(width: 20),
-            if (taskModel.icon != null)
-              Image.asset(
-                taskModel.icon!,
-                width: 40.w,
-                height: 40.w,
-                fit: BoxFit.contain,
-              ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    taskModel.taskName ?? "",
-                    maxLines: 1,
-                    style: TextStyle(
-                      color: AppColors.mainTitle333,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: AutoSizeText(
-                        taskModel.slogan ?? "",
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: AppColors.subtitle666,
-                          fontSize: 14.sp,
-                        ),
-                      ))
-                    ],
-                  ),
-                ],
-              ),
+    return Container(
+      margin: EdgeInsets.only(bottom: 15.h),
+      decoration: BoxDecoration(
+        color: taskModel.color != null
+            ? Color(int.parse(taskModel.color!, radix: 16)).withOpacity(0.2)
+            : AppColors.primaryBlue.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 20),
+          if (taskModel.icon != null)
+            Image.asset(
+              taskModel.icon!,
+              width: 40.w,
+              height: 40.w,
+              fit: BoxFit.contain,
             ),
-            _checkBox(taskModel),
-            const SizedBox(width: 20),
-          ],
-        ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  taskModel.taskName ?? "",
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: AppColors.mainTitle333,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: AutoSizeText(
+                      taskModel.slogan ?? "",
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: AppColors.subtitle666,
+                        fontSize: 14.sp,
+                      ),
+                    ))
+                  ],
+                ),
+              ],
+            ),
+          ),
+          _checkBox(taskModel),
+          const SizedBox(width: 20),
+        ],
       ),
     );
   }
@@ -158,35 +151,43 @@ class TodayPage extends GetView<TodayController> {
         (element) =>
             element.date == controller.selectedDay.toString().split(' ')[0],
         orElse: () => CheckRecordModel());
-    return Container(
-      width: 30.w,
-      height: 30.w,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.mainWhite,
-        borderRadius: BorderRadius.circular(8.r),
+    return GestureDetector(
+      onTap: () {
+        Vibrate.feedback(FeedbackType.success);
+        controller.checkTask(taskModel);
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: 36.w,
+        height: 36.w,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: AppColors.mainWhite,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: taskModel.checkCount == todayTaskModel?.checkCount
+            ? Icon(
+                taskModel.checkCount! > 0
+                    ? Icons.check
+                    : Icons.check_box_outline_blank,
+                color: Color(int.parse(taskModel.color!, radix: 16))
+                    .withOpacity(1),
+                size: 28.w,
+              ).animate().scale(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.bounceInOut)
+            : AutoSizeText(
+                todayTaskModel?.checkCount == 0
+                    ? ""
+                    : "${todayTaskModel?.checkCount}/${taskModel.checkCount}",
+                maxLines: 1,
+                style: TextStyle(
+                    color: Color(int.parse(taskModel.color!, radix: 16))
+                        .withOpacity(1),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold),
+              ),
       ),
-      child: taskModel.checkCount == todayTaskModel?.checkCount
-          ? Icon(
-              taskModel.checkCount! > 0
-                  ? Icons.check
-                  : Icons.check_box_outline_blank,
-              color:
-                  Color(int.parse(taskModel.color!, radix: 16)).withOpacity(1),
-              size: 28.w,
-            ).animate().scale(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.bounceInOut)
-          : Text(
-              todayTaskModel?.checkCount == 0
-                  ? ""
-                  : "${todayTaskModel?.checkCount}/${taskModel.checkCount}",
-              style: TextStyle(
-                  color: Color(int.parse(taskModel.color!, radix: 16))
-                      .withOpacity(1),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold),
-            ),
     );
   }
 }
