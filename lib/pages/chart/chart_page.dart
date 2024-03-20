@@ -1,6 +1,7 @@
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/utils/custom_clipper.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
+import 'package:clock_in/widgets/bar_chart/bar_chart.dart';
 import 'package:clock_in/widgets/flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:clock_in/widgets/line_chart/line_chart.dart';
 import 'package:clock_in/widgets/pie_chart/pie_chart.dart';
@@ -67,28 +68,82 @@ class ChartPage extends GetView<ChartController> {
                         controller.taskNumCon.flipcard();
                       },
                     )),
-                backWidget: _numberCard(
-                  Icons.format_list_numbered,
-                  Colors.amber,
-                  "任务数",
-                  "3",
-                  onTap: () => controller.taskNumCon.flipcard(),
+                backWidget: InkWell(
+                  onTap: () {
+                    controller.taskNumCon.flipcard();
+                  },
+                  child: Container(
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: CustomBarChart(),
+                  ),
                 ),
                 controller: controller.taskNumCon,
                 rotateSide: RotateSide.left),
           ),
           Expanded(
-            child: Obx(() => _numberCard(
-                Icons.calendar_month_rounded,
-                Colors.lightGreen,
-                "最长打卡天数",
-                controller.longestDay.value.toString())),
-          ),
+              child: FlipCard(
+                  frontWidget: Obx(() => _numberCard(
+                        Icons.calendar_month_rounded,
+                        Colors.lightGreen,
+                        "最长打卡天数",
+                        controller.longestDay.value.toString(),
+                        onTap: () {
+                          controller.longestDayCon.flipcard();
+                        },
+                      )),
+                  backWidget: InkWell(
+                    onTap: () {
+                      controller.longestDayCon.flipcard();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                        color: Colors.lightGreen.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: CustomBarChart(),
+                    ),
+                  ),
+                  controller: controller.longestDayCon,
+                  rotateSide: RotateSide.left)),
           Expanded(
-            child: Obx(
-              () => _numberCard(Icons.dynamic_feed, Colors.lightBlue, "单任务最长连续",
-                  controller.longestContinue.value.toString()),
-            ),
+            child: FlipCard(
+                frontWidget: Obx(
+                  () => _numberCard(
+                    Icons.dynamic_feed,
+                    Colors.lightBlue,
+                    "最长连续天数",
+                    controller.longestContinue.value.toString(),
+                    onTap: () {
+                      controller.longestContinueCon.flipcard();
+                    },
+                  ),
+                ),
+                backWidget: InkWell(
+                  onTap: () {
+                    controller.longestContinueCon.flipcard();
+                  },
+                  child: Container(
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: CustomBarChart(),
+                    ),
+                  ),
+                ),
+                controller: controller.longestContinueCon,
+                rotateSide: RotateSide.left),
           )
         ],
       ),
