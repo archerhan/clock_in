@@ -1,137 +1,6 @@
 {
     "allIcons": [
         {
-            "category": "business",
-            "icons": [
-                "assets/images/business/business_cable.png",
-                "assets/images/business/business_cafe.png",
-                "assets/images/business/business_design.png",
-                "assets/images/business/business_desk.png",
-                "assets/images/business/business_keyboard.png",
-                "assets/images/business/business_mouse.png",
-                "assets/images/business/business_pc.png",
-                "assets/images/business/business_printer.png",
-                "assets/images/business/business_usb.png"
-            ]
-        },
-        {
-            "category": "entertainment",
-            "icons": [
-                "assets/images/entertainment/entertainment_beer.png",
-                "assets/images/entertainment/entertainment_cards.png",
-                "assets/images/entertainment/entertainment_controller.png",
-                "assets/images/entertainment/entertainment_documentary.png",
-                "assets/images/entertainment/entertainment_feet.png",
-                "assets/images/entertainment/entertainment_micro.png",
-                "assets/images/entertainment/entertainment_music.png",
-                "assets/images/entertainment/entertainment_playground.png",
-                "assets/images/entertainment/entertainment_slot.png",
-                "assets/images/entertainment/entertainment_spa.png",
-                "assets/images/entertainment/entertainment_tractor.png"
-            ]
-        },
-        {
-            "category": "family",
-            "icons": [
-                "assets/images/family/family_bird.png",
-                "assets/images/family/family_cat.png",
-                "assets/images/family/family_chair.png",
-                "assets/images/family/family_clock.png",
-                "assets/images/family/family_dog.png",
-                "assets/images/family/family_electric.png",
-                "assets/images/family/family_fridge.png",
-                "assets/images/family/family_hammer.png",
-                "assets/images/family/family_house.png",
-                "assets/images/family/family_lamp.png",
-                "assets/images/family/family_light.png",
-                "assets/images/family/family_lipstick.png",
-                "assets/images/family/family_pacifier.png",
-                "assets/images/family/family_roller.png",
-                "assets/images/family/family_rucksack.png",
-                "assets/images/family/family_sofa.png",
-                "assets/images/family/family_teddy.png"
-            ]
-        },
-        {
-            "category": "food",
-            "icons": [
-                "assets/images/food/food_apple.png",
-                "assets/images/food/food_baguette.png",
-                "assets/images/food/food_banana.png",
-                "assets/images/food/food_broccoli.png",
-                "assets/images/food/food_carrot.png",
-                "assets/images/food/food_cheesecake.png",
-                "assets/images/food/food_chocolate.png",
-                "assets/images/food/food_cola.png",
-                "assets/images/food/food_corn.png",
-                "assets/images/food/food_crab.png",
-                "assets/images/food/food_doughnut.png",
-                "assets/images/food/food_grapes.png",
-                "assets/images/food/food_hamburger.png",
-                "assets/images/food/food_icecream.png",
-                "assets/images/food/food_milk.png",
-                "assets/images/food/food_mushroom.png",
-                "assets/images/food/food_noodles.png",
-                "assets/images/food/food_nut.png",
-                "assets/images/food/food_pear.png",
-                "assets/images/food/food_rice.png",
-                "assets/images/food/food_spaghetti.png",
-                "assets/images/food/food_sushi.png",
-                "assets/images/food/food_watermelon.png"
-            ]
-        },
-        {
-            "category": "income",
-            "icons": [
-                "assets/images/income/income_bitcoin.png",
-                "assets/images/income/income_card.png",
-                "assets/images/income/income_card_wallet.png",
-                "assets/images/income/income_coin.png",
-                "assets/images/income/income_coin_wallet.png",
-                "assets/images/income/income_face.png",
-                "assets/images/income/income_money.png",
-                "assets/images/income/income_money_box.png",
-                "assets/images/income/income_money_transfer.png"
-            ]
-        },
-        {
-            "category": "medical",
-            "icons": [
-                "assets/images/medical/medical_ambulance.png",
-                "assets/images/medical/medical_bandage.png",
-                "assets/images/medical/medical_blood_pressure.png",
-                "assets/images/medical/medical_doctor_man.png",
-                "assets/images/medical/medical_doctor_women.png",
-                "assets/images/medical/medical_medical_case.png",
-                "assets/images/medical/medical_medical_case_1.png",
-                "assets/images/medical/medical_medicalmask.png",
-                "assets/images/medical/medical_needle.png",
-                "assets/images/medical/medical_wheelchair.png"
-            ]
-        },
-        {
-            "category": "shopping",
-            "icons": [
-                "assets/images/shopping/shopping_cap.png",
-                "assets/images/shopping/shopping_buying.png",
-                "assets/images/shopping/shopping_camera.png",
-                "assets/images/shopping/shopping_clothes.png",
-                "assets/images/shopping/shopping_flip_flops.png",
-                "assets/images/shopping/shopping_gift.png",
-                "assets/images/shopping/shopping_ipad.png",
-                "assets/images/shopping/shopping_iphone.png",
-                "assets/images/shopping/shopping_necklace.png",
-                "assets/images/shopping/shopping_powder.png",
-                "assets/images/shopping/shopping_red_purse.png",
-                "assets/images/shopping/shopping_ring.png",
-                "assets/images/shopping/shopping_shopaholic.png",
-                "assets/images/shopping/shopping_shopping_basket.png",
-                "assets/images/shopping/shopping_socks.png",
-                "assets/images/shopping/shopping_umbrella.png",
-                "assets/images/shopping/shopping_vr.png"
-            ]
-        },
-        {
             "category": "skill",
             "icons": [
                 "assets/images/skill/skill_accounting.png",
@@ -168,6 +37,71 @@
             ]
         },
         {
+            "category": "medical",
+            "icons": [
+                "assets/images/medical/medical_ambulance.png",
+                "assets/images/medical/medical_bandage.png",
+                "assets/images/medical/medical_blood_pressure.png",
+                "assets/images/medical/medical_doctor_man.png",
+                "assets/images/medical/medical_doctor_women.png",
+                "assets/images/medical/medical_medical_case.png",
+                "assets/images/medical/medical_medical_case_1.png",
+                "assets/images/medical/medical_medicalmask.png",
+                "assets/images/medical/medical_needle.png",
+                "assets/images/medical/medical_wheelchair.png"
+            ]
+        },
+        {
+            "category": "income",
+            "icons": [
+                "assets/images/income/income_bitcoin.png",
+                "assets/images/income/income_card.png",
+                "assets/images/income/income_card_wallet.png",
+                "assets/images/income/income_coin.png",
+                "assets/images/income/income_coin_wallet.png",
+                "assets/images/income/income_face.png",
+                "assets/images/income/income_money.png",
+                "assets/images/income/income_money_box.png",
+                "assets/images/income/income_money_transfer.png"
+            ]
+        },
+        {
+            "category": "business",
+            "icons": [
+                "assets/images/business/business_cable.png",
+                "assets/images/business/business_cafe.png",
+                "assets/images/business/business_design.png",
+                "assets/images/business/business_desk.png",
+                "assets/images/business/business_keyboard.png",
+                "assets/images/business/business_mouse.png",
+                "assets/images/business/business_pc.png",
+                "assets/images/business/business_printer.png",
+                "assets/images/business/business_usb.png"
+            ]
+        },
+        {
+            "category": "family",
+            "icons": [
+                "assets/images/family/family_bird.png",
+                "assets/images/family/family_cat.png",
+                "assets/images/family/family_chair.png",
+                "assets/images/family/family_clock.png",
+                "assets/images/family/family_dog.png",
+                "assets/images/family/family_electric.png",
+                "assets/images/family/family_fridge.png",
+                "assets/images/family/family_hammer.png",
+                "assets/images/family/family_house.png",
+                "assets/images/family/family_lamp.png",
+                "assets/images/family/family_light.png",
+                "assets/images/family/family_lipstick.png",
+                "assets/images/family/family_pacifier.png",
+                "assets/images/family/family_roller.png",
+                "assets/images/family/family_rucksack.png",
+                "assets/images/family/family_sofa.png",
+                "assets/images/family/family_teddy.png"
+            ]
+        },
+        {
             "category": "traffic",
             "icons": [
                 "assets/images/traffic/traffic_airplane.png",
@@ -185,6 +119,72 @@
                 "assets/images/traffic/traffic_tesla.png",
                 "assets/images/traffic/traffic_truck.png",
                 "assets/images/traffic/traffic_wheel.png"
+            ]
+        },
+        {
+            "category": "entertainment",
+            "icons": [
+                "assets/images/entertainment/entertainment_beer.png",
+                "assets/images/entertainment/entertainment_cards.png",
+                "assets/images/entertainment/entertainment_controller.png",
+                "assets/images/entertainment/entertainment_documentary.png",
+                "assets/images/entertainment/entertainment_feet.png",
+                "assets/images/entertainment/entertainment_micro.png",
+                "assets/images/entertainment/entertainment_music.png",
+                "assets/images/entertainment/entertainment_playground.png",
+                "assets/images/entertainment/entertainment_slot.png",
+                "assets/images/entertainment/entertainment_spa.png",
+                "assets/images/entertainment/entertainment_tractor.png"
+            ]
+        },
+        {
+            "category": "food",
+            "icons": [
+                "assets/images/food/food_apple.png",
+                "assets/images/food/food_baguette.png",
+                "assets/images/food/food_banana.png",
+                "assets/images/food/food_broccoli.png",
+                "assets/images/food/food_carrot.png",
+                "assets/images/food/food_cheesecake.png",
+                "assets/images/food/food_chocolate.png",
+                "assets/images/food/food_cola.png",
+                "assets/images/food/food_corn.png",
+                "assets/images/food/food_crab.png",
+                "assets/images/food/food_doughnut.png",
+                "assets/images/food/food_grapes.png",
+                "assets/images/food/food_hamburger.png",
+                "assets/images/food/food_icecream.png",
+                "assets/images/food/food_milk.png",
+                "assets/images/food/food_mushroom.png",
+                "assets/images/food/food_noodles.png",
+                "assets/images/food/food_nut.png",
+                "assets/images/food/food_pear.png",
+                "assets/images/food/food_rice.png",
+                "assets/images/food/food_spaghetti.png",
+                "assets/images/food/food_sushi.png",
+                "assets/images/food/food_watermelon.png"
+            ]
+        },
+        {
+            "category": "shopping",
+            "icons": [
+                "assets/images/shopping/shopping_cap.png",
+                "assets/images/shopping/shopping_buying.png",
+                "assets/images/shopping/shopping_camera.png",
+                "assets/images/shopping/shopping_clothes.png",
+                "assets/images/shopping/shopping_flip_flops.png",
+                "assets/images/shopping/shopping_gift.png",
+                "assets/images/shopping/shopping_ipad.png",
+                "assets/images/shopping/shopping_iphone.png",
+                "assets/images/shopping/shopping_necklace.png",
+                "assets/images/shopping/shopping_powder.png",
+                "assets/images/shopping/shopping_red_purse.png",
+                "assets/images/shopping/shopping_ring.png",
+                "assets/images/shopping/shopping_shopaholic.png",
+                "assets/images/shopping/shopping_shopping_basket.png",
+                "assets/images/shopping/shopping_socks.png",
+                "assets/images/shopping/shopping_umbrella.png",
+                "assets/images/shopping/shopping_vr.png"
             ]
         },
         {

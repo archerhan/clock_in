@@ -4,10 +4,7 @@ import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:clock_in/widgets/line_chart/line_chart.dart';
 import 'package:clock_in/widgets/pie_chart/pie_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -61,15 +58,15 @@ class ChartPage extends GetView<ChartController> {
         children: [
           Expanded(
             child: FlipCard(
-                frontWidget: _numberCard(
-                  Icons.format_list_numbered,
-                  Colors.amber,
-                  "任务数",
-                  "3",
-                  onTap: () {
-                    controller.taskNumCon.flipcard();
-                  },
-                ),
+                frontWidget: Obx(() => _numberCard(
+                      Icons.format_list_numbered,
+                      Colors.amber,
+                      "任务数",
+                      controller.taskNum.value.toString(),
+                      onTap: () {
+                        controller.taskNumCon.flipcard();
+                      },
+                    )),
                 backWidget: _numberCard(
                   Icons.format_list_numbered,
                   Colors.amber,
@@ -81,13 +78,18 @@ class ChartPage extends GetView<ChartController> {
                 rotateSide: RotateSide.left),
           ),
           Expanded(
-            child: _numberCard(Icons.calendar_month_rounded, Colors.lightGreen,
-                "最长打卡天数", "12"),
+            child: Obx(() => _numberCard(
+                Icons.calendar_month_rounded,
+                Colors.lightGreen,
+                "最长打卡天数",
+                controller.longestDay.value.toString())),
           ),
           Expanded(
-            child: _numberCard(
-                Icons.dynamic_feed, Colors.lightBlue, "单任务最长连续", "10"),
-          ),
+            child: Obx(
+              () => _numberCard(Icons.dynamic_feed, Colors.lightBlue, "单任务最长连续",
+                  controller.longestContinue.value.toString()),
+            ),
+          )
         ],
       ),
     );
@@ -98,64 +100,67 @@ class ChartPage extends GetView<ChartController> {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(6.r),
-        ),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Column(
-                children: [
-                  const Spacer(),
-                  Text(
-                    number,
-                    style: TextStyle(
-                        color: AppColors.subtitle666,
-                        fontSize: 34.sp,
-                        fontWeight: FontWeight.w900),
-                  ),
-                  Expanded(
-                      child: Center(
-                    child: Text(
-                      title,
+      child: AspectRatio(
+        aspectRatio: 0.8,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(6.r),
+          ),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    Text(
+                      number,
                       style: TextStyle(
-                          color: AppColors.subtitle666, fontSize: 14.sp),
+                          color: AppColors.subtitle666,
+                          fontSize: 34.sp,
+                          fontWeight: FontWeight.w900),
                     ),
-                  ))
-                ],
-              ),
-            ),
-            Positioned(
-              left: 0,
-              top: 0,
-              child: ClipPath(
-                clipper: MyTriangleClipper(),
-                child: Container(
-                  width: 70.w,
-                  height: 70.w,
-                  decoration: BoxDecoration(
-                      color: color,
-                      borderRadius:
-                          BorderRadius.only(topLeft: Radius.circular(6.r))),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                          left: 10,
-                          top: 10,
-                          child: Icon(
-                            icon,
-                            size: 28.w,
-                            color: Colors.white,
-                          ))
-                    ],
-                  ),
+                    Expanded(
+                        child: Center(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                            color: AppColors.subtitle666, fontSize: 14.sp),
+                      ),
+                    ))
+                  ],
                 ),
               ),
-            )
-          ],
+              Positioned(
+                left: 0,
+                top: 0,
+                child: ClipPath(
+                  clipper: MyTriangleClipper(),
+                  child: Container(
+                    width: 70.w,
+                    height: 70.w,
+                    decoration: BoxDecoration(
+                        color: color,
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(6.r))),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                            left: 10,
+                            top: 10,
+                            child: Icon(
+                              icon,
+                              size: 28.w,
+                              color: Colors.white,
+                            ))
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

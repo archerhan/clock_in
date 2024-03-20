@@ -1,4 +1,5 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:clock_in/pages/chart/chart_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,6 +52,11 @@ class RootPage extends GetView<RootController> {
           onTap: (index) {
             SystemSound.play(SystemSoundType.click);
             controller.activeIndex.value = index;
+            if (index == 0) {
+            } else if (index == 1) {
+              Get.find<ChartController>().getAllTask();
+            } else if (index == 2) {
+            } else {}
           },
         ));
   }

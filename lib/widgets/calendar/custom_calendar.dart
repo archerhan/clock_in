@@ -91,7 +91,9 @@ class CustomCalendar extends StatelessWidget {
               day.day == 1 ? _monthName(day.month) : day.day.toString(),
               style: TextStyle(
                 fontSize: 16.sp,
-                color: AppColors.subtitle666,
+                color: day.isAfter(DateTime.now())
+                    ? AppColors.grey999
+                    : AppColors.subtitle666,
                 fontWeight: FontWeight.bold,
               ),
             ),
