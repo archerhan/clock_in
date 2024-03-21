@@ -89,6 +89,12 @@ class ChartController extends GetxController {
     var result = map.entries.toList();
     result.sort((a, b) => a.key.compareTo(b.key));
     final sorted = result.map((e) => Tuple2(e.key, e.value)).toList();
+    // 将之前的几周数据填上Tuple2(week, 0)
+    for (var i = 1; i <= DateTimeUtil.getWeekOfYear(DateTime.now()); i++) {
+      if (!sorted.any((element) => element.item1 == i)) {
+        sorted.add(Tuple2(i, 0));
+      }
+    }
     weekCheckData.value = sorted;
   }
 }
