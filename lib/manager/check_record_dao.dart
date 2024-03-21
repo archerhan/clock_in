@@ -71,4 +71,11 @@ class CheckRecordDao extends BaseDao {
     var db = await DBManager.instance.database;
     return await db.delete(tableName(), where: 'id = ?', whereArgs: [id]);
   }
+
+  // 删除指定taskId的所有checkRecordModel
+  Future<int> deleteCheckRecordByTaskId(int taskId) async {
+    var db = await DBManager.instance.database;
+    return await db
+        .delete(tableName(), where: 'taskId = ?', whereArgs: [taskId]);
+  }
 }

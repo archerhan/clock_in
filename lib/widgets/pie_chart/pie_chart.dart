@@ -1,4 +1,3 @@
-
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -22,6 +21,7 @@ class MyPieChartState extends State {
         aspectRatio: 1,
         child: PieChart(
           PieChartData(
+            startDegreeOffset: 0,
             pieTouchData: PieTouchData(
               touchCallback: (FlTouchEvent event, pieTouchResponse) {
                 setState(() {

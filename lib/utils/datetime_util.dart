@@ -1,9 +1,6 @@
-
 import 'package:intl/intl.dart';
 
-
 class DateTimeUtil {
-
   static String getYearStr(DateTime dateTime) {
     return dateTime.year.toString();
   }
@@ -43,7 +40,7 @@ class DateTimeUtil {
     return weekday[dateTime.weekday - 1];
   }
 
-    static String getWeekName(int weekNum) {
+  static String getWeekName(int weekNum) {
     var weekday = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
     return weekday[weekNum - 1];
   }
@@ -70,6 +67,7 @@ class DateTimeUtil {
       return 30;
     }
   }
+
   // 判断是否是今天
   static bool isToday(DateTime dateTime) {
     DateTime now = DateTime.now();
@@ -93,4 +91,13 @@ class DateTimeUtil {
     return list;
   }
 
+  // 获取当前日期所在周是今天的第几周
+  static int getWeekOfYear(DateTime dateTime) {
+    int dayOfYear = int.parse(DateFormat('D').format(dateTime));
+    int weekOfYear = ((dayOfYear - dateTime.weekday + 10) / 7).floor();
+    if (weekOfYear < 1) {
+      weekOfYear = 52 + weekOfYear;
+    }
+    return weekOfYear;
+  }
 }

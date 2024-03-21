@@ -1,12 +1,14 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/utils/custom_clipper.dart';
+import 'package:clock_in/utils/datetime_util.dart';
+import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
-import 'package:clock_in/widgets/bar_chart/bar_chart.dart';
 import 'package:clock_in/widgets/flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:clock_in/widgets/line_chart/line_chart.dart';
 import 'package:clock_in/widgets/pie_chart/pie_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/chart/chart_controller.dart';
@@ -58,92 +60,32 @@ class ChartPage extends GetView<ChartController> {
       child: Row(
         children: [
           Expanded(
-            child: FlipCard(
-                frontWidget: Obx(() => _numberCard(
-                      Icons.format_list_numbered,
-                      Colors.amber,
-                      "任务数",
-                      controller.taskNum.value.toString(),
-                      onTap: () {
-                        controller.taskNumCon.flipcard();
-                      },
-                    )),
-                backWidget: InkWell(
-                  onTap: () {
-                    controller.taskNumCon.flipcard();
-                  },
-                  child: Container(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                    decoration: BoxDecoration(
-                      color: Colors.amber.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: CustomBarChart(),
-                  ),
-                ),
-                controller: controller.taskNumCon,
-                rotateSide: RotateSide.left),
+              child: Obx(() => _numberCard(
+                    Icons.format_list_numbered,
+                    Colors.amber,
+                    "任务数",
+                    controller.taskNum.value.toString(),
+                    onTap: () {},
+                  ))),
+          Expanded(
+            child: Obx(() => _numberCard(
+                  Icons.calendar_month_rounded,
+                  Colors.lightGreen,
+                  "最长打卡天数",
+                  controller.longestDay.value.toString(),
+                  onTap: () {},
+                )),
           ),
           Expanded(
-              child: FlipCard(
-                  frontWidget: Obx(() => _numberCard(
-                        Icons.calendar_month_rounded,
-                        Colors.lightGreen,
-                        "最长打卡天数",
-                        controller.longestDay.value.toString(),
-                        onTap: () {
-                          controller.longestDayCon.flipcard();
-                        },
-                      )),
-                  backWidget: InkWell(
-                    onTap: () {
-                      controller.longestDayCon.flipcard();
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: 10.w, vertical: 10.h),
-                      decoration: BoxDecoration(
-                        color: Colors.lightGreen.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: CustomBarChart(),
-                    ),
-                  ),
-                  controller: controller.longestDayCon,
-                  rotateSide: RotateSide.left)),
-          Expanded(
-            child: FlipCard(
-                frontWidget: Obx(
-                  () => _numberCard(
-                    Icons.dynamic_feed,
-                    Colors.lightBlue,
-                    "最长连续天数",
-                    controller.longestContinue.value.toString(),
-                    onTap: () {
-                      controller.longestContinueCon.flipcard();
-                    },
-                  ),
-                ),
-                backWidget: InkWell(
-                  onTap: () {
-                    controller.longestContinueCon.flipcard();
-                  },
-                  child: Container(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: CustomBarChart(),
-                    ),
-                  ),
-                ),
-                controller: controller.longestContinueCon,
-                rotateSide: RotateSide.left),
+            child: Obx(
+              () => _numberCard(
+                Icons.dynamic_feed,
+                Colors.lightBlue,
+                "最长连续天数",
+                controller.longestContinue.value.toString(),
+                onTap: () {},
+              ),
+            ),
           )
         ],
       ),
@@ -222,24 +164,21 @@ class ChartPage extends GetView<ChartController> {
   }
 
   Widget _heatMap() {
-    return HeatMap(
-      datasets: {
-        DateTime(2023, 12, 1): 3,
-        DateTime(2024, 1, 7): 7,
-        DateTime(2024, 1, 8): 10,
-        DateTime(2024, 1, 9): 13,
-        DateTime(2024, 1, 13): 6,
-      },
-      colorMode: ColorMode.opacity,
-      defaultColor: AppColors.dividerEEE,
-      showText: false,
-      scrollable: true,
-      colorTipHelper: const [Text("少"), Text("多")],
-      colorsets: const {
-        7: Colors.green,
-      },
-      weekStartsWith: 1,
-      onClick: (value) {},
-    ).paddingSymmetric(horizontal: 20.w, vertical: 10.h);
+    return Obx(() => HeatMap(
+          datasets: controller.heatMapData.value,
+          colorMode: ColorMode.opacity,
+          defaultColor: AppColors.dividerEEE,
+          showText: false,
+          scrollable: true,
+          colorTipHelper: const [Text("少"), Text("多")],
+          colorsets: const {
+            7: Colors.green,
+          },
+          weekStartsWith: 1,
+          onClick: (value) {
+            showToast(
+                "${DateTimeUtil.formatDate(value)}打卡${controller.heatMapData.value[value]}次");
+          },
+        ).paddingSymmetric(horizontal: 20.w, vertical: 10.h));
   }
 }

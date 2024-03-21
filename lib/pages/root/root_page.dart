@@ -54,7 +54,7 @@ class RootPage extends GetView<RootController> {
             controller.activeIndex.value = index;
             if (index == 0) {
             } else if (index == 1) {
-              Get.find<ChartController>().getAllTask();
+              Get.find<ChartController>().loadAllData();
             } else if (index == 2) {
             } else {}
           },

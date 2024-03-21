@@ -3,23 +3,20 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CustomBarChart extends StatelessWidget {
-  const CustomBarChart();
+  const CustomBarChart({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(maxWidth: 300),
-      child: BarChart(
-        BarChartData(
-          barTouchData: barTouchData,
-          titlesData: titlesData,
-          borderData: borderData,
-          barGroups: barGroups,
-          groupsSpace: 8,
-          gridData: const FlGridData(show: false),
-          alignment: BarChartAlignment.start,
-          maxY: 20,
-        ),
+    return BarChart(
+      BarChartData(
+        barTouchData: barTouchData,
+        titlesData: titlesData,
+        borderData: borderData,
+        barGroups: barGroups,
+        groupsSpace: 8,
+        gridData: const FlGridData(show: false),
+        alignment: BarChartAlignment.start,
+        maxY: 20,
       ),
     );
   }
@@ -48,7 +45,7 @@ class CustomBarChart extends StatelessWidget {
       );
 
   Widget getTitles(double value, TitleMeta meta) {
-    final style = TextStyle(
+    const style = TextStyle(
       color: AppColors.primaryYellow,
       fontWeight: FontWeight.bold,
       fontSize: 14,
@@ -111,7 +108,7 @@ class CustomBarChart extends StatelessWidget {
         show: false,
       );
 
-  LinearGradient get _barsGradient => LinearGradient(
+  LinearGradient get _barsGradient => const LinearGradient(
         colors: [
           AppColors.lightBlue,
           AppColors.brightBlue,

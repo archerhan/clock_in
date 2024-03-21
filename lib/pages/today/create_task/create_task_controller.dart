@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:clock_in/constants/assets.gen.dart';
+import 'package:clock_in/manager/check_record_dao.dart';
 import 'package:clock_in/manager/task_dao.dart';
 import 'package:clock_in/pages/today/create_task/icons_model.dart';
 import 'package:clock_in/pages/today/task_list/task_list_controller.dart';
@@ -108,6 +109,8 @@ class CreateTaskController extends GetxController {
     if (!isCreateTask) {
       await TaskDao().deleteTask(_currentTask!.id!);
       await Get.find<TaskListController>().loadAllTask();
+      // 同时删除任务的打卡记录
+      await CheckRecordDao().deleteCheckRecordByTaskId(_currentTask!.id!);
     }
   }
 
