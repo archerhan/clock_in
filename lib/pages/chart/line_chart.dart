@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'package:clock_in/constants/app_colors.dart';
+import 'package:clock_in/utils/number_util.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -151,11 +152,16 @@ class CustomLineChart extends StatelessWidget {
         fontWeight: FontWeight.bold,
         fontSize: 10.sp,
         color: AppColors.subtitle666);
-
+    final numberData = NumberUtil.getNumbers(meta.max.toInt());
+    if (numberData.isNotEmpty) {
+      numberData[0] = 1;
+    }
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      child:
-          Text("${value.toInt()}周", style: style, textAlign: TextAlign.center),
+      child: Text(
+          numberData.contains(value.toInt()) ? "第${value.toInt()}周" : "",
+          style: style,
+          textAlign: TextAlign.center),
     );
   }
 
@@ -164,9 +170,9 @@ class CustomLineChart extends StatelessWidget {
         fontWeight: FontWeight.bold,
         fontSize: 14.sp,
         color: AppColors.subtitle666);
-
+    final numberData = NumberUtil.getNumbers(meta.max.toInt());
     return Text(
-      value.toInt().toString(),
+      numberData.contains(value.toInt()) ? "${value.toInt()}" : "",
       style: style,
       textAlign: TextAlign.center,
     );

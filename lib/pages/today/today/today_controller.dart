@@ -14,12 +14,21 @@ class TodayController extends GetxController {
   // 获取当月最后一天
   var calendarLastDay = DateTime.now();
 
+  // 今日的打卡任务
   var todayTasks = <TaskModel>[].obs;
 
+  // 每日打卡次数
+  var dailyCheckCountData = <String, int>{}.obs;
+
   @override
-  void onInit() {
-    loadSelectDayTasks();
-    super.onInit();
+  void onReady() {
+    loadData();
+    super.onReady();
+  }
+
+  Future loadData() async {
+    await loadSelectDayTasks();
+    await getDailyCheckCount();
   }
 
   /// 加载今日任务
@@ -166,7 +175,7 @@ class TodayController extends GetxController {
     task.grandTotal = grandTotal;
     task.continuousDays = continuousDays;
     await TaskDao().updateTask(task);
-    await loadSelectDayTasks();
+    await loadData();
   }
 
   /// 计算最长连续打卡天数
@@ -186,5 +195,25 @@ class TodayController extends GetxController {
       maxStreak = max(maxStreak, currentStreak);
     }
     return maxStreak;
+  }
+
+  // 查询全部的打卡记录
+  // 按照date分组, 累加每组的checkCount
+  // 最后按照date排序
+  // 返回一个Map, key是DateTime, value是当天的打卡次数
+  Future getDailyCheckCount() async {
+    var map = <String, int>{};
+    var list = await CheckRecordDao().queryAllCheckRecords();
+    for (var element in list) {
+      if (element.date?.isNotEmpty == true) {
+        var date = element.date!;
+        if (map.containsKey(date)) {
+          map[date] = map[date]! + element.checkCount!;
+        } else {
+          map[date] = element.checkCount!;
+        }
+      }
+    }
+    dailyCheckCountData.value = map;
   }
 }

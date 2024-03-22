@@ -193,6 +193,7 @@ class ChartPage extends GetView<ChartController> {
               datasets: controller.heatMapData.value,
               colorMode: ColorMode.opacity,
               defaultColor: AppColors.dividerEEE,
+              size: 20.w,
               showText: false,
               scrollable: true,
               startDate: DateTime(DateTime.now().year, 1, 1),

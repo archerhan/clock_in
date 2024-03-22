@@ -1,4 +1,5 @@
 import 'package:clock_in/constants/app_colors.dart';
+import 'package:clock_in/pages/today/today/today_controller.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CustomCalendar extends StatelessWidget {
+class CustomCalendar extends GetView<TodayController> {
   final DateTime focusedDay;
   final DateTime firstDay;
   final DateTime lastDay;
@@ -23,6 +24,7 @@ class CustomCalendar extends StatelessWidget {
       firstDay: firstDay,
       lastDay: lastDay,
       pageJumpingEnabled: true,
+      rowHeight: 60.h,
       headerVisible: false,
       availableGestures: AvailableGestures.horizontalSwipe,
       calendarFormat: CalendarFormat.twoWeeks,
@@ -73,7 +75,8 @@ class CustomCalendar extends StatelessWidget {
     return CalendarBuilders(
       prioritizedBuilder: (context, day, focusDay) {
         return Container(
-          margin: const EdgeInsets.all(3),
+          constraints: const BoxConstraints.expand(),
+          margin: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: AppColors.bgColor,
             shape: BoxShape.rectangle,
@@ -86,18 +89,37 @@ class CustomCalendar extends StatelessWidget {
                     : Colors.transparent,
                 width: 4),
           ),
-          child: Center(
-            child: Text(
-              day.day == 1 ? _monthName(day.month) : day.day.toString(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: day.isAfter(DateTime.now())
-                    ? AppColors.grey999
-                    : AppColors.subtitle666,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          child: Obx(() => Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    day.day == 1 ? _monthName(day.month) : day.day.toString(),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: day.isAfter(DateTime.now())
+                          ? AppColors.grey999
+                          : AppColors.subtitle666,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // 判断日期是否包含在dailyCheckCountData中
+                  (controller.dailyCheckCountData
+                              .containsKey(day.toString().split(" ").first) &&
+                          controller.dailyCheckCountData[
+                                  day.toString().split(" ").first]! >
+                              0)
+                      ? Icon(
+                          Icons.check,
+                          size: 12.w,
+                          color: AppColors.textGreen,
+                        )
+                      : SizedBox(
+                          width: 12.w,
+                          height: 12.w,
+                        ),
+                ],
+              )),
         );
       },
     );
