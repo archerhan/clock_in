@@ -93,8 +93,8 @@ class TaskModel {
     sort = json['sort'];
     color = json['color'];
     records = json['records'];
-    grandTotal = json['grandTotal'];
-    continuousDays = json['continuousDays'];
+    grandTotal = json['grandTotal'] ?? 0;
+    continuousDays = json['continuousDays'] ?? 0;
     monthTotal = json['monthTotal'];
   }
 

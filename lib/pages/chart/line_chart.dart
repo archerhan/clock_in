@@ -1,91 +1,55 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/pages/chart/chart_controller.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tuple/tuple.dart';
 
-class CustomLineChart extends GetView<ChartController> {
-  const CustomLineChart({super.key});
+class CustomLineChart extends StatelessWidget {
+  final List<Tuple2> weekCheckData;
+  const CustomLineChart(this.weekCheckData, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: 1.70,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 18,
-              left: 12,
-              top: 24,
-              bottom: 12,
-            ),
-            child: LineChart(
-              mainData(),
-            ),
-          ),
-        ),
-      ],
+    return AspectRatio(
+      aspectRatio: 1.7,
+      child: Container(
+        child: LineChart(
+          mainData(),
+        ).paddingSymmetric(horizontal: 20.w),
+      ),
     );
-  }
-
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
-    }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
   }
 
   LineChartData mainData() {
     return LineChartData(
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: AppColors.bgColor,
+          getTooltipItems: (List<LineBarSpot> touchedSpots) {
+            return touchedSpots.map((LineBarSpot touchedSpot) {
+              final flSpot = touchedSpot;
+              if (flSpot.x == 0 || flSpot.x == weekCheckData.length - 1) {
+                return null;
+              }
+              return LineTooltipItem(
+                "${flSpot.y.toInt()}次",
+                const TextStyle(
+                  color: AppColors.mainTitle333,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }).toList();
+          },
+        ),
+        touchCallback: (event, touchResponse) {},
+        handleBuiltInTouches: true,
+      ),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return const FlLine(
             color: AppColors.dividerEEE,
@@ -127,21 +91,30 @@ class CustomLineChart extends GetView<ChartController> {
       borderData: FlBorderData(
         show: false,
       ),
-      minX: 0,
-      maxX: 11,
+      minX: weekCheckData.isNotEmpty
+          ? weekCheckData
+                  .map((e) => e.item1.toDouble())
+                  .reduce((a, b) => a < b ? a : b) ??
+              0
+          : 0,
+      maxX: weekCheckData.isNotEmpty
+          ? weekCheckData
+                  .map((e) => e.item1.toDouble())
+                  .reduce((a, b) => a > b ? a : b) ??
+              0
+          : 0,
       minY: 0,
-      maxY: 6,
+      maxY: weekCheckData.isNotEmpty
+          ? weekCheckData
+                  .map((e) => e.item2.toDouble())
+                  .reduce((a, b) => a > b ? a : b) ??
+              0
+          : 0,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: weekCheckData
+              .map((e) => FlSpot(e.item1.toDouble(), e.item2.toDouble()))
+              .toList(),
           isCurved: true,
           gradient: const LinearGradient(
             colors: [
@@ -165,6 +138,32 @@ class CustomLineChart extends GetView<ChartController> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    final style = TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 10.sp,
+        color: AppColors.subtitle666);
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child:
+          Text("${value.toInt()}周", style: style, textAlign: TextAlign.center),
+    );
+  }
+
+  Widget leftTitleWidgets(double value, TitleMeta meta) {
+    final style = TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 14.sp,
+        color: AppColors.subtitle666);
+
+    return Text(
+      value.toInt().toString(),
+      style: style,
+      textAlign: TextAlign.center,
     );
   }
 }

@@ -8,7 +8,9 @@ import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:clock_in/pages/chart/line_chart.dart';
 import 'package:clock_in/pages/chart/pie_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/chart/chart_controller.dart';
@@ -26,12 +28,13 @@ class ChartPage extends GetView<ChartController> {
         child: Column(
           children: [
             _numberCardHorizontalView(),
+            _title("任务打卡分布"),
+            _pieChart(),
+            _title("每周打卡统计"),
+            _lineChart(),
             _title("全年打卡热度"),
             _heatMap(),
-            _title("每周打卡统计"),
-            const CustomLineChart(),
-            _title("任务打卡分布"),
-            const MyPieChart(),
+
             // _title("已获得的奖励"),
           ],
         ),
@@ -163,22 +166,40 @@ class ChartPage extends GetView<ChartController> {
     );
   }
 
+  Widget _pieChart() {
+    return Obx(() => controller.taskCheckProportion.isNotEmpty
+        ? MyPieChart(controller.taskCheckProportion.value)
+        : const SizedBox());
+  }
+
+  Widget _lineChart() {
+    return Obx(() => controller.weekCheckData.isNotEmpty
+        ? CustomLineChart(
+            controller.weekCheckData.value,
+          )
+        : const SizedBox());
+  }
+
   Widget _heatMap() {
-    return Obx(() => HeatMap(
-          datasets: controller.heatMapData.value,
-          colorMode: ColorMode.opacity,
-          defaultColor: AppColors.dividerEEE,
-          showText: false,
-          scrollable: true,
-          colorTipHelper: const [Text("少"), Text("多")],
-          colorsets: const {
-            7: Colors.green,
-          },
-          weekStartsWith: 1,
-          onClick: (value) {
-            showToast(
-                "${DateTimeUtil.formatDate(value)}打卡${controller.heatMapData.value[value]}次");
-          },
-        ).paddingSymmetric(horizontal: 20.w, vertical: 10.h));
+    return AspectRatio(
+      aspectRatio: 1.6,
+      child: Obx(() => HeatMap(
+            datasets: controller.heatMapData.value,
+            colorMode: ColorMode.opacity,
+            defaultColor: AppColors.dividerEEE,
+            showText: false,
+            scrollable: true,
+            startDate: DateTime(DateTime.now().year, 1, 1),
+            colorTipHelper: const [Text("少"), Text("多")],
+            colorsets: const {
+              7: Colors.green,
+            },
+            weekStartsWith: 1,
+            onClick: (value) {
+              showToast(
+                  "${DateTimeUtil.formatDate(value)}打卡${controller.heatMapData.value[value] ?? 0}次");
+            },
+          ).paddingSymmetric(horizontal: 20.w, vertical: 10.h)),
+    );
   }
 }

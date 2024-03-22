@@ -27,8 +27,8 @@ class TaskDao implements BaseDao {
       sort INTEGER,
       color TEXT,
       records TEXT,
-      grandTotal INTEGER,
-      continuousDays INTEGER
+      grandTotal INTEGER DEFAULT 0,
+      continuousDays INTEGER DEFAULT 0
     )
     ''';
   }

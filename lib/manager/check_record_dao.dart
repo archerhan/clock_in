@@ -47,7 +47,7 @@ class CheckRecordDao extends BaseDao {
     }
     return null;
   }
-
+  // 查询指定taskId和date的checkRecordModel
   Future<CheckRecordModel?> queryCheckRecordByDate(int taskId, DateTime date) async {
     var db = await DBManager.instance.database;
     List<Map<String, dynamic>> maps = await db.query(tableName(),
@@ -57,6 +57,18 @@ class CheckRecordDao extends BaseDao {
       return CheckRecordModel.fromJson(maps.first);
     }
     return null;
+  }
+
+  Future<int> queryCheckCountByTaskId(int taskId) async {
+    var db = await DBManager.instance.database;
+    List<Map<String, dynamic>> maps = await db.query(tableName(),
+        columns: ['SUM(checkCount) as checkCount'],
+        where: 'taskId = ?',
+        whereArgs: [taskId]);
+    if (maps.isNotEmpty) {
+      return maps.first['checkCount'] as int;
+    }
+    return 0;
   }
 
   // 更新checkRecordModel
