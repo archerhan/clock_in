@@ -7,6 +7,7 @@ import 'package:clock_in/pages/today/task_list/task_list_page.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/calendar/custom_calendar.dart';
+import 'package:clock_in/widgets/empty/empty_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,15 +78,20 @@ class TodayPage extends GetView<TodayController> {
 
   Widget _taskListView() {
     return Obx(
-      () => ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return _taskItem(controller.todayTasks[index]);
-        },
-        itemCount: controller.todayTasks.length,
-        itemExtent: 100.h,
-      ),
+      () => controller.todayTasks.isNotEmpty
+          ? ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return _taskItem(controller.todayTasks[index]);
+              },
+              itemCount: controller.todayTasks.length,
+              itemExtent: 100.h,
+            )
+          : const EmptyChart(
+              iconData: Icons.table_view_outlined,
+              text: "没有任务哦~",
+            ),
     );
   }
 

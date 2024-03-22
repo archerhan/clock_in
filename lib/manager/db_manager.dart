@@ -33,8 +33,8 @@ class DBManager {
 
   // 创建表
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute(TaskDao().createTableSql());
     await db.execute(CheckRecordDao().createTableSql());
+    await db.execute(TaskDao().createTableSql());
   }
 
   void addColumnIfNotExists(Database db, String tableName, String columnName,

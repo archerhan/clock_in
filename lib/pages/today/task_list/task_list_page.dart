@@ -6,6 +6,7 @@ import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
+import 'package:clock_in/widgets/empty/empty_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,22 +45,27 @@ class TaskListPage extends GetView<TaskListController> {
   }
 
   Widget _taskList() {
-    return Obx(() => ReorderableListView.builder(
-          shrinkWrap: true,
-          itemCount: controller.taskList.length,
-          onReorder: (oldIndex, newIndex) {
-            Vibrate.feedback(FeedbackType.success);
-            controller.reorder(oldIndex, newIndex);
-          },
-          itemBuilder: (BuildContext context, int index) {
-            return _taskItem(controller.taskList[index], onTap: () {
-              logger.d("点击了任务:${controller.taskList[index].taskName}");
-              Get.to(const CreateTaskPage(),
-                  arguments: controller.taskList[index],
-                  binding: CreateTaskBinding());
-            });
-          },
-        ));
+    return Obx(() => controller.taskList.isNotEmpty
+        ? ReorderableListView.builder(
+            shrinkWrap: true,
+            itemCount: controller.taskList.length,
+            onReorder: (oldIndex, newIndex) {
+              Vibrate.feedback(FeedbackType.success);
+              controller.reorder(oldIndex, newIndex);
+            },
+            itemBuilder: (BuildContext context, int index) {
+              return _taskItem(controller.taskList[index], onTap: () {
+                logger.d("点击了任务:${controller.taskList[index].taskName}");
+                Get.to(const CreateTaskPage(),
+                    arguments: controller.taskList[index],
+                    binding: CreateTaskBinding());
+              });
+            },
+          )
+        : const EmptyChart(
+            iconData: Icons.table_view_outlined,
+            text: "去创建一个任务吧~",
+          ));
   }
 
   Widget _taskItem(TaskModel taskModel, {Function? onTap}) {
@@ -156,8 +162,7 @@ class TaskListPage extends GetView<TaskListController> {
                         (taskModel.continuousDays ?? 0).toString(), "最长持续",
                         secondaryText: "天"),
                     _numTextWidget(
-                        (taskModel.monthTotal ?? 0).toString(),
-                        "本月已打卡",
+                        (taskModel.monthTotal ?? 0).toString(), "本月已打卡",
                         secondaryText: "天"),
                   ]),
             ),

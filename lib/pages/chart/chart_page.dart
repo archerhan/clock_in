@@ -5,12 +5,11 @@ import 'package:clock_in/utils/custom_clipper.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
+import 'package:clock_in/widgets/empty/empty_chart.dart';
 import 'package:clock_in/widgets/flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:clock_in/pages/chart/line_chart.dart';
 import 'package:clock_in/pages/chart/pie_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/chart/chart_controller.dart';
@@ -45,7 +44,7 @@ class ChartPage extends GetView<ChartController> {
   Widget _title(String title) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       child: Text(
         title,
         style: TextStyle(
@@ -147,8 +146,8 @@ class ChartPage extends GetView<ChartController> {
                     child: Stack(
                       children: [
                         Positioned(
-                            left: 10,
-                            top: 10,
+                            left: 8.w,
+                            top: 8.h,
                             child: Icon(
                               icon,
                               size: 28.w,
@@ -169,7 +168,10 @@ class ChartPage extends GetView<ChartController> {
   Widget _pieChart() {
     return Obx(() => controller.taskCheckProportion.isNotEmpty
         ? MyPieChart(controller.taskCheckProportion.value)
-        : const SizedBox());
+        : const EmptyChart(
+            iconData: Icons.donut_small_outlined,
+            text: "请创建任务打卡后再来看吧~",
+          ));
   }
 
   Widget _lineChart() {
@@ -177,29 +179,37 @@ class ChartPage extends GetView<ChartController> {
         ? CustomLineChart(
             controller.weekCheckData.value,
           )
-        : const SizedBox());
+        : const EmptyChart(
+            iconData: Icons.monitor_heart_outlined,
+            text: "请创建任务打卡后再来看吧~",
+          ));
   }
 
   Widget _heatMap() {
     return AspectRatio(
-      aspectRatio: 1.6,
-      child: Obx(() => HeatMap(
-            datasets: controller.heatMapData.value,
-            colorMode: ColorMode.opacity,
-            defaultColor: AppColors.dividerEEE,
-            showText: false,
-            scrollable: true,
-            startDate: DateTime(DateTime.now().year, 1, 1),
-            colorTipHelper: const [Text("少"), Text("多")],
-            colorsets: const {
-              7: Colors.green,
-            },
-            weekStartsWith: 1,
-            onClick: (value) {
-              showToast(
-                  "${DateTimeUtil.formatDate(value)}打卡${controller.heatMapData.value[value] ?? 0}次");
-            },
-          ).paddingSymmetric(horizontal: 20.w, vertical: 10.h)),
+      aspectRatio: 1.5,
+      child: Obx(() => controller.heatMapData.isNotEmpty
+          ? HeatMap(
+              datasets: controller.heatMapData.value,
+              colorMode: ColorMode.opacity,
+              defaultColor: AppColors.dividerEEE,
+              showText: false,
+              scrollable: true,
+              startDate: DateTime(DateTime.now().year, 1, 1),
+              colorTipHelper: const [Text("少"), Text("多")],
+              colorsets: const {
+                7: Colors.green,
+              },
+              weekStartsWith: 1,
+              onClick: (value) {
+                showToast(
+                    "${DateTimeUtil.formatDate(value)}打卡${controller.heatMapData.value[value] ?? 0}次");
+              },
+            ).paddingSymmetric(horizontal: 20.w, vertical: 10.h)
+          : const EmptyChart(
+              iconData: Icons.grid_4x4_outlined,
+              text: "请创建任务打卡后再来看吧~",
+            )),
     );
   }
 }

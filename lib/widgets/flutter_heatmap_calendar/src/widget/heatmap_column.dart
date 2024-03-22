@@ -114,7 +114,7 @@ class HeatMapColumn extends StatelessWidget {
             // we have to color the matched HeatMapContainer.
             //
             // If datasets is null or doesn't contains the equal DateTime value, send null.
-            selectedColor: datasets?.keys.contains(DateTime(
+            selectedColor: maxValue != 0 ? datasets?.keys.contains(DateTime(
                         startDate.year,
                         startDate.month,
                         startDate.day -
@@ -143,7 +143,7 @@ class HeatMapColumn extends StatelessWidget {
                         colorsets,
                         datasets?[
                             DateTime(startDate.year, startDate.month, startDate.day + i - ((startDate.weekday - weekStartsWith) % 7))])
-                : null,
+                : null : null,
           ),
         ),
         // Fill emptySpace list only if given wek doesn't have 7 days.

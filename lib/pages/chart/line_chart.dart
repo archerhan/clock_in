@@ -14,7 +14,7 @@ class CustomLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.7,
+      aspectRatio: 1.5,
       child: Container(
         child: LineChart(
           mainData(),
@@ -89,7 +89,10 @@ class CustomLineChart extends StatelessWidget {
         ),
       ),
       borderData: FlBorderData(
-        show: false,
+        border: const Border(
+            left: BorderSide(width: 1, color: AppColors.dividerEEE),
+            bottom: BorderSide(width: 1, color: AppColors.dividerEEE)),
+        show: true,
       ),
       minX: weekCheckData.isNotEmpty
           ? weekCheckData
@@ -115,6 +118,7 @@ class CustomLineChart extends StatelessWidget {
           spots: weekCheckData
               .map((e) => FlSpot(e.item1.toDouble(), e.item2.toDouble()))
               .toList(),
+          preventCurveOverShooting: true,
           isCurved: true,
           gradient: const LinearGradient(
             colors: [
@@ -122,8 +126,9 @@ class CustomLineChart extends StatelessWidget {
               Colors.purple,
             ],
           ),
-          barWidth: 5,
+          barWidth: 3,
           isStrokeCapRound: true,
+          isStrokeJoinRound: true,
           dotData: const FlDotData(
             show: false,
           ),

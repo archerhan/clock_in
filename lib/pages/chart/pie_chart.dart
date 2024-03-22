@@ -1,5 +1,4 @@
 import 'package:clock_in/pages/today/today/task_model.dart';
-import 'package:clock_in/utils/logger_util.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,7 @@ class MyPieChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.6,
+      aspectRatio: 1.5,
       child: PieChart(
         PieChartData(
           borderData: FlBorderData(
@@ -32,7 +31,7 @@ class MyPieChart extends StatelessWidget {
         color: Color(int.parse(e.item1.color!, radix: 16)).withOpacity(0.7),
         value: e.item2.toDouble(),
         title: '${e.item2}次',
-        titlePositionPercentageOffset: 0.6,
+        titlePositionPercentageOffset: 0.5,
         radius: 100.r,
         titleStyle: TextStyle(
           fontSize: 16.sp,

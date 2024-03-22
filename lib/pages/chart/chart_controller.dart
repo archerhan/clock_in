@@ -106,11 +106,11 @@ class ChartController extends GetxController {
   // 生成一个Tuple2数组, item1是任务模型, item2是该任务的打卡次数占比
   Future getTaskCheckProportion() async {
     var tuples = <Tuple2<TaskModel, int>>[];
-    var tasks = await TaskDao().queryAllTask().then((value) =>
-        value.where((element) => element.isActive == 1).toList());
+    var tasks = await TaskDao().queryAllTask();
     for (var task in tasks) {
       if (task.id != null) {
-        var checkCount = await CheckRecordDao().queryCheckCountByTaskId(task.id!);
+        var checkCount =
+            await CheckRecordDao().queryCheckCountByTaskId(task.id!);
         tuples.add(Tuple2(task, checkCount));
       }
     }
