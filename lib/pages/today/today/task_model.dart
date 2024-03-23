@@ -55,7 +55,6 @@ class TaskModel {
   /// 本月打卡天数
   int? monthTotal;
 
-
   TaskModel({
     this.id,
     this.taskName,
@@ -132,9 +131,17 @@ class CheckRecordModel {
   String? note;
   // 今日已打卡次数
   int? checkCount;
+  String? createDT;
+  String? updateDT;
 
   CheckRecordModel(
-      {this.id, this.taskId, this.date, this.note, this.checkCount});
+      {this.id,
+      this.taskId,
+      this.date,
+      this.note,
+      this.checkCount,
+      this.createDT,
+      this.updateDT});
 
   CheckRecordModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -142,6 +149,8 @@ class CheckRecordModel {
     date = json['date'];
     note = json['note'];
     checkCount = json['checkCount'];
+    createDT = json['createDT'];
+    updateDT = json['updateDT'];
   }
 
   Map<String, dynamic> toJson() {
@@ -151,6 +160,8 @@ class CheckRecordModel {
     data['date'] = date;
     data['note'] = note;
     data['checkCount'] = checkCount;
+    data['createDT'] = createDT;
+    data['updateDT'] = updateDT;
     data.removeWhere((key, value) => value == null);
     return data;
   }

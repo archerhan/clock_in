@@ -21,10 +21,16 @@ class SettingPage extends GetView<SettingController> {
           children: [
             const SectionTitle("数据与安全"),
             _settingGridView([
-              _settingItem(Assets.images.entertainment.entertainmentBeer.path,
-                  "数据备份", () {}),
-              _settingItem(Assets.images.entertainment.entertainmentCards.path,
-                  "密码", () {}),
+              _settingItem(
+                  Assets.images.entertainment.entertainmentBeer.path, "数据备份",
+                  () {
+                controller.backupData();
+              }),
+              _settingItem(
+                  Assets.images.entertainment.entertainmentCards.path, "密码",
+                  () {
+                controller.restoreData();
+              }),
             ]),
             const SectionTitle("会员"),
             _settingGridView([

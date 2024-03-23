@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:clock_in/i18n/app_translation.dart';
 import 'package:clock_in/pages/root/root_binding.dart';
 import 'package:clock_in/pages/root/root_page.dart';
@@ -26,13 +25,14 @@ void main() async {
 /// 初始化多语言(动态下发多语言),初始化设置等
 /// 里面的执行顺序不能变, 否则会出错
 Future _initServices() async {
-  await Get.putAsync(() async => await GetStorage.init(), permanent: true);
+  // await Get.putAsync(() async => await GetStorage.init(), permanent: true);
   // await Get.putAsync(() async => IsarService.instance);
 }
 
-void _otherConfigs() {
-  DBManager.instance.database;
-
+void _otherConfigs() async {
+  await DBManager.instance.database;
+  await DBManager.instance.backupDatabase;
+  
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,

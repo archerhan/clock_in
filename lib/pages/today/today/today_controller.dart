@@ -129,7 +129,12 @@ class TodayController extends GetxController {
     }
     if (!dateSet.contains(todayDateString)) {
       var checkRecordModel = CheckRecordModel(
-          taskId: task.id, date: todayDateString, note: "", checkCount: 0);
+          taskId: task.id,
+          date: todayDateString,
+          note: "",
+          checkCount: 0,
+          createDT: DateTime.now().toString(),
+          updateDT: DateTime.now().toString());
       logger.d("记录生成完成: $checkRecordModel, 准备插入数据库");
       var id = await CheckRecordDao().insertCheckRecord(checkRecordModel);
       logger.d("插入数据库完成, id: $id, 准备更新task的records字段");
@@ -168,6 +173,7 @@ class TodayController extends GetxController {
       checkCount = todayRecord.checkCount! + 1;
     }
     todayRecord.checkCount = checkCount;
+    todayRecord.updateDT = DateTime.now().toString();
     await CheckRecordDao().updateCheckRecord(todayRecord);
 
     var grandTotal = recordsList.length;

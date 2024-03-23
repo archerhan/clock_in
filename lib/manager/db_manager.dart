@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:clock_in/manager/check_record_dao.dart';
+import 'package:clock_in/manager/icloud_manager.dart';
 import 'package:clock_in/manager/task_dao.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:path/path.dart';
 
 class DBManager {
   static const _databaseName = "ClockIn.db";
+  static const _backupDatabaseName = "ClockInBackup.db";
   static const _databaseVersion = 2;
 
   DBManager._privateConstructor();
@@ -21,18 +23,62 @@ class DBManager {
     return _database!;
   }
 
+  static Database? _backupDatabase;
+  Future<Database> get backupDatabase async {
+    if (_backupDatabase != null) return _backupDatabase!;
+    _backupDatabase = await _initBackupDatabase();
+    return _backupDatabase!;
+  }
+
+  Future<Database> _initBackupDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _backupDatabaseName);
+    logger.d("备份数据库路径:$path");
+    ICloudManager.instance.backupFilePath = path;
+    final db = await openDatabase(path,
+        version: _databaseVersion, onCreate: _onCreateBackup);
+    return db;
+  }
+
+  // 获取数据库路径
+  Future<String> getDatabasePath() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
+    return path;
+  }
+
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     logger.d("数据库路径:$path");
+    ICloudManager.instance.filePath = path;
     final db = await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
     // addColumnIfNotExists(db, TaskDao().tableName(), columnName, columnType)
     return db;
   }
 
+  // 关闭数据库
+  Future closeDb() async {
+    var db = await database;
+    await db.close();
+    _database = null;
+  }
+
+  // 关闭备份数据库
+  Future closeBackupDb() async {
+    var db = await backupDatabase;
+    await db.close();
+    _backupDatabase = null;
+  }
   // 创建表
   Future<void> _onCreate(Database db, int version) async {
+    await db.execute(CheckRecordDao().createTableSql());
+    await db.execute(TaskDao().createTableSql());
+  }
+
+  // 创建备份数据库的表
+  Future<void> _onCreateBackup(Database db, int version) async {
     await db.execute(CheckRecordDao().createTableSql());
     await db.execute(TaskDao().createTableSql());
   }
