@@ -57,8 +57,9 @@ class TaskListPage extends GetView<TaskListController> {
               return _taskItem(controller.taskList[index], onTap: () {
                 logger.d("点击了任务:${controller.taskList[index].taskName}");
                 Get.to(const CreateTaskPage(),
-                    arguments: controller.taskList[index],
-                    binding: CreateTaskBinding());
+                        arguments: controller.taskList[index],
+                        binding: CreateTaskBinding())
+                    ?.then((value) => controller.loadAllTask());
               });
             },
           )

@@ -97,7 +97,10 @@ class CustomCalendar extends GetView<TodayController> {
                     day.day == 1 ? _monthName(day.month) : day.day.toString(),
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: day.isAfter(DateTime.now())
+                      color: DateTime(day.year, day.month, day.day).isAfter(
+                        DateTime(DateTime.now().year, DateTime.now().month,
+                            DateTime.now().day),
+                      )
                           ? AppColors.grey999
                           : AppColors.subtitle666,
                       fontWeight: FontWeight.bold,

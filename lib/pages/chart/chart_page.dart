@@ -166,7 +166,10 @@ class ChartPage extends GetView<ChartController> {
   }
 
   Widget _pieChart() {
-    return Obx(() => controller.taskCheckProportion.isNotEmpty
+    return Obx(() => (controller.taskCheckProportion.isNotEmpty &&
+            controller.taskCheckProportion
+                    .firstWhereOrNull((element) => element.item2 > 0) !=
+                null)
         ? MyPieChart(controller.taskCheckProportion.value)
         : const EmptyChart(
             iconData: Icons.donut_small_outlined,
@@ -213,4 +216,5 @@ class ChartPage extends GetView<ChartController> {
             )),
     );
   }
+
 }

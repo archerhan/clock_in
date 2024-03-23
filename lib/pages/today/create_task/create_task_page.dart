@@ -30,21 +30,15 @@ class CreateTaskPage extends GetView<CreateTaskController> {
       appBar: CustomAppBar(
         title: Text(controller.isCreateTask ? "创建任务" : "编辑任务"),
       ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _basicInfo(),
-              _notificationInfo(),
-              _iconSlogan(),
-              _buttons(),
-              SizedBox(height: 40.h),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _basicInfo(),
+            _notificationInfo(),
+            _iconSlogan(),
+            _buttons(),
+            SizedBox(height: 40.h),
+          ],
         ),
       ),
     );

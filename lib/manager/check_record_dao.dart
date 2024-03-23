@@ -11,7 +11,7 @@ class CheckRecordDao extends BaseDao {
       taskId INTEGER,
       date TEXT,
       note TEXT,
-      checkCount INTEGER
+      checkCount INTEGER DEFAULT 0
     )
     ''';
     return createTableQuery;

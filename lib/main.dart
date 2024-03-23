@@ -53,41 +53,37 @@ class MyApp extends StatelessWidget {
       designSize: const Size(414, 896),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: GetMaterialApp(
-        enableLog: false,
-        translationsKeys: AppTranslation.translations,
-        locale: Get.locale,
-        defaultTransition: Transition.cupertino,
-        popGesture: Get.isPopGestureEnable,
-        fallbackLocale: const Locale('zh', 'CN'),
-        // localizationsDelegates: const [
-        // PickerLocalizationsDelegate.delegate
-        // GlobalCupertinoLocalizations.delegate,
-        // GlobalMaterialLocalizations.delegate,
-        // ],
-        //   supportedLocales: const [
-        //     Locale('zh'),
-        //     Locale('en'),
-        //   ],
-        initialBinding: RootBinding(),
-        home: const RootPage(),
-        navigatorObservers: [BotToastNavigatorObserver()],
-        theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: false,
-            // 全局去掉点击的背景高亮颜色
-            highlightColor: Colors.transparent,
-            // 全局去掉水波纹效果
-            splashColor: Colors.transparent),
-        builder: (context, widget) {
-          widget = MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: const TextScaler.linear(1.0)),
-            child: widget!,
-          );
-          widget = botToastBuilder(context, widget);
-          return widget;
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(Get.context!).requestFocus(FocusNode());
         },
+        child: GetMaterialApp(
+          enableLog: false,
+          translationsKeys: AppTranslation.translations,
+          locale: Get.locale,
+          defaultTransition: Transition.cupertino,
+          popGesture: Get.isPopGestureEnable,
+          fallbackLocale: const Locale('zh', 'CN'),
+          initialBinding: RootBinding(),
+          home: const RootPage(),
+          navigatorObservers: [BotToastNavigatorObserver()],
+          theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: false,
+              // 全局去掉点击的背景高亮颜色
+              highlightColor: Colors.transparent,
+              // 全局去掉水波纹效果
+              splashColor: Colors.transparent),
+          builder: (context, widget) {
+            widget = MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(1.0)),
+              child: widget!,
+            );
+            widget = botToastBuilder(context, widget);
+            return widget;
+          },
+        ),
       ),
     );
   }
