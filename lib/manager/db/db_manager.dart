@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:clock_in/manager/check_record_dao.dart';
-import 'package:clock_in/manager/icloud_manager.dart';
-import 'package:clock_in/manager/task_dao.dart';
+import 'package:clock_in/manager/db/check_record_dao.dart';
+import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -34,7 +33,6 @@ class DBManager {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _backupDatabaseName);
     logger.d("备份数据库路径:$path");
-    ICloudManager.instance.backupFilePath = path;
     final db = await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreateBackup);
     return db;
@@ -47,11 +45,17 @@ class DBManager {
     return path;
   }
 
+  // 获取备份数据库路径
+  Future<String> getBackupDatabasePath() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _backupDatabaseName);
+    return path;
+  }
+
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     logger.d("数据库路径:$path");
-    ICloudManager.instance.filePath = path;
     final db = await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
     // addColumnIfNotExists(db, TaskDao().tableName(), columnName, columnType)

@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:clock_in/manager/db_manager.dart';
-import 'package:get/get.dart';
+import 'package:clock_in/manager/db/db_manager.dart';
+import 'package:clock_in/utils/toast_util.dart';
 import 'package:icloud_storage/icloud_storage.dart';
 
 class ICloudManager {
@@ -10,12 +9,9 @@ class ICloudManager {
   ICloudManager._privateConstructor();
   static final ICloudManager instance = ICloudManager._privateConstructor();
 
-  late String filePath;
-  late String backupFilePath;
-
   StreamSubscription? uploadProgressSub;
   StreamSubscription? downloadProgressSub;
-  final containerId = 'iCloud.fun.4coding.clockIn';
+  final containerId = "iCloud.fun.4coding.clockIn";
 
   Future<void> uploadData(
       {Function(double)? progress, void Function()? onDone}) async {
@@ -28,12 +24,7 @@ class ICloudManager {
           progress,
           onDone: onDone,
           onError: (err) {
-            AwesomeDialog(
-              context: Get.context!,
-              dialogType: DialogType.error,
-              title: '上传失败',
-              desc: err.toString(),
-            ).show();
+            showToast("上传失败: ${err.toString()}");
           },
           cancelOnError: true,
         );
@@ -45,22 +36,17 @@ class ICloudManager {
   Future downloadData(
       {Function(double)? progress, void Function()? onDone}) async {
     final path = await DBManager.instance.getDatabasePath();
-
+    final backupPath = await DBManager.instance.getBackupDatabasePath();
     await ICloudStorage.download(
       containerId: containerId,
       relativePath: path.split("/").last,
-      destinationFilePath: backupFilePath,
+      destinationFilePath: backupPath,
       onProgress: (stream) {
         downloadProgressSub = stream.listen(
           progress,
           onDone: onDone,
           onError: (err) {
-            AwesomeDialog(
-              context: Get.context!,
-              dialogType: DialogType.error,
-              title: '下载失败',
-              desc: err.toString(),
-            ).show();
+            showToast("下载失败: ${err.toString()}");
           },
           cancelOnError: true,
         );

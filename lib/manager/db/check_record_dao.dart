@@ -1,5 +1,5 @@
-import 'package:clock_in/manager/base_dao.dart';
-import 'package:clock_in/manager/db_manager.dart';
+import 'package:clock_in/manager/db/base_dao.dart';
+import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:get/get.dart';
@@ -112,7 +112,7 @@ class CheckRecordDao extends BaseDao {
   // 2.将待插入的checkRecordModel与本地的checkRecordModel进行比对
   // 3.当待插入的checkRecordModel中有id相同的checkRecordModel时:判断最后更新时间，更新时间晚的checkRecordModel将覆盖数据库中的checkRecordModel, 否则跳过该条数据
   // 4.当待插入的checkRecordModel中有id不同的taskModel时:直接插入数据库
-  Future<void> mergeBackupTasks() async {
+  Future<void> mergeBackupCheckRecords() async {
     logger.d("开始合并打卡记录");
     List<CheckRecordModel> backupCheckRecordModels =
         await queryAllBackupCheckRecord();

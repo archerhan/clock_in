@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:clock_in/constants/assets.gen.dart';
-import 'package:clock_in/manager/check_record_dao.dart';
-import 'package:clock_in/manager/task_dao.dart';
+import 'package:clock_in/manager/db/check_record_dao.dart';
+import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/pages/today/create_task/icons_model.dart';
 import 'package:clock_in/pages/today/task_list/task_list_controller.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';

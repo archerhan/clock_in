@@ -24,12 +24,11 @@ class SettingPage extends GetView<SettingController> {
               _settingItem(
                   Assets.images.entertainment.entertainmentBeer.path, "数据备份",
                   () {
-                controller.backupData();
+                controller.syncData();
               }),
               _settingItem(
                   Assets.images.entertainment.entertainmentCards.path, "密码",
                   () {
-                controller.restoreData();
               }),
             ]),
             const SectionTitle("会员"),
