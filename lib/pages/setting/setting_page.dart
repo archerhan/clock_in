@@ -1,5 +1,6 @@
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/assets.gen.dart';
+import 'package:clock_in/manager/notification_manager.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/header/section_title.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class SettingPage extends GetView<SettingController> {
               _settingItem(
                   Assets.images.entertainment.entertainmentCards.path, "密码",
                   () {
+                    NotificationManager.instance.showNotifications();
               }),
             ]),
             const SectionTitle("会员"),

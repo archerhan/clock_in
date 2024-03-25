@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
+import 'package:clock_in/manager/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,8 +11,8 @@ import 'package:clock_in/pages/root/root_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  await _initServices();
   WidgetsFlutterBinding.ensureInitialized();
+  await _initServices();
   initializeDateFormatting('zh', null).then(
     (_) => runApp(
       const MyApp(),
@@ -27,12 +28,13 @@ void main() async {
 Future _initServices() async {
   // await Get.putAsync(() async => await GetStorage.init(), permanent: true);
   // await Get.putAsync(() async => IsarService.instance);
+  await NotificationManager.instance.init();
 }
 
 void _otherConfigs() async {
   await DBManager.instance.database;
   await DBManager.instance.backupDatabase;
-  
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
