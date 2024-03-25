@@ -9,12 +9,10 @@ import 'package:timezone/timezone.dart' as tz;
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
-  // ignore: avoid_print
   logger.d('notification(${notificationResponse.id}) action tapped: '
       '${notificationResponse.actionId} with'
       ' payload: ${notificationResponse.payload}');
   if (notificationResponse.input?.isNotEmpty ?? false) {
-    // ignore: avoid_print
     logger.d(
         'notification action tapped with input: ${notificationResponse.input}');
   }
