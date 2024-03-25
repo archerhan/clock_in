@@ -7,6 +7,8 @@ class RootController extends GetxController {
   @override
   void onReady() {
     NotificationManager.instance.requestPermissions();
+    NotificationManager.instance.configureSelectNotificationSubject();
+    NotificationManager.instance.configureDidReceiveLocalNotificationSubject();
     super.onReady();
   }
 }

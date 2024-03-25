@@ -5,6 +5,7 @@ import 'package:clock_in/utils/logger_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 @pragma('vm:entry-point')
@@ -38,17 +39,8 @@ class NotificationManager {
   final portName = 'notification_send_port';
   String? selectedNotificationPayload;
 
-  /// A notification action which triggers a url launch event
-  final String urlLaunchActionId = 'id_1';
-
   /// A notification action which triggers a App navigation event
   final String navigationActionId = 'id_3';
-
-  /// Defines a iOS/MacOS notification category for text input actions.
-  final String darwinNotificationCategoryText = 'textCategory';
-
-  /// Defines a iOS/MacOS notification category for plain actions.
-  final String darwinNotificationCategoryPlain = 'plainCategory';
 
   Future<void> init() async {
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
@@ -63,52 +55,6 @@ class NotificationManager {
     // android 初始化
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    // ios/macos通知分类
-    final List<DarwinNotificationCategory> darwinNotificationCategories =
-        <DarwinNotificationCategory>[
-      DarwinNotificationCategory(
-        darwinNotificationCategoryText,
-        actions: <DarwinNotificationAction>[
-          DarwinNotificationAction.text(
-            'text_1',
-            'Action 1',
-            buttonTitle: 'Send',
-            placeholder: 'Placeholder',
-          ),
-        ],
-      ),
-      DarwinNotificationCategory(
-        darwinNotificationCategoryPlain,
-        actions: <DarwinNotificationAction>[
-          DarwinNotificationAction.plain('id_1', 'Action 1'),
-          DarwinNotificationAction.plain(
-            'id_2',
-            'Action 2 (destructive)',
-            options: <DarwinNotificationActionOption>{
-              DarwinNotificationActionOption.destructive,
-            },
-          ),
-          DarwinNotificationAction.plain(
-            navigationActionId,
-            'Action 3 (foreground)',
-            options: <DarwinNotificationActionOption>{
-              DarwinNotificationActionOption.foreground,
-            },
-          ),
-          DarwinNotificationAction.plain(
-            'id_4',
-            'Action 4 (auth required)',
-            options: <DarwinNotificationActionOption>{
-              DarwinNotificationActionOption.authenticationRequired,
-            },
-          ),
-        ],
-        options: <DarwinNotificationCategoryOption>{
-          DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
-        },
-      )
-    ];
-
     // ios/macos初始化设置
     final DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
@@ -126,7 +72,7 @@ class NotificationManager {
           ),
         );
       },
-      notificationCategories: darwinNotificationCategories,
+      // notificationCategories: darwinNotificationCategories,
     );
     // 初始化设置
     final InitializationSettings initializationSettings =
@@ -212,6 +158,9 @@ class NotificationManager {
     );
     const DarwinNotificationDetails darwinNotificationDetails =
         DarwinNotificationDetails(
+      subtitle: "subtitle",
+      presentBadge: true,
+      badgeNumber: 1,
       sound: 'slow_spring_board.aiff',
     );
 
@@ -225,6 +174,7 @@ class NotificationManager {
       'custom sound notification title',
       'custom sound notification body',
       notificationDetails,
+      payload: "item x",
     );
   }
 
