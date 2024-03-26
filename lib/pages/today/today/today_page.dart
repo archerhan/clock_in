@@ -51,27 +51,31 @@ class TodayPage extends GetView<TodayController> {
           const SizedBox(width: 20)
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            Obx(() => CustomCalendar(
-                  controller.selectedDay.value,
-                  controller.calendarFirstDay,
-                  controller.calendarLastDay,
-                  onDaySelected: (selectedDay, focusDay) {
-                    controller.selectedDay.value = selectedDay;
-                    controller.loadSelectDayTasks();
-                  },
-                  onPageChanged: (selectedDay, focusDay) {
-                    controller.selectedDay.value = selectedDay;
-                    controller.loadSelectDayTasks();
-                  },
-                )),
-            const SizedBox(height: 10),
-            _taskListView()
-          ],
-        ).paddingSymmetric(horizontal: 10.w),
+      body: Column(
+        children: [
+          Obx(() => CustomCalendar(
+                controller.selectedDay.value,
+                controller.calendarFirstDay,
+                controller.calendarLastDay,
+                onDaySelected: (selectedDay, focusDay) {
+                  controller.selectedDay.value = selectedDay;
+                  controller.loadSelectDayTasks();
+                },
+                onPageChanged: (selectedDay, focusDay) {
+                  controller.selectedDay.value = selectedDay;
+                  controller.loadSelectDayTasks();
+                },
+              )),
+          const SizedBox(height: 10),
+          Expanded(
+              child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _taskListView(),
+              ],
+            ).paddingSymmetric(horizontal: 10.w),
+          ))
+        ],
       ),
     );
   }

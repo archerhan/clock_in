@@ -6,8 +6,9 @@ import 'package:clock_in/utils/logger_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
@@ -44,6 +45,10 @@ class NotificationManager {
   final String navigationActionId = 'id_3';
 
   Future<void> init() async {
+    tz.initializeTimeZones();
+    final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
+
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
         !kIsWeb && Platform.isLinux
             ? null
@@ -179,61 +184,88 @@ class NotificationManager {
     );
   }
 
-  // 计划通知
-  Future showScheduleNotification() async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        'weekly scheduled notification title',
-        'weekly scheduled notification body',
-        _nextInstanceOfTenAM(),
-        const NotificationDetails(
-          android: AndroidNotificationDetails('weekly notification channel id',
-              'weekly notification channel name',
-              channelDescription: 'weekly notificationdescription'),
-        ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
+  // 每天定时提醒
+  tz.TZDateTime _scheduleDaily(String time) {
+    final now = tz.TZDateTime.now(tz.local);
+    final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day,
+        int.parse(time.split(":")[0]), int.parse(time.split(":")[1]));
+    return scheduledDate;
   }
 
-  // 每周一早上10点
-  tz.TZDateTime _nextInstanceOfTenAM() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
-    if (scheduledDate.isBefore(now)) {
+  // 每周x定时提醒
+  tz.TZDateTime _scheduleWeekly(String time, int day) {
+    var scheduledDate = _scheduleDaily(time);
+    while (scheduledDate.weekday != day) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
   }
 
+  // 定时提醒
   Future scheduleNotification(TaskModel taskModel) async {
     if (taskModel.remindTime?.isEmpty == true) {
       return;
     }
+    // 先取消之前的通知
+    // for (var element in taskModel.remindTime!.split(";")) {
+    //   final day = int.parse(element.split("-")[0]);
+    //   final time = element.split("-")[1];
+    //   final id = taskModel.id! * 100000 +
+    //       day * 10000 +
+    //       int.parse(time.split(":")[0]) * 100 +
+    //       int.parse(time.split(":")[1]);
+    //   await cancelNotificationWithId(id);
+    // }
     final remindTimes = taskModel.remindTime!.split(";");
     for (var element in remindTimes) {
-      final title = "快来打卡啦~";
+      const title = "快来打卡啦~";
       final subTitle = "${taskModel.taskName ?? ""}任务已经开始";
       final body = taskModel.slogan ?? "";
-      final day = int.parse(taskModel.remindTime!.split("-")[0]);
-      final time = taskModel.remindTime!.split("-")[1];
+      final day = int.parse(element.split("-")[0]);
+      final time = element.split("-")[1];
+      var scheduledDate = tz.TZDateTime.now(tz.local);
+      final DateTimeComponents? components;
       if (day == 0) {
         // 每天提醒
-        final scheduledDate = tz.TZDateTime.now(tz.local)
-            .add(Duration(hours: int.parse(time.split(":")[0])))
-            .add(Duration(minutes: int.parse(time.split(":")[1])));
+        scheduledDate = _scheduleDaily(time);
+        components = DateTimeComponents.time;
       } else {
         // 每周x提醒
+        scheduledDate = _scheduleWeekly(time, day);
+        components = DateTimeComponents.dayOfWeekAndTime;
+      }
+      final id = taskModel.id! * 100000 +
+          day * 10000 +
+          int.parse(time.split(":")[0]) * 100 +
+          int.parse(time.split(":")[1]);
+      try {
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+          id,
+          title,
+          "$subTitle\n$body",
+          scheduledDate,
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'daily notification channel id',
+              'daily notification channel name',
+              channelDescription: 'daily notificationdescription',
+            ),
+          ),
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: components,
+        );
+        logger.d("已设置通知id：$id, 时间为: $scheduledDate");
+      } catch (e) {
+        logger.e("设置通知失败: $e");
       }
     }
-
-    // flutterLocalNotificationsPlugin.zonedSchedule(taskModel.id!, title, body, scheduledDate, notificationDetails, uiLocalNotificationDateInterpretation: uiLocalNotificationDateInterpretation)
   }
 
   // 取消通知
-  Future<void> cancelNotificationWithTag(int id) async {
+  Future<void> cancelNotificationWithId(int id) async {
+    logger.d("取消通知id：$id");
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 

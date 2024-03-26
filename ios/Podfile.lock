@@ -4,6 +4,8 @@ PODS:
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
+  - flutter_timezone (0.0.1):
+    - Flutter
   - flutter_vibrate (0.0.1):
     - Flutter
   - icloud_storage (0.0.1):
@@ -25,6 +27,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - flutter_vibrate (from `.symlinks/plugins/flutter_vibrate/ios`)
   - icloud_storage (from `.symlinks/plugins/icloud_storage/ios`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
@@ -40,6 +43,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_email_sender/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_timezone:
+    :path: ".symlinks/plugins/flutter_timezone/ios"
   flutter_vibrate:
     :path: ".symlinks/plugins/flutter_vibrate/ios"
   icloud_storage:
@@ -59,6 +64,7 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
   flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
+  flutter_timezone: ffb07bdad3c6276af8dada0f11978d8a1f8a20bb
   flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   icloud_storage: d9ac7a33ced81df08ba7ea1bf3099cc0ee58f60a
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d

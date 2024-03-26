@@ -1,5 +1,6 @@
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/assets.gen.dart';
+import 'package:clock_in/manager/email_manager.dart';
 import 'package:clock_in/manager/notification_manager.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/header/section_title.dart';
@@ -49,7 +50,9 @@ class SettingPage extends GetView<SettingController> {
               _settingItem(
                   Assets.images.traffic.trafficDelivery.path, "通知", () {}),
               _settingItem(
-                  Assets.images.business.businessKeyboard.path, "意见反馈", () {}),
+                  Assets.images.business.businessKeyboard.path, "意见反馈", () {
+                    EmailManager.sendFeedbackEmail();
+                  }),
               _settingItem(
                   Assets.images.business.businessPc.path, "联系开发者", () {}),
             ]),

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/db/check_record_dao.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
+import 'package:clock_in/manager/notification_manager.dart';
 import 'package:clock_in/pages/today/create_task/icons_model.dart';
 import 'package:clock_in/pages/today/task_list/task_list_controller.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
@@ -99,7 +100,11 @@ class CreateTaskController extends GetxController {
     if (!isCreateTask) {
       await TaskDao().updateTask(task);
     } else {
-      await TaskDao().insertTask(task);
+      final id = await TaskDao().insertTask(task);
+      task.id = id;
+    }
+    if (notificationIsOn.value) {
+      NotificationManager.instance.scheduleNotification(task);
     }
     Get.back();
   }
