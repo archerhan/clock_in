@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -207,12 +208,33 @@ class NotificationManager {
     return scheduledDate;
   }
 
-  Future<void> _cancelNotification() async {
-    await flutterLocalNotificationsPlugin.cancel(1);
+  Future scheduleNotification(TaskModel taskModel) async {
+    if (taskModel.remindTime?.isEmpty == true) {
+      return;
+    }
+    final remindTimes = taskModel.remindTime!.split(";");
+    for (var element in remindTimes) {
+      final title = "快来打卡啦~";
+      final subTitle = "${taskModel.taskName ?? ""}任务已经开始";
+      final body = taskModel.slogan ?? "";
+      final day = int.parse(taskModel.remindTime!.split("-")[0]);
+      final time = taskModel.remindTime!.split("-")[1];
+      if (day == 0) {
+        // 每天提醒
+        final scheduledDate = tz.TZDateTime.now(tz.local)
+            .add(Duration(hours: int.parse(time.split(":")[0])))
+            .add(Duration(minutes: int.parse(time.split(":")[1])));
+      } else {
+        // 每周x提醒
+      }
+    }
+
+    // flutterLocalNotificationsPlugin.zonedSchedule(taskModel.id!, title, body, scheduledDate, notificationDetails, uiLocalNotificationDateInterpretation: uiLocalNotificationDateInterpretation)
   }
 
-  Future<void> _cancelNotificationWithTag() async {
-    await flutterLocalNotificationsPlugin.cancel(1, tag: 'tag');
+  // 取消通知
+  Future<void> cancelNotificationWithTag(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 
   // 关闭通知流
