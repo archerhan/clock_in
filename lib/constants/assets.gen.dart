@@ -93,12 +93,44 @@ class $AssetsImagesBusinessGen {
 class $AssetsImagesCommonGen {
   const $AssetsImagesCommonGen();
 
-  /// File path: assets/images/common/better_logo.png
-  AssetGenImage get betterLogo =>
-      const AssetGenImage('assets/images/common/better_logo.png');
+  /// File path: assets/images/common/setting_feedback.png
+  AssetGenImage get settingFeedback =>
+      const AssetGenImage('assets/images/common/setting_feedback.png');
+
+  /// File path: assets/images/common/setting_language.png
+  AssetGenImage get settingLanguage =>
+      const AssetGenImage('assets/images/common/setting_language.png');
+
+  /// File path: assets/images/common/setting_notification.png
+  AssetGenImage get settingNotification =>
+      const AssetGenImage('assets/images/common/setting_notification.png');
+
+  /// File path: assets/images/common/setting_restore.png
+  AssetGenImage get settingRestore =>
+      const AssetGenImage('assets/images/common/setting_restore.png');
+
+  /// File path: assets/images/common/setting_sync.png
+  AssetGenImage get settingSync =>
+      const AssetGenImage('assets/images/common/setting_sync.png');
+
+  /// File path: assets/images/common/setting_vip.png
+  AssetGenImage get settingVip =>
+      const AssetGenImage('assets/images/common/setting_vip.png');
+
+  /// File path: assets/images/common/setting_website.png
+  AssetGenImage get settingWebsite =>
+      const AssetGenImage('assets/images/common/setting_website.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [betterLogo];
+  List<AssetGenImage> get values => [
+        settingFeedback,
+        settingLanguage,
+        settingNotification,
+        settingRestore,
+        settingSync,
+        settingVip,
+        settingWebsite
+      ];
 }
 
 class $AssetsImagesEntertainmentGen {

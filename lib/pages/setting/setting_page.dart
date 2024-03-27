@@ -23,37 +23,33 @@ class SettingPage extends GetView<SettingController> {
           children: [
             const SectionTitle("数据与安全"),
             _settingGridView([
-              _settingItem(
-                  Assets.images.entertainment.entertainmentBeer.path, "数据备份",
-                  () {
+              _settingItem(Assets.images.common.settingSync.path, "数据备份", () {
                 controller.syncData();
               }),
-              _settingItem(
-                  Assets.images.entertainment.entertainmentCards.path, "密码",
-                  () {
-              }),
+              // _settingItem(
+              //     Assets.images.entertainment.entertainmentCards.path, "密码",
+              //     () {
+              // }),
             ]),
             const SectionTitle("会员"),
             _settingGridView([
               _settingItem(
-                  Assets.images.entertainment.entertainmentDocumentary.path,
-                  "购买高级版",
-                  () {}),
-              _settingItem(Assets.images.entertainment.entertainmentFeet.path,
-                  "恢复购买", () {}),
+                  Assets.images.common.settingVip.path, "购买高级版", () {}),
+              _settingItem(
+                  Assets.images.common.settingRestore.path, "恢复购买", () {}),
             ]),
             const SectionTitle("通用"),
             _settingGridView([
-              _settingItem(Assets.images.entertainment.entertainmentCards.path,
-                  "语言", () {}),
               _settingItem(
-                  Assets.images.traffic.trafficDelivery.path, "通知", () {}),
+                  Assets.images.common.settingLanguage.path, "语言", () {}),
               _settingItem(
-                  Assets.images.business.businessKeyboard.path, "意见反馈", () {
-                    EmailManager.sendFeedbackEmail();
-                  }),
+                  Assets.images.common.settingNotification.path, "通知", () {}),
+              _settingItem(Assets.images.common.settingFeedback.path, "意见反馈",
+                  () {
+                EmailManager.sendFeedbackEmail();
+              }),
               _settingItem(
-                  Assets.images.business.businessPc.path, "联系开发者", () {}),
+                  Assets.images.common.settingWebsite.path, "官方网站", () {}),
             ]),
           ],
         ),

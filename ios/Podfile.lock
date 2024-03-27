@@ -10,6 +10,9 @@ PODS:
     - Flutter
   - icloud_storage (0.0.1):
     - Flutter
+  - in_app_purchase_storekit (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - in_app_review (0.2.0):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -30,6 +33,7 @@ DEPENDENCIES:
   - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - flutter_vibrate (from `.symlinks/plugins/flutter_vibrate/ios`)
   - icloud_storage (from `.symlinks/plugins/icloud_storage/ios`)
+  - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - rive_common (from `.symlinks/plugins/rive_common/ios`)
@@ -49,6 +53,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_vibrate/ios"
   icloud_storage:
     :path: ".symlinks/plugins/icloud_storage/ios"
+  in_app_purchase_storekit:
+    :path: ".symlinks/plugins/in_app_purchase_storekit/darwin"
   in_app_review:
     :path: ".symlinks/plugins/in_app_review/ios"
   path_provider_foundation:
@@ -67,6 +73,7 @@ SPEC CHECKSUMS:
   flutter_timezone: ffb07bdad3c6276af8dada0f11978d8a1f8a20bb
   flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   icloud_storage: d9ac7a33ced81df08ba7ea1bf3099cc0ee58f60a
+  in_app_purchase_storekit: 0e4b3c2e43ba1e1281f4f46dd71b0593ce529892
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   rive_common: 3a4c254c6e4db7e4b9e05daeb3d1f47ae4f7bf76
