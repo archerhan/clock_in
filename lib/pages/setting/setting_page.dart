@@ -31,7 +31,6 @@ class SettingPage extends GetView<SettingController> {
               _settingItem(
                   Assets.images.entertainment.entertainmentCards.path, "密码",
                   () {
-                    NotificationManager.instance.showNotifications();
               }),
             ]),
             const SectionTitle("会员"),

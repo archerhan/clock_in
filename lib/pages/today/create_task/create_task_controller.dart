@@ -98,6 +98,9 @@ class CreateTaskController extends GetxController {
         createDT: !isCreateTask ? null : DateTime.now().toString(),
         updateDT: DateTime.now().toString());
     if (!isCreateTask) {
+      if (!notificationIsOn.value) {
+        await NotificationManager.instance.cancelNotificationByTask(task);
+      }
       await TaskDao().updateTask(task);
     } else {
       final id = await TaskDao().insertTask(task);
@@ -113,6 +116,7 @@ class CreateTaskController extends GetxController {
   Future<void> deleteTask() async {
     if (!isCreateTask) {
       await TaskDao().deleteTask(_currentTask!.id!);
+      await NotificationManager.instance.cancelNotificationByTask(_currentTask!);
       await Get.find<TaskListController>().loadAllTask();
       // 同时删除任务的打卡记录
       await CheckRecordDao().deleteCheckRecordByTaskId(_currentTask!.id!);

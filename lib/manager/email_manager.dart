@@ -1,3 +1,5 @@
+import 'package:clock_in/utils/toast_util.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class EmailManager {
@@ -12,7 +14,11 @@ class EmailManager {
       attachmentPaths: filePath?.isNotEmpty == true ? [filePath!] : [],
       isHTML: false,
     );
-
-    await FlutterEmailSender.send(email);
+    try {
+      await FlutterEmailSender.send(email);
+    } catch (e) {
+      final err = e as PlatformException;
+      showToast('发送邮件出现错误:\n${err.message}');
+    }
   }
 }

@@ -396,7 +396,6 @@ class CreateTaskPage extends GetView<CreateTaskController> {
       ),
     );
   }
-
   /// 通知时间
   Widget _notificationTime() {
     return AnimatedContainer(

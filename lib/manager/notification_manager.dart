@@ -153,37 +153,6 @@ class NotificationManager {
     });
   }
 
-  // 发送通知
-  Future showNotifications() async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'your other channel id',
-      'your other channel name',
-      channelDescription: 'your other channel description',
-      sound: RawResourceAndroidNotificationSound('slow_spring_board'),
-    );
-    const DarwinNotificationDetails darwinNotificationDetails =
-        DarwinNotificationDetails(
-      subtitle: "subtitle",
-      presentBadge: true,
-      badgeNumber: 1,
-      sound: 'slow_spring_board.aiff',
-    );
-
-    NotificationDetails notificationDetails = const NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: darwinNotificationDetails,
-      macOS: darwinNotificationDetails,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      1,
-      'custom sound notification title',
-      'custom sound notification body',
-      notificationDetails,
-      payload: "item x",
-    );
-  }
-
   // 每天定时提醒
   tz.TZDateTime _scheduleDaily(String time) {
     final now = tz.TZDateTime.now(tz.local);
@@ -206,21 +175,14 @@ class NotificationManager {
     if (taskModel.remindTime?.isEmpty == true) {
       return;
     }
-    // 先取消之前的通知
-    // for (var element in taskModel.remindTime!.split(";")) {
-    //   final day = int.parse(element.split("-")[0]);
-    //   final time = element.split("-")[1];
-    //   final id = taskModel.id! * 100000 +
-    //       day * 10000 +
-    //       int.parse(time.split(":")[0]) * 100 +
-    //       int.parse(time.split(":")[1]);
-    //   await cancelNotificationWithId(id);
-    // }
+
+    cancelNotificationByTask(taskModel);
+
     final remindTimes = taskModel.remindTime!.split(";");
     for (var element in remindTimes) {
-      const title = "快来打卡啦~";
-      final subTitle = "${taskModel.taskName ?? ""}任务已经开始";
-      final body = taskModel.slogan ?? "";
+      const title = "快来打卡啦👋";
+      final subTitle = "⏰${taskModel.taskName ?? ""}任务已经开始";
+      final body = "${taskModel.slogan ?? ""}💪🏻💪🏻💪🏻";
       final day = int.parse(element.split("-")[0]);
       final time = element.split("-")[1];
       var scheduledDate = tz.TZDateTime.now(tz.local);
@@ -261,6 +223,24 @@ class NotificationManager {
         logger.e("设置通知失败: $e");
       }
     }
+    final notifiList =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    logger.d("通知池中通知：${notifiList.map((e) => e.id).toList()}");
+  }
+
+  // 按照任务id取消通知
+  Future<void> cancelNotificationByTask(TaskModel taskModel) async {
+    final notifiList =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    logger.d("通知池中通知：${notifiList.map((e) => e.id).toList()}");
+    for (var element in notifiList) {
+      if (element.id ~/ 100000 == taskModel.id) {
+        cancelNotificationWithId(element.id);
+      }
+    }
+    final notifiListLeft =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    logger.d("取消后通知池中剩余通知：${notifiListLeft.map((e) => e.id).toList()}");
   }
 
   // 取消通知
