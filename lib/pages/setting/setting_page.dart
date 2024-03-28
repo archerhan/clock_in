@@ -1,13 +1,24 @@
 import 'package:clock_in/constants/app_colors.dart';
+import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/email_manager.dart';
-import 'package:clock_in/manager/notification_manager.dart';
+import 'package:clock_in/pages/setting/setting_binding.dart';
+import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
+import 'package:clock_in/widgets/divider/horizontal_divider.dart';
+import 'package:clock_in/widgets/divider/vertical_divider.dart';
 import 'package:clock_in/widgets/header/section_title.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/setting/setting_controller.dart';
+import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends GetView<SettingController> {
   const SettingPage({super.key});
@@ -23,9 +34,17 @@ class SettingPage extends GetView<SettingController> {
           children: [
             const SectionTitle("数据与安全"),
             _settingGridView([
-              _settingItem(Assets.images.common.settingSync.path, "数据备份", () {
-                controller.syncData();
-              }),
+              FlipCard(
+                  frontWidget: _settingItem(
+                      Assets.images.common.settingSync.path, "数据备份", () {
+                    controller.syncDataController.flipcard();
+                  }),
+                  backWidget: _dataSyncBack(() {
+                    controller.syncDataController.flipcard();
+                  }),
+                  controller: controller.syncDataController,
+                  rotateSide: RotateSide.left),
+
               // _settingItem(
               //     Assets.images.entertainment.entertainmentCards.path, "密码",
               //     () {
@@ -40,17 +59,33 @@ class SettingPage extends GetView<SettingController> {
             ]),
             const SectionTitle("通用"),
             _settingGridView([
-              // _settingItem(
-              //     Assets.images.common.settingLanguage.path, "语言", () {}),
-              _settingItem(
-                  Assets.images.common.settingNotification.path, "通知", () {}),
+              FlipCard(
+                  frontWidget: _settingItem(
+                      Assets.images.common.settingNotification.path, "通知", () {
+                    controller.notificationController.flipcard();
+                  }),
+                  backWidget: _notificationBack(() {
+                    controller.notificationController.flipcard();
+                  }),
+                  controller: controller.notificationController,
+                  rotateSide: RotateSide.left),
               _settingItem(Assets.images.common.settingFeedback.path, "意见反馈",
                   () {
                 EmailManager.sendFeedbackEmail();
               }),
-              _settingItem(
-                  Assets.images.common.settingWebsite.path, "官方网站", () {}),
+              _settingItem(Assets.images.common.settingWebsite.path, "官方网站",
+                  () async {
+                if (await canLaunchUrl(
+                    Uri(scheme: "http", host: AppStrings.website))) {
+                  await launchUrl(
+                      Uri(scheme: "http", host: AppStrings.website));
+                } else {
+                  showToast("无法打开网页");
+                }
+              }),
+              _settingItem(Assets.images.common.settingAbout.path, "关于", () {}),
             ]),
+            _rights(),
           ],
         ),
       ).paddingSymmetric(horizontal: 20.w),
@@ -97,6 +132,169 @@ class SettingPage extends GetView<SettingController> {
               style: TextStyle(color: AppColors.mainTitle333, fontSize: 14.sp),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _dataSyncBack(Function onTap) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+        decoration: BoxDecoration(
+          color: AppColors.mainWhite,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Row(
+                children: [
+                  Text(
+                    "自动备份",
+                    style: TextStyle(
+                        color: AppColors.subtitle666, fontSize: 14.sp),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    height: 20,
+                    child: Obx(() {
+                      return CupertinoSwitch(
+                        value: controller.isAutoSync.value,
+                        onChanged: (value) {
+                          Vibrate.feedback(FeedbackType.medium);
+                          controller.setAutoSync(value);
+                        },
+                        activeColor: Colors.green,
+                      );
+                    }),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 10.h),
+            const HorizontalDivider(),
+            Expanded(
+              flex: 3,
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Obx(() => _progressItem(
+                            controller.uploadProgress.value,
+                            "上传",
+                            onTap: () => controller.uploadData(),
+                          ))),
+                  Container(
+                    width: 1,
+                    height: double.infinity,
+                    color: AppColors.dividerEEE,
+                  ),
+                  Expanded(
+                      child: Obx(() => _progressItem(
+                          controller.downloadProgress.value, "下载",
+                          onTap: () => controller.downloadData()))),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _notificationBack(Function onTap) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+        decoration: BoxDecoration(
+          color: AppColors.mainWhite,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "允许通知",
+                  style:
+                      TextStyle(color: AppColors.subtitle666, fontSize: 14.sp),
+                ),
+                const Spacer(),
+                SizedBox(
+                  height: 20,
+                  child: Obx(() {
+                    return CupertinoSwitch(
+                      value: controller.isAllowNotification.value,
+                      onChanged: (value) {
+                        Vibrate.feedback(FeedbackType.medium);
+                        controller.setAllowNotification(value);
+                      },
+                      activeColor: Colors.green,
+                    );
+                  }),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _progressItem(double progress, String title, {Function()? onTap}) {
+    return TextButton(
+        onPressed: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                CircularProgressIndicator(
+                  value: progress,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                      AppColors.primaryBlue),
+                  backgroundColor: AppColors.dividerEEE,
+                ),
+                progress == 1
+                    ? const Icon(Icons.check, color: AppColors.textGreen)
+                    : Text(
+                        "${(progress * 100).toInt()}%",
+                        style: TextStyle(
+                            color: AppColors.subtitle666, fontSize: 6.sp),
+                      )
+              ],
+            ),
+            SizedBox(height: 5.h),
+            Text(
+              title,
+              style: TextStyle(color: AppColors.subtitle666, fontSize: 12.sp),
+            ),
+          ],
+        ));
+  }
+
+  Widget _rights() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20.h),
+      child: Text(
+        "© 2024 clock_in",
+        style: TextStyle(
+          color: AppColors.grey999,
+          fontSize: 10.sp,
         ),
       ),
     );

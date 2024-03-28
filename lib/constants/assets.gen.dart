@@ -93,6 +93,10 @@ class $AssetsImagesBusinessGen {
 class $AssetsImagesCommonGen {
   const $AssetsImagesCommonGen();
 
+  /// File path: assets/images/common/setting_about.png
+  AssetGenImage get settingAbout =>
+      const AssetGenImage('assets/images/common/setting_about.png');
+
   /// File path: assets/images/common/setting_feedback.png
   AssetGenImage get settingFeedback =>
       const AssetGenImage('assets/images/common/setting_feedback.png');
@@ -123,6 +127,7 @@ class $AssetsImagesCommonGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        settingAbout,
         settingFeedback,
         settingLanguage,
         settingNotification,

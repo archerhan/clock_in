@@ -9,6 +9,7 @@ import 'package:clock_in/i18n/app_translation.dart';
 import 'package:clock_in/pages/root/root_binding.dart';
 import 'package:clock_in/pages/root/root_page.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ Future _initServices() async {
   // await Get.putAsync(() async => await GetStorage.init(), permanent: true);
   // await Get.putAsync(() async => IsarService.instance);
   await NotificationManager.instance.init();
+  await SharedPreferences.getInstance();
 }
 
 void _otherConfigs() async {
