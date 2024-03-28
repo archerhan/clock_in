@@ -40,8 +40,8 @@ class SettingPage extends GetView<SettingController> {
             ]),
             const SectionTitle("通用"),
             _settingGridView([
-              _settingItem(
-                  Assets.images.common.settingLanguage.path, "语言", () {}),
+              // _settingItem(
+              //     Assets.images.common.settingLanguage.path, "语言", () {}),
               _settingItem(
                   Assets.images.common.settingNotification.path, "通知", () {}),
               _settingItem(Assets.images.common.settingFeedback.path, "意见反馈",
