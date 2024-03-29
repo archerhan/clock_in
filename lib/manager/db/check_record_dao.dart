@@ -130,6 +130,7 @@ class CheckRecordDao extends BaseDao {
               element.createDT == recordModel.createDT));
       if (localCheckRecordModel == null) {
         logger.d("插入新打卡记录:${recordModel.toJson()}");
+        recordModel.id = null;
         await db.insert(tableName(), recordModel.toJson());
       } else {
         logger.d(

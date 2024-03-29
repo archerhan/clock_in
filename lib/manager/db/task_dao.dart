@@ -114,6 +114,7 @@ class TaskDao implements BaseDao {
               element.createDT == taskModel.createDT));
       if (localTaskModel == null) {
         logger.d("插入新任务:${taskModel.taskName}");
+        taskModel.id = null;
         await insertTask(taskModel);
       } else {
         logger.d(

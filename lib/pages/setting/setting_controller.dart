@@ -41,6 +41,9 @@ class SettingController extends GetxController {
   Future setAutoSync(bool value) async {
     isAutoSync.value = value;
     await SPUtil.save(AppStrings.autoSyncDataKey, value);
+    if (value) {
+      await syncData();
+    }
   }
 
   Future setAllowNotification(bool value) async {

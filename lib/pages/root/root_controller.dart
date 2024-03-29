@@ -30,17 +30,15 @@ class RootController extends GetxController with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.inactive:
-        // TODO: Handle this case.
         break;
       case AppLifecycleState.paused:
-        // TODO: Handle this case.
         break;
       case AppLifecycleState.resumed:
         Future.delayed(const Duration(seconds: 1),
             () => Get.find<SettingController>().syncData(showTip: false));
         break;
       case AppLifecycleState.detached:
-      // TODO: Handle this case.
+        break;
       case AppLifecycleState.hidden:
         break;
     }

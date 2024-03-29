@@ -1,23 +1,19 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/email_manager.dart';
-import 'package:clock_in/pages/setting/setting_binding.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
-import 'package:clock_in/widgets/divider/vertical_divider.dart';
 import 'package:clock_in/widgets/header/section_title.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/setting/setting_controller.dart';
-import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends GetView<SettingController> {
@@ -153,36 +149,31 @@ class SettingPage extends GetView<SettingController> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 2,
-              child: Row(
-                children: [
-                  Text(
-                    "自动备份",
-                    style: TextStyle(
-                        color: AppColors.subtitle666, fontSize: 14.sp),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    height: 20,
-                    child: Obx(() {
-                      return CupertinoSwitch(
-                        value: controller.isAutoSync.value,
-                        onChanged: (value) {
-                          Vibrate.feedback(FeedbackType.medium);
-                          controller.setAutoSync(value);
-                        },
-                        activeColor: Colors.green,
-                      );
-                    }),
-                  )
-                ],
-              ),
+            Row(
+              children: [
+                Expanded(
+                    child: AutoSizeText(
+                  "自动\n备份",
+                  style:
+                      TextStyle(color: AppColors.subtitle666, fontSize: 12.sp),
+                )),
+                Transform.scale(
+                  scale: 0.8,
+                  child: Obx(() {
+                    return CupertinoSwitch(
+                      value: controller.isAutoSync.value,
+                      onChanged: (value) {
+                        Vibrate.feedback(FeedbackType.medium);
+                        controller.setAutoSync(value);
+                      },
+                      activeColor: Colors.green,
+                    );
+                  }),
+                )
+              ],
             ),
-            SizedBox(height: 10.h),
             const HorizontalDivider(),
             Expanded(
-              flex: 3,
               child: Row(
                 children: [
                   Expanded(
@@ -228,13 +219,13 @@ class SettingPage extends GetView<SettingController> {
             Row(
               children: [
                 Text(
-                  "允许通知",
+                  "允许\n通知",
                   style:
                       TextStyle(color: AppColors.subtitle666, fontSize: 14.sp),
                 ),
                 const Spacer(),
-                SizedBox(
-                  height: 20,
+                Transform.scale(
+                  scale: 0.8,
                   child: Obx(() {
                     return CupertinoSwitch(
                       value: controller.isAllowNotification.value,
@@ -263,14 +254,18 @@ class SettingPage extends GetView<SettingController> {
             Stack(
               alignment: Alignment.center,
               children: [
-                CircularProgressIndicator(
-                  value: progress,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                      AppColors.primaryBlue),
-                  backgroundColor: AppColors.dividerEEE,
+                SizedBox(
+                  width: 20.w,
+                  height: 20.w,
+                  child: CircularProgressIndicator(
+                    value: progress,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppColors.primaryBlue),
+                    backgroundColor: AppColors.dividerEEE,
+                  ),
                 ),
                 progress == 1
-                    ? const Icon(Icons.check, color: AppColors.textGreen)
+                    ? Icon(Icons.check, size: 15.w, color: AppColors.textGreen)
                     : Text(
                         "${(progress * 100).toInt()}%",
                         style: TextStyle(
@@ -278,7 +273,7 @@ class SettingPage extends GetView<SettingController> {
                       )
               ],
             ),
-            SizedBox(height: 5.h),
+            const Spacer(),
             Text(
               title,
               style: TextStyle(color: AppColors.subtitle666, fontSize: 12.sp),
