@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:flutter/foundation.dart';
@@ -241,6 +242,25 @@ class NotificationManager {
     final notifiListLeft =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
     logger.d("取消后通知池中剩余通知：${notifiListLeft.map((e) => e.id).toList()}");
+  }
+
+  Future cancelAllNotification() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+    final notifiList =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    logger.d("取消后通知池中剩余通知：${notifiList.map((e) => e.id).toList()}");
+  }
+
+  Future scheduleAllNotification() async {
+    final taskList = await TaskDao().queryAllTask();
+    for (var element in taskList) {
+      if (element.isActive == 1) {
+        await scheduleNotification(element);
+      }
+    }
+    final notifiList =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    logger.d("全部打开后通知池的通知：${notifiList.map((e) => e.id).toList()}");
   }
 
   // 取消通知

@@ -25,66 +25,68 @@ class SettingPage extends GetView<SettingController> {
       appBar: CustomAppBar(
         title: Text("设置".tr),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SectionTitle("数据与安全"),
-            _settingGridView([
-              FlipCard(
-                  frontWidget: _settingItem(
-                      Assets.images.common.settingSync.path, "数据备份", () {
-                    controller.syncDataController.flipcard();
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                const SectionTitle("数据与安全"),
+                _settingGridView([
+                  FlipCard(
+                      frontWidget: _settingItem(
+                          Assets.images.common.settingSync.path, "数据备份", () {
+                        controller.syncDataController.flipcard();
+                      }),
+                      backWidget: _dataSyncBack(() {
+                        controller.syncDataController.flipcard();
+                      }),
+                      controller: controller.syncDataController,
+                      rotateSide: RotateSide.left),
+                ]),
+                const SectionTitle("会员"),
+                _settingGridView([
+                  _settingItem(
+                      Assets.images.common.settingVip.path, "购买高级版", () {}),
+                  _settingItem(
+                      Assets.images.common.settingRestore.path, "恢复购买", () {}),
+                ]),
+                const SectionTitle("通用"),
+                _settingGridView([
+                  FlipCard(
+                      frontWidget: _settingItem(
+                          Assets.images.common.settingNotification.path, "通知",
+                          () {
+                        controller.notificationController.flipcard();
+                      }),
+                      backWidget: _notificationBack(() {
+                        controller.notificationController.flipcard();
+                      }),
+                      controller: controller.notificationController,
+                      rotateSide: RotateSide.left),
+                  _settingItem(
+                      Assets.images.common.settingFeedback.path, "意见反馈", () {
+                    EmailManager.sendFeedbackEmail();
                   }),
-                  backWidget: _dataSyncBack(() {
-                    controller.syncDataController.flipcard();
+                  _settingItem(Assets.images.common.settingWebsite.path, "官方网站",
+                      () async {
+                    if (await canLaunchUrl(
+                        Uri(scheme: "http", host: AppStrings.website))) {
+                      await launchUrl(
+                          Uri(scheme: "http", host: AppStrings.website));
+                    } else {
+                      showToast("无法打开网页");
+                    }
                   }),
-                  controller: controller.syncDataController,
-                  rotateSide: RotateSide.left),
-
-              // _settingItem(
-              //     Assets.images.entertainment.entertainmentCards.path, "密码",
-              //     () {
-              // }),
-            ]),
-            const SectionTitle("会员"),
-            _settingGridView([
-              _settingItem(
-                  Assets.images.common.settingVip.path, "购买高级版", () {}),
-              _settingItem(
-                  Assets.images.common.settingRestore.path, "恢复购买", () {}),
-            ]),
-            const SectionTitle("通用"),
-            _settingGridView([
-              FlipCard(
-                  frontWidget: _settingItem(
-                      Assets.images.common.settingNotification.path, "通知", () {
-                    controller.notificationController.flipcard();
-                  }),
-                  backWidget: _notificationBack(() {
-                    controller.notificationController.flipcard();
-                  }),
-                  controller: controller.notificationController,
-                  rotateSide: RotateSide.left),
-              _settingItem(Assets.images.common.settingFeedback.path, "意见反馈",
-                  () {
-                EmailManager.sendFeedbackEmail();
-              }),
-              _settingItem(Assets.images.common.settingWebsite.path, "官方网站",
-                  () async {
-                if (await canLaunchUrl(
-                    Uri(scheme: "http", host: AppStrings.website))) {
-                  await launchUrl(
-                      Uri(scheme: "http", host: AppStrings.website));
-                } else {
-                  showToast("无法打开网页");
-                }
-              }),
-              _settingItem(Assets.images.common.settingAbout.path, "关于", () {}),
-            ]),
-            _rights(),
-          ],
-        ),
-      ).paddingSymmetric(horizontal: 20.w),
+                  _settingItem(
+                      Assets.images.common.settingAbout.path, "关于", () {}),
+                ]),
+              ],
+            ),
+          ).paddingSymmetric(horizontal: 20.w),
+          const Spacer(),
+          _rights()
+        ],
+      ),
     );
   }
 

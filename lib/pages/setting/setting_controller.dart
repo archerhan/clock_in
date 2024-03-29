@@ -5,6 +5,7 @@ import 'package:clock_in/manager/db/check_record_dao.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/manager/icloud_manager.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
+import 'package:clock_in/manager/notification_manager.dart';
 import 'package:clock_in/pages/today/today/today_controller.dart';
 import 'package:clock_in/utils/sp_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
@@ -48,6 +49,13 @@ class SettingController extends GetxController {
 
   Future setAllowNotification(bool value) async {
     isAllowNotification.value = value;
+    if (value) {
+      // 重新初始化通知
+      await NotificationManager.instance.scheduleAllNotification();
+    } else {
+      // 取消所有通知
+      await NotificationManager.instance.cancelAllNotification();
+    }
     await SPUtil.save(AppStrings.allowNotificationKey, value);
   }
 
