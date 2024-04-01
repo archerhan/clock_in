@@ -3,6 +3,7 @@ import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/email_manager.dart';
+import 'package:clock_in/manager/store_manager.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
@@ -45,8 +46,10 @@ class SettingPage extends GetView<SettingController> {
                 ]),
                 const SectionTitle("会员"),
                 _settingGridView([
-                  _settingItem(
-                      Assets.images.common.settingVip.path, "购买高级版", () {}),
+                  _settingItem(Assets.images.common.settingVip.path, "购买高级版",
+                      () {
+                    StoreManager.showStoreOptionsBottomSheet();
+                  }),
                   _settingItem(
                       Assets.images.common.settingRestore.path, "恢复购买", () {}),
                 ]),
@@ -77,8 +80,8 @@ class SettingPage extends GetView<SettingController> {
                       showToast("无法打开网页");
                     }
                   }),
-                  _settingItem(
-                      Assets.images.common.settingAbout.path, "关于", () {}),
+                  // _settingItem(
+                  //     Assets.images.common.settingAbout.path, "关于", () {}),
                 ]),
               ],
             ),
@@ -157,7 +160,7 @@ class SettingPage extends GetView<SettingController> {
                     child: AutoSizeText(
                   "自动\n备份",
                   style:
-                      TextStyle(color: AppColors.subtitle666, fontSize: 12.sp),
+                      TextStyle(color: AppColors.subtitle666, fontSize: 14.sp),
                 )),
                 Transform.scale(
                   scale: 0.8,
@@ -174,28 +177,28 @@ class SettingPage extends GetView<SettingController> {
                 )
               ],
             ),
-            const HorizontalDivider(),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Obx(() => _progressItem(
-                            controller.uploadProgress.value,
-                            "上传",
-                            onTap: () => controller.uploadData(),
-                          ))),
-                  Container(
-                    width: 1,
-                    height: double.infinity,
-                    color: AppColors.dividerEEE,
-                  ),
-                  Expanded(
-                      child: Obx(() => _progressItem(
-                          controller.downloadProgress.value, "下载",
-                          onTap: () => controller.downloadData()))),
-                ],
-              ),
-            )
+            // const HorizontalDivider(),
+            // Expanded(
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //           child: Obx(() => _progressItem(
+            //                 controller.uploadProgress.value,
+            //                 "上传",
+            //                 onTap: () => controller.uploadData(),
+            //               ))),
+            //       Container(
+            //         width: 1,
+            //         height: double.infinity,
+            //         color: AppColors.dividerEEE,
+            //       ),
+            //       Expanded(
+            //           child: Obx(() => _progressItem(
+            //               controller.downloadProgress.value, "下载",
+            //               onTap: () => controller.downloadData()))),
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),
