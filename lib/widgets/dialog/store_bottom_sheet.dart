@@ -5,15 +5,10 @@ import 'package:clock_in/constants/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:intro_slider/intro_slider.dart';
 
-class StoreManager {
-  late StreamSubscription<List<PurchaseDetails>> _subscription;
-
+class StoreBottomSheet {
   static const double _imageHeight = 100.0;
-  // 加载商品
-  static Future loadProducts() async {}
   // 显示商店选项底部弹窗
   static Future showStoreOptionsBottomSheet() async {
     await showModalBottomSheet(

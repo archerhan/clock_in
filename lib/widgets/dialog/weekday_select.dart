@@ -19,19 +19,28 @@ class WeekdaySelectDialog {
     await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (ctx) {
-        return SizedBox(
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.r),
+                topRight: Radius.circular(10.r)),
+          ),
           child: MultiSelectBottomSheet<int>(
             items: weekdays.map((e) {
               return MultiSelectItem(e.value, e.name);
             }).toList(),
-            title: Text(
+            title: Expanded(
+                child: Text(
               "选择重复日期",
+              textAlign: TextAlign.center,
               style: TextStyle(
                   color: AppColors.subtitle666,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold),
-            ),
+            )),
             confirmText: Text(
               "确定",
               style: TextStyle(

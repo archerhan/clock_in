@@ -20,12 +20,13 @@ class NotificationTimePickerDialog {
   // 周一到周日, 0为每天
   static final notificationDays = [
     ["每天", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-    List.generate(23, (index) => (index + 1).toString().padLeft(2, "0")),
+    List.generate(24, (index) => (index).toString().padLeft(2, "0")),
     List.generate(60, (index) => (index).toString().padLeft(2, "0"))
   ];
 
   static void showNotificationDayDialog(
-      BuildContext context, Function(String?) onConfirm) {
+      BuildContext context, Function(String?) onConfirm,
+      {String? selected}) {
     var picker = Picker(
         height: 200.h,
         itemExtent: 32.h,
@@ -41,7 +42,7 @@ class NotificationTimePickerDialog {
           pickerData: notificationDays,
           isArray: true,
         ),
-        selecteds: [0, 7, 30],
+        selecteds: selected == null ? [0, 7, 30] : getSelectedList(selected),
         title: Text(
           "请选择提醒时间",
           style: TextStyle(
@@ -77,5 +78,14 @@ class NotificationTimePickerDialog {
             child: view,
           ));
     });
+  }
+
+  static List<int> getSelectedList(String selectedString) {
+    final selectedList = selectedString.split("-");
+    final day = int.parse(selectedList[0]);
+    final time = selectedList[1].split(":");
+    final hour = int.parse(time[0]);
+    final minute = int.parse(time[1]);
+    return [day, hour, minute];
   }
 }

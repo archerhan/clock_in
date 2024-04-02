@@ -337,11 +337,35 @@ class CreateTaskPage extends GetView<CreateTaskController> {
             ),
             const Spacer(),
             Obx(() => controller.selectedColor.value.isNotEmpty == true
-                ? CircleAvatar(
-                    backgroundColor: Color(int.parse(
-                            controller.selectedColor.value,
-                            radix: 16))
-                        .withOpacity(0.2))
+                ? SizedBox(
+                    width: 60.w,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      fit: StackFit.loose,
+                      children: [
+                        Positioned(
+                            left: 0,
+                            child: CircleAvatar(
+                                backgroundColor: Color(int.parse(
+                                        controller.selectedColor.value,
+                                        radix: 16))
+                                    .withOpacity(0.3))),
+                        Positioned(
+                            child: CircleAvatar(
+                                backgroundColor: Color(int.parse(
+                                        controller.selectedColor.value,
+                                        radix: 16))
+                                    .withOpacity(0.6))),
+                        Positioned(
+                            right: 0,
+                            child: CircleAvatar(
+                                backgroundColor: Color(int.parse(
+                                        controller.selectedColor.value,
+                                        radix: 16))
+                                    .withOpacity(0.9)))
+                      ],
+                    ),
+                  )
                 : const SizedBox()),
             const Icon(
               Icons.arrow_forward_ios,
@@ -396,6 +420,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
       ),
     );
   }
+
   /// 通知时间
   Widget _notificationTime() {
     return AnimatedContainer(
@@ -448,7 +473,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                       p0 ?? controller.initialNotificationTime;
                   controller.notificationTimes[index] =
                       p0 ?? controller.initialNotificationTime;
-                });
+                }, selected: controller.notificationTimes[index]);
               },
               child: Text(
                 title,

@@ -124,31 +124,35 @@ class TodayPage extends GetView<TodayController> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                AutoSizeText(
                   taskModel.taskName ?? "",
                   maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: AppColors.mainTitle333,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: AutoSizeText(
-                      taskModel.slogan ?? "",
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: AppColors.subtitle666,
-                        fontSize: 14.sp,
-                      ),
-                    ))
-                  ],
-                ),
+                if (taskModel.slogan?.isNotEmpty == true)
+                  Row(
+                    children: [
+                      Expanded(
+                          child: AutoSizeText(
+                        taskModel.slogan!,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: AppColors.subtitle666,
+                          fontSize: 14.sp,
+                        ),
+                      ))
+                    ],
+                  ),
               ],
             ),
           ),
+          SizedBox(width: 10.w),
           _checkBox(taskModel),
           const SizedBox(width: 20),
         ],

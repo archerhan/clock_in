@@ -84,7 +84,7 @@ class CreateTaskController extends GetxController {
     }
     final task = TaskModel(
         id: _currentTask?.id,
-        taskName: taskNameTextController.text,
+        taskName: taskNameTextController.text.trim(),
         icon: selectedIcon.value.assetPath,
         plan: repeatValue.join(";"),
         durationDays: duration.value,
@@ -92,7 +92,7 @@ class CreateTaskController extends GetxController {
         checkCount: checkCountPerDay.value,
         remindTime:
             notificationTimes.isNotEmpty ? notificationTimes.join(";") : "",
-        slogan: sloganTextController.text,
+        slogan: sloganTextController.text.trim(),
         isActive: 1,
         color: selectedColor.value,
         createDT: !isCreateTask ? null : DateTime.now().toString(),
@@ -116,6 +116,7 @@ class CreateTaskController extends GetxController {
   Future<void> deleteTask() async {
     if (!isCreateTask) {
       await TaskDao().deleteTask(_currentTask!.id!);
+      // 删除任务的通知
       await NotificationManager.instance.cancelNotificationByTask(_currentTask!);
       await Get.find<TaskListController>().loadAllTask();
       // 同时删除任务的打卡记录

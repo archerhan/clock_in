@@ -102,7 +102,7 @@ class TaskListPage extends GetView<TaskListController> {
                 color: taskModel.isActive == 1
                     ? (taskModel.color != null
                         ? Color(int.parse(taskModel.color!, radix: 16))
-                            .withOpacity(1)
+                            .withOpacity(0.9)
                         : AppColors.primaryBlue.withOpacity(1))
                     : Colors.grey,
               ),
@@ -123,16 +123,18 @@ class TaskListPage extends GetView<TaskListController> {
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          taskModel.slogan ?? "",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: AppColors.dividerEEE,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        if (taskModel.slogan?.isNotEmpty == true)
+                          const SizedBox(height: 5),
+                        if (taskModel.slogan?.isNotEmpty == true)
+                          Text(
+                            taskModel.slogan!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: AppColors.dividerEEE,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.bold),
+                          ),
                       ],
                     ),
                   ),

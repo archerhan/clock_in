@@ -3,10 +3,9 @@ import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/email_manager.dart';
-import 'package:clock_in/manager/store_manager.dart';
+import 'package:clock_in/widgets/dialog/store_bottom_sheet.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
-import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:clock_in/widgets/header/section_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class SettingPage extends GetView<SettingController> {
                 _settingGridView([
                   _settingItem(Assets.images.common.settingVip.path, "购买高级版",
                       () {
-                    StoreManager.showStoreOptionsBottomSheet();
+                    StoreBottomSheet.showStoreOptionsBottomSheet();
                   }),
                   _settingItem(
                       Assets.images.common.settingRestore.path, "恢复购买", () {}),
