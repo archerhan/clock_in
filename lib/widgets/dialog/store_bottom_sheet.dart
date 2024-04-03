@@ -14,8 +14,10 @@ class StoreBottomSheet {
     await showModalBottomSheet(
       context: Get.context!,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) {
         return Container(
+          height: Get.height * 0.7,
           color: Colors.white,
           child: Column(
             children: <Widget>[

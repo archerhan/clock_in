@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "fun.4coding.clockIn"
+        applicationId "com.example.clockin"
         multiDexEnabled true
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion

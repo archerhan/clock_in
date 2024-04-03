@@ -249,42 +249,42 @@ class SettingPage extends GetView<SettingController> {
     );
   }
 
-  Widget _progressItem(double progress, String title, {Function()? onTap}) {
-    return TextButton(
-        onPressed: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  width: 20.w,
-                  height: 20.w,
-                  child: CircularProgressIndicator(
-                    value: progress,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.primaryBlue),
-                    backgroundColor: AppColors.dividerEEE,
-                  ),
-                ),
-                progress == 1
-                    ? Icon(Icons.check, size: 15.w, color: AppColors.textGreen)
-                    : Text(
-                        "${(progress * 100).toInt()}%",
-                        style: TextStyle(
-                            color: AppColors.subtitle666, fontSize: 6.sp),
-                      )
-              ],
-            ),
-            const Spacer(),
-            Text(
-              title,
-              style: TextStyle(color: AppColors.subtitle666, fontSize: 12.sp),
-            ),
-          ],
-        ));
-  }
+  // Widget _progressItem(double progress, String title, {Function()? onTap}) {
+  //   return TextButton(
+  //       onPressed: onTap,
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Stack(
+  //             alignment: Alignment.center,
+  //             children: [
+  //               SizedBox(
+  //                 width: 20.w,
+  //                 height: 20.w,
+  //                 child: CircularProgressIndicator(
+  //                   value: progress,
+  //                   valueColor: const AlwaysStoppedAnimation<Color>(
+  //                       AppColors.primaryBlue),
+  //                   backgroundColor: AppColors.dividerEEE,
+  //                 ),
+  //               ),
+  //               progress == 1
+  //                   ? Icon(Icons.check, size: 15.w, color: AppColors.textGreen)
+  //                   : Text(
+  //                       "${(progress * 100).toInt()}%",
+  //                       style: TextStyle(
+  //                           color: AppColors.subtitle666, fontSize: 6.sp),
+  //                     )
+  //             ],
+  //           ),
+  //           const Spacer(),
+  //           Text(
+  //             title,
+  //             style: TextStyle(color: AppColors.subtitle666, fontSize: 12.sp),
+  //           ),
+  //         ],
+  //       ));
+  // }
 
   Widget _rights() {
     return Container(
