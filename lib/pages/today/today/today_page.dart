@@ -101,62 +101,68 @@ class TodayPage extends GetView<TodayController> {
   }
 
   Widget _taskItem(TaskModel taskModel) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 15.h),
-      decoration: BoxDecoration(
-        color: taskModel.color != null
-            ? Color(int.parse(taskModel.color!, radix: 16)).withOpacity(0.2)
-            : AppColors.primaryBlue.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        children: [
-          const SizedBox(width: 20),
-          if (taskModel.icon != null)
-            Image.asset(
-              taskModel.icon!,
-              width: 40.w,
-              height: 40.w,
-              fit: BoxFit.contain,
-            ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  taskModel.taskName ?? "",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: AppColors.mainTitle333,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        Vibrate.feedback(FeedbackType.success);
+        controller.checkTask(taskModel);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 15.h),
+        decoration: BoxDecoration(
+          color: taskModel.color != null
+              ? Color(int.parse(taskModel.color!, radix: 16)).withOpacity(0.2)
+              : AppColors.primaryBlue.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Row(
+          children: [
+            const SizedBox(width: 20),
+            if (taskModel.icon != null)
+              Image.asset(
+                taskModel.icon!,
+                width: 40.w,
+                height: 40.w,
+                fit: BoxFit.contain,
+              ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    taskModel.taskName ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: AppColors.mainTitle333,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                if (taskModel.slogan?.isNotEmpty == true)
-                  Row(
-                    children: [
-                      Expanded(
-                          child: AutoSizeText(
-                        taskModel.slogan!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: AppColors.subtitle666,
-                          fontSize: 14.sp,
-                        ),
-                      ))
-                    ],
-                  ),
-              ],
+                  if (taskModel.slogan?.isNotEmpty == true)
+                    Row(
+                      children: [
+                        Expanded(
+                            child: AutoSizeText(
+                          taskModel.slogan!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: AppColors.subtitle666,
+                            fontSize: 14.sp,
+                          ),
+                        ))
+                      ],
+                    ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(width: 10.w),
-          _checkBox(taskModel),
-          const SizedBox(width: 20),
-        ],
+            SizedBox(width: 10.w),
+            _checkBox(taskModel),
+            const SizedBox(width: 20),
+          ],
+        ),
       ),
     );
   }
