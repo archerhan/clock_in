@@ -17,7 +17,7 @@ class StoreBottomSheet {
       isScrollControlled: true,
       builder: (context) {
         return Container(
-          height: Get.height * 0.7,
+          height: Get.height * 0.8,
           color: Colors.white,
           child: Column(
             children: <Widget>[
@@ -36,6 +36,9 @@ class StoreBottomSheet {
                     heightImage: _imageHeight,
                     foregroundImageFit: BoxFit.contain,
                     backgroundColor: Colors.amber,
+                    marginTitle: EdgeInsets.only(top: 40.h, bottom: 20.h),
+                    marginDescription:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                   ),
                   ContentConfig(
                     title: "云同步",
@@ -44,6 +47,9 @@ class StoreBottomSheet {
                     heightImage: _imageHeight,
                     foregroundImageFit: BoxFit.contain,
                     backgroundColor: Colors.deepOrange,
+                    marginTitle: EdgeInsets.only(top: 40.h, bottom: 20.h),
+                    marginDescription:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                   ),
                   ContentConfig(
                     title: "多次提醒",
@@ -52,6 +58,9 @@ class StoreBottomSheet {
                     heightImage: _imageHeight,
                     foregroundImageFit: BoxFit.contain,
                     backgroundColor: Colors.lime,
+                    marginTitle: EdgeInsets.only(top: 40.h, bottom: 20.h),
+                    marginDescription:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                   ),
                   ContentConfig(
                     title: "支持开发者",
@@ -60,6 +69,9 @@ class StoreBottomSheet {
                     heightImage: _imageHeight,
                     foregroundImageFit: BoxFit.contain,
                     backgroundColor: Colors.indigo,
+                    marginTitle: EdgeInsets.only(top: 40.h, bottom: 20.h),
+                    marginDescription:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                   )
                 ],
               )),
