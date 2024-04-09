@@ -125,6 +125,10 @@ class $AssetsImagesCommonGen {
   AssetGenImage get settingWebsite =>
       const AssetGenImage('assets/images/common/setting_website.png');
 
+  /// File path: assets/images/common/settings_email_backup.png
+  AssetGenImage get settingsEmailBackup =>
+      const AssetGenImage('assets/images/common/settings_email_backup.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         settingAbout,
@@ -134,7 +138,8 @@ class $AssetsImagesCommonGen {
         settingRestore,
         settingSync,
         settingVip,
-        settingWebsite
+        settingWebsite,
+        settingsEmailBackup
       ];
 }
 

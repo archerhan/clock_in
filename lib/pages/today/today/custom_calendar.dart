@@ -130,18 +130,18 @@ class CustomCalendar extends GetView<TodayController> {
 
   String _monthName(int month) {
     var array = [
-      'jan'.tr,
-      'feb'.tr,
-      'mar'.tr,
-      'apr'.tr,
-      'may'.tr,
-      'jun'.tr,
-      'jul'.tr,
-      'aug'.tr,
-      'sep'.tr,
-      'oct'.tr,
-      'nov'.tr,
-      'dec'.tr,
+      '一月'.tr,
+      '二月'.tr,
+      '三月'.tr,
+      '四月'.tr,
+      '五月'.tr,
+      '六月'.tr,
+      '七月'.tr,
+      '八月'.tr,
+      '九月'.tr,
+      '十月'.tr,
+      '十一月'.tr,
+      '十二月'.tr,
     ];
     return array[month - 1];
   }

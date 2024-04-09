@@ -53,6 +53,7 @@ class TodayPage extends GetView<TodayController> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 10.h),
           Obx(() => CustomCalendar(
                 controller.selectedDay.value,
                 controller.calendarFirstDay,

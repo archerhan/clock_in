@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/assets.gen.dart';
+import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/manager/email_manager.dart';
 import 'package:clock_in/widgets/dialog/store_bottom_sheet.dart';
 import 'package:clock_in/utils/toast_util.dart';
@@ -32,16 +35,24 @@ class SettingPage extends GetView<SettingController> {
               children: [
                 const SectionTitle("数据与安全"),
                 _settingGridView([
-                  FlipCard(
-                      frontWidget: _settingItem(
-                          Assets.images.common.settingSync.path, "数据备份", () {
-                        controller.syncDataController.flipcard();
-                      }),
-                      backWidget: _dataSyncBack(() {
-                        controller.syncDataController.flipcard();
-                      }),
-                      controller: controller.syncDataController,
-                      rotateSide: RotateSide.left),
+                  if (Platform.isIOS || Platform.isMacOS)
+                    FlipCard(
+                        frontWidget: _settingItem(
+                            Assets.images.common.settingSync.path, "iCloud备份",
+                            () {
+                          controller.syncDataController.flipcard();
+                        }),
+                        backWidget: _dataSyncBack(() {
+                          controller.syncDataController.flipcard();
+                        }),
+                        controller: controller.syncDataController,
+                        rotateSide: RotateSide.left),
+                  _settingItem(
+                      Assets.images.common.settingsEmailBackup.path, "备份到邮件",
+                      () async {
+                    await EmailManager.sendFeedbackEmail(
+                        filePath: await DBManager.instance.getDatabasePath());
+                  })
                 ]),
                 const SectionTitle("会员"),
                 _settingGridView([
