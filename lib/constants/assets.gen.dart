@@ -93,6 +93,26 @@ class $AssetsImagesBusinessGen {
 class $AssetsImagesCommonGen {
   const $AssetsImagesCommonGen();
 
+  /// File path: assets/images/common/app_icon40.png
+  AssetGenImage get appIcon40 =>
+      const AssetGenImage('assets/images/common/app_icon40.png');
+
+  /// File path: assets/images/common/app_icon60.png
+  AssetGenImage get appIcon60 =>
+      const AssetGenImage('assets/images/common/app_icon60.png');
+
+  /// File path: assets/images/common/app_icon_clear40.png
+  AssetGenImage get appIconClear40 =>
+      const AssetGenImage('assets/images/common/app_icon_clear40.png');
+
+  /// File path: assets/images/common/app_icon_clear60.png
+  AssetGenImage get appIconClear60 =>
+      const AssetGenImage('assets/images/common/app_icon_clear60.png');
+
+  /// File path: assets/images/common/litle_cat.png
+  AssetGenImage get litleCat =>
+      const AssetGenImage('assets/images/common/litle_cat.png');
+
   /// File path: assets/images/common/setting_about.png
   AssetGenImage get settingAbout =>
       const AssetGenImage('assets/images/common/setting_about.png');
@@ -131,6 +151,11 @@ class $AssetsImagesCommonGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        appIcon40,
+        appIcon60,
+        appIconClear40,
+        appIconClear60,
+        litleCat,
         settingAbout,
         settingFeedback,
         settingLanguage,
