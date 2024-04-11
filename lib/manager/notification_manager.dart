@@ -116,7 +116,7 @@ class NotificationManager {
               IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
             alert: true,
-            badge: true,
+            badge: false,
             sound: true,
           );
       await flutterLocalNotificationsPlugin
@@ -124,7 +124,7 @@ class NotificationManager {
               MacOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
             alert: true,
-            badge: true,
+            badge: false,
             sound: true,
           );
     } else if (Platform.isAndroid) {
