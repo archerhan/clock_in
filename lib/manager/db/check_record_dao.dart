@@ -71,7 +71,7 @@ class CheckRecordDao extends BaseDao {
         columns: ['SUM(checkCount) as checkCount'],
         where: 'taskId = ?',
         whereArgs: [taskId]);
-    if (maps.isNotEmpty) {
+    if (maps.isNotEmpty && maps.every((element) => element['checkCount'] != null)) {
       return maps.first['checkCount'] as int;
     }
     return 0;
