@@ -1,4 +1,5 @@
 // 自定义AppBar
+import 'package:clock_in/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends AppBar {
@@ -11,7 +12,7 @@ class CustomAppBar extends AppBar {
     super.elevation,
     super.shadowColor,
     super.shape,
-    super.backgroundColor,
+    super.backgroundColor = AppColors.primaryYellow,
     Brightness? brightness,
     super.iconTheme,
     super.actionsIconTheme,

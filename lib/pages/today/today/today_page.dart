@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
+import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/pages/today/create_task/create_task_binding.dart';
 import 'package:clock_in/pages/today/create_task/create_task_page.dart';
 import 'package:clock_in/pages/today/task_list/task_list_binding.dart';
@@ -22,7 +23,20 @@ class TodayPage extends GetView<TodayController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: Text("懒猫打卡".tr),
+        title: Row(
+          children: [
+            const Spacer(),
+            Image.asset(
+              Assets.images.common.appIconClear40.path,
+              width: 30.w,
+              height: 30.w,
+            ),
+            Text(
+              "懒猫打卡".tr,
+            ),
+            const Spacer()
+          ],
+        ),
         leading: IconButton(
           onPressed: () {
             Get.to(const TaskListPage(), binding: TaskListBinding())
