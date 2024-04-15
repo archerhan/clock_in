@@ -59,6 +59,10 @@ class SettingPage extends GetView<SettingController> {
                 _settingGridView([
                   _settingItem(Assets.images.common.settingVip.path, "购买高级版",
                       () async {
+                    if (StoreManager.instance.hasPurchased) {
+                      showToast("您已购买高级版");
+                      return;
+                    }
                     showLoading();
                     await controller.loadProducts();
                     dismissLoading();
@@ -68,6 +72,7 @@ class SettingPage extends GetView<SettingController> {
                       showLoading();
                       await StoreManager.instance.purchaseProduct(product);
                       dismissLoading();
+                      Navigator.of(Get.context!).pop();
                     });
                   }),
                   _settingItem(Assets.images.common.settingRestore.path, "恢复购买",
