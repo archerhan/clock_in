@@ -17,6 +17,9 @@ class SettingController extends GetxController {
   var downloadProgress = 0.0.obs;
   var uploadProgress = 0.0.obs;
 
+  // 是否已购买
+  var hasPurchased = false.obs;
+
   // 是否开启自动同步
   var isAutoSync = true.obs;
   // 是否允许通知
@@ -30,6 +33,14 @@ class SettingController extends GetxController {
   void onInit() {
     initData();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    Future.delayed(const Duration(seconds: 1), () {
+      hasPurchased.value = StoreManager.instance.hasPurchased;
+    });
+    super.onReady();
   }
 
   Future initData() async {
@@ -137,4 +148,8 @@ class SettingController extends GetxController {
     await StoreManager.instance.initStoreInfo();
   }
 
+  // 恢复购买
+  Future restorePurchases() async {
+    await StoreManager.instance.restorePurchases();
+  }
 }

@@ -1,20 +1,25 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'dart:async';
 
+import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
-
 class StoreManager {
   StoreManager._privateConstructor();
   static final StoreManager instance = StoreManager._privateConstructor();
-  final List<String> _kProductIds = ["clock_in_premium"];
+  final List<String> _kProductIds = [AppStrings.productKey];
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
 
   List<ProductDetails> _products = <ProductDetails>[];
   List<ProductDetails> get products => _products;
-  List<PurchaseDetails> _purchases = <PurchaseDetails>[];
+
+  bool _hasPurchased = false;
+  bool get hasPurchased => _hasPurchased;
+
   bool _isAvailable = false;
   bool get isAvailable => _isAvailable;
   bool _purchasePending = false;
@@ -39,62 +44,46 @@ class StoreManager {
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      logger.d("购买状态: ${purchaseDetails.status}");
       if (purchaseDetails.status == PurchaseStatus.pending) {
-        _showPendingUI();
+        showLoading();
       } else {
+        dismissLoading();
         if (purchaseDetails.status == PurchaseStatus.error) {
           _handleError(purchaseDetails.error!);
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
-          bool valid = await _verifyPurchase(purchaseDetails);
+          bool valid = _verifyPurchase(purchaseDetails);
           if (valid) {
-            unawaited(_deliverProduct(purchaseDetails));
+            _deliverProduct(purchaseDetails);
           } else {
             _handleInvalidPurchase(purchaseDetails);
           }
         }
         if (purchaseDetails.pendingCompletePurchase) {
-          await InAppPurchase.instance.completePurchase(purchaseDetails);
+          await _inAppPurchase.completePurchase(purchaseDetails);
         }
       }
     });
   }
 
-  void _showPendingUI() {
-    logger.d("showPendingUI");
+  bool _verifyPurchase(PurchaseDetails purchaseDetails) {
+    return purchaseDetails.productID == AppStrings.productKey;
   }
 
-  Future<void> _deliverProduct(PurchaseDetails purchaseDetails) async {
-    //! IMPORTANT!! Always verify purchase details before delivering the product.
+  void _deliverProduct(PurchaseDetails purchaseDetails) {
     logger.d("验证成功, 下发商品");
-    // if (purchaseDetails.productID == _kConsumableId) {
-    //   await ConsumableStore.save(purchaseDetails.purchaseID!);
-    //   final List<String> consumables = await ConsumableStore.load();
-    //   setState(() {
-    //     _purchasePending = false;
-    //     _consumables = consumables;
-    //   });
-    // } else {
-    //   setState(() {
-    //     _purchases.add(purchaseDetails);
-    //     _purchasePending = false;
-    //   });
-    // }
+    _hasPurchased = true;
   }
 
   void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
-    // handle invalid purchase here if  _verifyPurchase` failed.
+    showToast("购买验证失败~");
     logger.e("handleInvalidPurchase: ${purchaseDetails.purchaseID}");
   }
 
   void _handleError(IAPError error) {
+    showToast("购买中发生错误:${error.message}");
     logger.e("handleError: ${error.message}");
-  }
-
-  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
-    //! IMPORTANT!! Always verify a purchase before delivering the product.
-    // For the purpose of an example, we directly return true.
-    return Future<bool>.value(true);
   }
 
   Future<void> initStoreInfo() async {
@@ -103,7 +92,6 @@ class StoreManager {
     if (!_isAvailable) {
       showToast("内购不可用~");
       _products = [];
-      _purchases = [];
       _purchasePending = false;
       _loading = false;
       return;
@@ -113,7 +101,6 @@ class StoreManager {
     if (productDetailResponse.error != null) {
       showToast("获取产品失败~");
       _products = productDetailResponse.productDetails;
-      _purchases = [];
       _purchasePending = false;
       _loading = false;
       return;
@@ -122,12 +109,12 @@ class StoreManager {
     if (productDetailResponse.productDetails.isEmpty) {
       showToast("没有找到产品~");
       _products = productDetailResponse.productDetails;
-      _purchases = [];
       _purchasePending = false;
       _loading = false;
       return;
     }
-
+    logger.d(
+        "获取到产品: ${productDetailResponse.productDetails.map((e) => e.title).toList()}");
     _products = productDetailResponse.productDetails;
     _loading = false;
     _purchasePending = false;
@@ -135,7 +122,13 @@ class StoreManager {
 
   // 购买商品
   Future<void> purchaseProduct(ProductDetails productDetails) async {
-    final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
+    final PurchaseParam purchaseParam =
+        PurchaseParam(productDetails: productDetails);
     _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+  }
+
+  // 恢复购买
+  Future<void> restorePurchases() async {
+    await _inAppPurchase.restorePurchases();
   }
 }

@@ -70,8 +70,12 @@ class SettingPage extends GetView<SettingController> {
                       dismissLoading();
                     });
                   }),
-                  _settingItem(
-                      Assets.images.common.settingRestore.path, "恢复购买", () {}),
+                  _settingItem(Assets.images.common.settingRestore.path, "恢复购买",
+                      () async {
+                    showLoading();
+                    await StoreManager.instance.restorePurchases();
+                    showToast("恢复购买成功");
+                  }),
                 ]),
                 const SectionTitle("通用"),
                 _settingGridView([
