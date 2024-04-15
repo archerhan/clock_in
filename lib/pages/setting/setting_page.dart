@@ -6,6 +6,7 @@ import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/manager/email_manager.dart';
+import 'package:clock_in/manager/store_manager.dart';
 import 'package:clock_in/widgets/dialog/store_bottom_sheet.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
@@ -57,8 +58,17 @@ class SettingPage extends GetView<SettingController> {
                 const SectionTitle("会员"),
                 _settingGridView([
                   _settingItem(Assets.images.common.settingVip.path, "购买高级版",
-                      () {
-                    StoreBottomSheet.showStoreOptionsBottomSheet();
+                      () async {
+                    showLoading();
+                    await controller.loadProducts();
+                    dismissLoading();
+                    final product = StoreManager.instance.products.first;
+                    StoreBottomSheet.showStoreOptionsBottomSheet(product.price,
+                        () async {
+                      showLoading();
+                      await StoreManager.instance.purchaseProduct(product);
+                      dismissLoading();
+                    });
                   }),
                   _settingItem(
                       Assets.images.common.settingRestore.path, "恢复购买", () {}),

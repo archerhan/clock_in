@@ -1,4 +1,5 @@
 import 'package:clock_in/manager/notification_manager.dart';
+import 'package:clock_in/manager/store_manager.dart';
 import 'package:clock_in/pages/setting/setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ class RootController extends GetxController with WidgetsBindingObserver {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
+    StoreManager.instance.listenPurchaseUpdates();
   }
 
   @override

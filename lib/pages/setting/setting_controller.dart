@@ -6,6 +6,7 @@ import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/manager/icloud_manager.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/manager/notification_manager.dart';
+import 'package:clock_in/manager/store_manager.dart';
 import 'package:clock_in/pages/today/today/today_controller.dart';
 import 'package:clock_in/utils/sp_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
@@ -131,6 +132,9 @@ class SettingController extends GetxController {
     }
   }
 
-    
+  // 加载商品
+  Future loadProducts() async {
+    await StoreManager.instance.initStoreInfo();
+  }
 
 }
