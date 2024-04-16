@@ -17,6 +17,7 @@ class StoreManager {
   List<ProductDetails> _products = <ProductDetails>[];
   List<ProductDetails> get products => _products;
 
+  // 是否已购买
   bool _hasPurchased = false;
   bool get hasPurchased => _hasPurchased;
 

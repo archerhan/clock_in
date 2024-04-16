@@ -65,7 +65,10 @@ class TaskListController extends GetxController {
     for (var record in recordList) {
       if (record.isNotEmpty) {
         final checkRecord = await CheckRecordDao().queryCheckRecord(int.parse(record));
-        var date = DateTime.parse(checkRecord!.date!);
+        if (checkRecord == null) {
+          continue;
+        }
+        var date = DateTime.parse(checkRecord.date!);
         if (date.year == DateTime.now().year && date.month == DateTime.now().month) {
           count++;
         }

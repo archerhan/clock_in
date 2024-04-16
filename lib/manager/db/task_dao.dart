@@ -58,6 +58,12 @@ class TaskDao implements BaseDao {
     });
   }
 
+  // 查询任务数量
+  Future<int> getTaskCount() async {
+    final allTask = await queryAllTask();
+    return allTask.length;
+  }
+
   // 查询指定taskModel
   Future<TaskModel?> queryTask(int id) async {
     var db = await DBManager.instance.database;

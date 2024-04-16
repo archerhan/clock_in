@@ -41,6 +41,10 @@ class SettingPage extends GetView<SettingController> {
                         frontWidget: _settingItem(
                             Assets.images.common.settingSync.path, "iCloud备份",
                             () {
+                          if (StoreManager.instance.hasPurchased == false) {
+                            showToast("iCloud备份为付费功能");
+                            return;
+                          }
                           controller.syncDataController.flipcard();
                         }),
                         backWidget: _dataSyncBack(() {
@@ -51,6 +55,10 @@ class SettingPage extends GetView<SettingController> {
                   _settingItem(
                       Assets.images.common.settingsEmailBackup.path, "备份到邮件",
                       () async {
+                    if (StoreManager.instance.hasPurchased == false) {
+                      showToast("邮件备份为付费功能");
+                      return;
+                    }
                     await EmailManager.sendFeedbackEmail(
                         filePath: await DBManager.instance.getDatabasePath());
                   })

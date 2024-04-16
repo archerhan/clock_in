@@ -5,6 +5,7 @@ import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/db/check_record_dao.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/manager/notification_manager.dart';
+import 'package:clock_in/manager/store_manager.dart';
 import 'package:clock_in/pages/today/create_task/icons_model.dart';
 import 'package:clock_in/pages/today/task_list/task_list_controller.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
@@ -117,7 +118,8 @@ class CreateTaskController extends GetxController {
     if (!isCreateTask) {
       await TaskDao().deleteTask(_currentTask!.id!);
       // 删除任务的通知
-      await NotificationManager.instance.cancelNotificationByTask(_currentTask!);
+      await NotificationManager.instance
+          .cancelNotificationByTask(_currentTask!);
       await Get.find<TaskListController>().loadAllTask();
       // 同时删除任务的打卡记录
       await CheckRecordDao().deleteCheckRecordByTaskId(_currentTask!.id!);
@@ -151,6 +153,11 @@ class CreateTaskController extends GetxController {
 
   // 添加通知时间
   void addNotificationTime(String time) {
+    if (StoreManager.instance.hasPurchased == false &&
+        notificationTimes.length >= 2) {
+      showToast("免费版最多只能设置2个提醒");
+      return;
+    }
     notificationTimes.add(time);
   }
 
