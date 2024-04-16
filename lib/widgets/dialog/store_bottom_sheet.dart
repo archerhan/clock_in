@@ -10,7 +10,8 @@ import 'package:intro_slider/intro_slider.dart';
 class StoreBottomSheet {
   static const double _imageHeight = 100.0;
   // 显示商店选项底部弹窗
-  static Future showStoreOptionsBottomSheet(String price, Function() onTap) async {
+  static Future showStoreOptionsBottomSheet(
+      String price, Function() onTap) async {
     await showModalBottomSheet(
       context: Get.context!,
       backgroundColor: Colors.transparent,
@@ -83,7 +84,7 @@ class StoreBottomSheet {
                   children: [
                     FilledButton(
                       onPressed: onTap,
-                      child: const Text("永久购买高级版￥12.00"),
+                      child: Text("永久购买高级版 $price"),
                     ),
                     const SizedBox(height: 10),
                     Text(

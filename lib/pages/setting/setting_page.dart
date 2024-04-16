@@ -79,7 +79,6 @@ class SettingPage extends GetView<SettingController> {
                       () async {
                     showLoading();
                     await StoreManager.instance.restorePurchases();
-                    showToast("恢复购买成功");
                   }),
                 ]),
                 const SectionTitle("通用"),

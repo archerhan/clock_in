@@ -39,10 +39,14 @@ class StoreManager {
     }, onError: (Object error) {
       logger.e("listenPurchaseUpdates error: $error");
     });
-    _inAppPurchase.restorePurchases();
   }
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    if (purchaseDetailsList.isEmpty) {
+      showToast("没有购买记录~");
+      dismissLoading();
+      return;
+    }
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       logger.d("购买状态: ${purchaseDetails.status}");
       if (purchaseDetails.status == PurchaseStatus.pending) {
