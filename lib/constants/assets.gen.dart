@@ -117,6 +117,10 @@ class $AssetsImagesCommonGen {
   AssetGenImage get settingAbout =>
       const AssetGenImage('assets/images/common/setting_about.png');
 
+  /// File path: assets/images/common/setting_developer.png
+  AssetGenImage get settingDeveloper =>
+      const AssetGenImage('assets/images/common/setting_developer.png');
+
   /// File path: assets/images/common/setting_feedback.png
   AssetGenImage get settingFeedback =>
       const AssetGenImage('assets/images/common/setting_feedback.png');
@@ -157,6 +161,7 @@ class $AssetsImagesCommonGen {
         appIconClear60,
         litleCat,
         settingAbout,
+        settingDeveloper,
         settingFeedback,
         settingLanguage,
         settingNotification,

@@ -7,6 +7,7 @@ import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/manager/email_manager.dart';
 import 'package:clock_in/manager/store_manager.dart';
+import 'package:clock_in/widgets/dialog/social_picker.dart';
 import 'package:clock_in/widgets/dialog/store_bottom_sheet.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
@@ -115,15 +116,10 @@ class SettingPage extends GetView<SettingController> {
                       subject: "意见反馈",
                     );
                   }),
-                  _settingItem(Assets.images.common.settingWebsite.path, "官方网站",
+                  _settingItem(
+                      Assets.images.common.settingDeveloper.path, "联系开发者",
                       () async {
-                    if (await canLaunchUrl(
-                        Uri(scheme: "http", host: AppStrings.website))) {
-                      await launchUrl(
-                          Uri(scheme: "http", host: AppStrings.website));
-                    } else {
-                      showToast("无法打开网页");
-                    }
+                    SocialPicker.showActionSheet(context);
                   }),
                   // _settingItem(
                   //     Assets.images.common.settingAbout.path, "关于", () {}),
