@@ -60,7 +60,10 @@ class SettingPage extends GetView<SettingController> {
                       return;
                     }
                     await EmailManager.sendFeedbackEmail(
-                        filePath: await DBManager.instance.getDatabasePath());
+                        isFeedback: false,
+                        subject: "数据备份${DateTime.now()}",
+                        attachmentPath:
+                            await DBManager.instance.getDatabasePath());
                   })
                 ]),
                 const SectionTitle("会员"),
@@ -74,6 +77,9 @@ class SettingPage extends GetView<SettingController> {
                     showLoading();
                     await controller.loadProducts();
                     dismissLoading();
+                    if (StoreManager.instance.products.isEmpty) {
+                      return;
+                    }
                     final product = StoreManager.instance.products.first;
                     StoreBottomSheet.showStoreOptionsBottomSheet(product.price,
                         () async {
@@ -104,7 +110,10 @@ class SettingPage extends GetView<SettingController> {
                       rotateSide: RotateSide.left),
                   _settingItem(
                       Assets.images.common.settingFeedback.path, "意见反馈", () {
-                    EmailManager.sendFeedbackEmail();
+                    EmailManager.sendFeedbackEmail(
+                      isFeedback: true,
+                      subject: "意见反馈",
+                    );
                   }),
                   _settingItem(Assets.images.common.settingWebsite.path, "官方网站",
                       () async {

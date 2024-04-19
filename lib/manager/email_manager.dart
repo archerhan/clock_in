@@ -1,17 +1,21 @@
+import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class EmailManager {
-  static Future sendFeedbackEmail({String? filePath}) async {
+  static Future sendFeedbackEmail(
+      {required bool? isFeedback,
+      String? subject,
+      String? attachmentPath}) async {
     final Email email = Email(
-      body:
-          '\n\n\n\n\n App Version: 1.0.0\n Device: Android\n OS Version: 12\n',
-      subject: 'Feedback Email Test',
-      recipients: ['feedback@example.com'],
+      body: '\n\n\n\n\n',
+      subject: subject ?? "暂无主题",
+      recipients: isFeedback == true ? [AppStrings.feedbackEmailAddress] : [],
       cc: [],
       bcc: [],
-      attachmentPaths: filePath?.isNotEmpty == true ? [filePath!] : [],
+      attachmentPaths:
+          attachmentPath?.isNotEmpty == true ? [attachmentPath!] : [],
       isHTML: false,
     );
     try {
