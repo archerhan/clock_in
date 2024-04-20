@@ -19,32 +19,34 @@ class CustomCalendar extends GetView<TodayController> {
 
   @override
   Widget build(BuildContext context) {
-    return TableCalendar(
-      focusedDay: focusedDay,
-      firstDay: firstDay,
-      lastDay: lastDay,
-      pageJumpingEnabled: true,
-      rowHeight: 64.h,
-      headerVisible: false,
-      availableGestures: AvailableGestures.horizontalSwipe,
-      calendarFormat: CalendarFormat.twoWeeks,
-      startingDayOfWeek: StartingDayOfWeek.monday,
-      daysOfWeekStyle: _weekStyle(),
-      daysOfWeekHeight: 28.h,
-      calendarBuilders: _calendarBuilders(),
-      onDaySelected: (selectedDay, focusDay) {
-        onDaySelected?.call(selectedDay, focusDay);
-      },
-      onDisabledDayTapped: (day) {
-        Vibrate.feedback(FeedbackType.error);
-      },
-      onPageChanged: (focusedDay) {
-        if (onDaySelected != null) {
-          onDaySelected!(focusedDay, focusedDay);
-        }
-        onPageChanged?.call(focusedDay, focusedDay);
-      },
-    );
+    return Obx(() => TableCalendar(
+          focusedDay: focusedDay,
+          firstDay: firstDay,
+          lastDay: lastDay,
+          pageJumpingEnabled: true,
+          rowHeight: 64.h,
+          headerVisible: false,
+          availableGestures: AvailableGestures.horizontalSwipe,
+          calendarFormat: controller.isExpanedCalendar.value
+              ? CalendarFormat.month
+              : CalendarFormat.twoWeeks,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          daysOfWeekStyle: _weekStyle(),
+          daysOfWeekHeight: 28.h,
+          calendarBuilders: _calendarBuilders(),
+          onDaySelected: (selectedDay, focusDay) {
+            onDaySelected?.call(selectedDay, focusDay);
+          },
+          onDisabledDayTapped: (day) {
+            Vibrate.feedback(FeedbackType.error);
+          },
+          onPageChanged: (focusedDay) {
+            if (onDaySelected != null) {
+              onDaySelected!(focusedDay, focusedDay);
+            }
+            onPageChanged?.call(focusedDay, focusedDay);
+          },
+        ));
   }
 
   DaysOfWeekStyle _weekStyle() {
@@ -81,12 +83,13 @@ class CustomCalendar extends GetView<TodayController> {
             color: AppColors.bgColor,
             shape: BoxShape.rectangle,
             border: Border.all(
-                color: (DateTimeUtil.isToday(day) ||
-                        day.year == focusedDay.year &&
+                color: DateTimeUtil.isToday(day)
+                    ? AppColors.textGreen
+                    : (day.year == focusedDay.year &&
                             day.month == focusedDay.month &&
                             day.day == focusedDay.day)
-                    ? AppColors.primaryBlue
-                    : Colors.transparent,
+                        ? AppColors.primaryBlue
+                        : Colors.transparent,
                 width: 4),
           ),
           child: Obx(() => Column(
@@ -107,20 +110,31 @@ class CustomCalendar extends GetView<TodayController> {
                     ),
                   ),
                   // 判断日期是否包含在dailyCheckCountData中
-                  (controller.dailyCheckCountData
-                              .containsKey(day.toString().split(" ").first) &&
-                          controller.dailyCheckCountData[
-                                  day.toString().split(" ").first]! >
-                              0)
-                      ? Icon(
-                          Icons.check,
-                          size: 12.w,
-                          color: AppColors.textGreen,
-                        )
-                      : SizedBox(
-                          width: 12.w,
-                          height: 12.w,
-                        ),
+                  SizedBox(
+                    height: 15.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (DateTimeUtil.isToday(day))
+                          Text(
+                            "今",
+                            style: TextStyle(
+                                color: AppColors.textGreen, fontSize: 10.sp),
+                          ),
+                        (controller.dailyCheckCountData.containsKey(
+                                    day.toString().split(" ").first) &&
+                                controller.dailyCheckCountData[
+                                        day.toString().split(" ").first]! >
+                                    0)
+                            ? Icon(
+                                Icons.check,
+                                size: 12.w,
+                                color: AppColors.textGreen,
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                  ),
                 ],
               )),
         );

@@ -20,6 +20,9 @@ class TodayController extends GetxController {
   // 每日打卡次数
   var dailyCheckCountData = <String, int>{}.obs;
 
+  // 默认显示2周
+  var isExpanedCalendar = true.obs;
+
   @override
   void onReady() {
     loadData();
