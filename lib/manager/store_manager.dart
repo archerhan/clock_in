@@ -77,6 +77,7 @@ class StoreManager {
   }
 
   void _deliverProduct(PurchaseDetails purchaseDetails) {
+    showToast("会员资格已生效~");
     logger.d("验证成功, 下发商品");
     _hasPurchased = true;
   }

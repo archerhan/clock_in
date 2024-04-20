@@ -65,6 +65,9 @@ class ICloudManager {
       if ((e as PlatformException).code == "E_NAT") {
         onDone?.call();
       }
+      if ((e as PlatformException).code == "E_CTR") {
+        showToast("您的iCloud服务暂不可用, 请检查设备的iCloud设置");
+      }
       logger.e("下载失败: $e");
     }
   }

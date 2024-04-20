@@ -1,4 +1,5 @@
 import 'package:clock_in/constants/app_strings.dart';
+import 'package:clock_in/utils/logger_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -22,7 +23,8 @@ class EmailManager {
       await FlutterEmailSender.send(email);
     } catch (e) {
       final err = e as PlatformException;
-      showToast('发送邮件出现错误:\n${err.message}');
+      showToast('发送邮件出现错误,请检查您是否安装邮件客户端,并且已经登录可用的邮箱账号');
+      logger.e('发送邮件出现错误: ${err.message}');
     }
   }
 }
