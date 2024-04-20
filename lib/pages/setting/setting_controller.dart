@@ -116,26 +116,26 @@ class SettingController extends GetxController {
           progress: (progress) => downloadProgress.value =
               double.parse((progress / 100).toStringAsFixed(2)),
           onDone: () async {
-            // 关闭现有的备份数据库, 以防读取不到现在的数据
-            await DBManager.instance.closeBackupDb();
-            // 合并任务数据
-            await TaskDao().mergeBackupTasks();
-            // 合并打卡数据
-            await CheckRecordDao().mergeBackupCheckRecords();
-            // 重新加载数据
-            Get.find<TodayController>().loadData();
-            // 上传合并后的数据
-            uploadProgress.value = 0;
-            await ICloudManager.instance.uploadData(
-              progress: (p0) => uploadProgress.value =
-                  double.parse((p0 / 100).toStringAsFixed(2)),
-              onDone: () {
-                if (showTip) {
-                  showToast("同步成功");
-                }
-              },
-            );
-          });
+        // 关闭现有的备份数据库, 以防读取不到现在的数据
+        await DBManager.instance.closeBackupDb();
+        // 合并任务数据
+        await TaskDao().mergeBackupTasks();
+        // 合并打卡数据
+        await CheckRecordDao().mergeBackupCheckRecords();
+        // 重新加载数据
+        Get.find<TodayController>().loadData();
+        // 上传合并后的数据
+        uploadProgress.value = 0;
+        await ICloudManager.instance.uploadData(
+          progress: (p0) => uploadProgress.value =
+              double.parse((p0 / 100).toStringAsFixed(2)),
+          onDone: () {
+            if (showTip) {
+              showToast("同步成功");
+            }
+          },
+        );
+      });
     } catch (e) {
       if (showTip) {
         showToast("同步失败");

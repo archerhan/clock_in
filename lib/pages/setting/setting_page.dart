@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/manager/email_manager.dart';
@@ -38,12 +37,12 @@ class SettingPage extends GetView<SettingController> {
                 _settingGridView([
                   if (Platform.isIOS || Platform.isMacOS)
                     _settingItem(
-                        Assets.images.common.settingSync.path, "iCloud备份", () {
+                        Assets.images.common.settingSync.path, "iCloud备份", () async {
                       if (StoreManager.instance.hasPurchased == false) {
                         showToast("iCloud备份为付费功能");
                         return;
                       }
-                      controller.syncData();
+                      await controller.syncData();
                     }),
                   // FlipCard(
                   //     frontWidget: _settingItem(

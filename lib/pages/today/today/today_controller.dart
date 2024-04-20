@@ -21,7 +21,7 @@ class TodayController extends GetxController {
   var dailyCheckCountData = <String, int>{}.obs;
 
   // 默认显示2周
-  var isExpanedCalendar = true.obs;
+  var isExpanedCalendar = false.obs;
 
   @override
   void onReady() {

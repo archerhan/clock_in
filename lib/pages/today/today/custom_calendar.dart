@@ -24,7 +24,7 @@ class CustomCalendar extends GetView<TodayController> {
           firstDay: firstDay,
           lastDay: lastDay,
           pageJumpingEnabled: true,
-          rowHeight: 64.h,
+          rowHeight: 66.h,
           headerVisible: false,
           availableGestures: AvailableGestures.horizontalSwipe,
           calendarFormat: controller.isExpanedCalendar.value
