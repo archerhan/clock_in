@@ -41,6 +41,7 @@ dependencies:
   flutter_flip_card: ^0.0.5
   url_launcher: ^6.2.5
   intro_slider: ^4.2.1
+  flutter_markdown: ^0.7.1
   
 
 dev_dependencies:

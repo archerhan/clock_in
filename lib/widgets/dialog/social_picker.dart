@@ -1,80 +1,101 @@
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/utils/toast_util.dart';
-import 'package:clock_in/widgets/divider/horizontal_divider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialPicker {
-  static void showActionSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _item("新浪微博", () async {
-              if (await canLaunchUrl(
-                  Uri(scheme: "https", host: AppStrings.weiboLink))) {
-                await launchUrl(Uri(
-                    scheme: "https",
-                    host: AppStrings.weiboLink,
-                    path: "/"));
-              } else {
-                showToast("无法打开网页");
-              }
-            }),
-            const HorizontalDivider(),
-            _item("知乎", () async {
-              if (await canLaunchUrl(
-                  Uri(scheme: "https", host: AppStrings.zhihuLink))) {
-                await launchUrl(Uri(
-                    scheme: "https",
-                    host: AppStrings.zhihuLink,
-                    path: "/"));
-              } else {
-                showToast("无法打开网页");
-              }
-            }),
-            const HorizontalDivider(),
-            _item("小红书", () async {
-              if (await canLaunchUrl(
-                  Uri(scheme: "https", host: AppStrings.xiaohongshuLink))) {
-                await launchUrl(Uri(
-                    scheme: "https",
-                    host: AppStrings.xiaohongshuLink,
-                    path: "/"));
-              } else {
-                showToast("无法打开网页");
-              }
-            }),
-            SizedBox(height: 20.h)
-          ],
-        );
-      },
-    );
-  }
-
-  static Widget _item(String title, Function() onTap) {
-    return InkWell(
-        onTap: onTap,
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            children: [
-              const Spacer(),
-              Text(
-                title,
+  static void show() {
+    showCupertinoModalPopup(
+      context: Get.context!,
+      builder: (context) {
+        return CupertinoActionSheet(
+          title: Text(
+            "请选择社交媒体",
+            style: TextStyle(
+              color: AppColors.mainTitle333,
+              fontSize: 16.sp,
+            ),
+          ),
+          message: Text(
+            "请点击对应社交媒体给开发者留言，我会尽快回复您",
+            style: TextStyle(
+              color: AppColors.subtitle666,
+              fontSize: 16.sp,
+            ),
+          ),
+          actions: [
+            CupertinoActionSheetAction(
+              child: Text(
+                "新浪微博",
                 style: TextStyle(
                   color: AppColors.mainTitle333,
                   fontSize: 16.sp,
                 ),
               ),
-              const Spacer()
-            ],
+              onPressed: () async {
+                Get.back();
+                final uri = Uri.parse(AppStrings.weiboLink);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                } else {
+                  showToast("无法打开网页");
+                }
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: Text(
+                "知乎",
+                style: TextStyle(
+                  color: AppColors.mainTitle333,
+                  fontSize: 16.sp,
+                ),
+              ),
+              onPressed: () async {
+                Get.back();
+                final uri = Uri.parse(AppStrings.zhihuLink);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                } else {
+                  showToast("无法打开网页");
+                }
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: Text(
+                "小红书",
+                style: TextStyle(
+                  color: AppColors.mainTitle333,
+                  fontSize: 16.sp,
+                ),
+              ),
+              onPressed: () async {
+                Get.back();
+                final uri = Uri.parse(AppStrings.xiaohongshuLink);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                } else {
+                  showToast("无法打开网页");
+                }
+              },
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: Text(
+              "取消",
+              style: TextStyle(
+                color: AppColors.mainTitle333,
+                fontSize: 16.sp,
+              ),
+            ),
+            onPressed: () {
+              Get.back();
+            },
           ),
-        ));
+        );
+      },
+    );
   }
 }

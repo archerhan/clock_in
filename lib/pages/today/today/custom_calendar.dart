@@ -81,7 +81,7 @@ class CustomCalendar extends GetView<TodayController> {
           margin: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: AppColors.bgColor,
-            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
             border: Border.all(
                 color: DateTimeUtil.isToday(day)
                     ? AppColors.textGreen

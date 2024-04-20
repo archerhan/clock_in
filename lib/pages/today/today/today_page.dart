@@ -11,6 +11,7 @@ import 'package:clock_in/pages/today/today/custom_calendar.dart';
 import 'package:clock_in/pages/today/today/task_model.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
+import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:clock_in/widgets/empty/empty_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -89,7 +90,25 @@ class TodayPage extends GetView<TodayController> {
                   controller.loadSelectDayTasks();
                 },
               )),
-          const SizedBox(height: 10),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              controller.isExpanedCalendar.toggle();
+            },
+            child: Row(
+              children: [
+                const Expanded(child: HorizontalDivider()),
+                Obx(() => Icon(
+                      controller.isExpanedCalendar.value
+                          ? Icons.arrow_drop_up_rounded
+                          : Icons.arrow_drop_down_rounded,
+                      size: 40.w,
+                      color: AppColors.greyCCC,
+                    )),
+                const Expanded(child: HorizontalDivider())
+              ],
+            ),
+          ),
           Expanded(
               child: SingleChildScrollView(
             child: Column(

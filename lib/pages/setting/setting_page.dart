@@ -19,7 +19,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/pages/setting/setting_controller.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends GetView<SettingController> {
   const SettingPage({super.key});
@@ -119,7 +118,7 @@ class SettingPage extends GetView<SettingController> {
                   _settingItem(
                       Assets.images.common.settingDeveloper.path, "联系开发者",
                       () async {
-                    SocialPicker.showActionSheet(context);
+                    SocialPicker.show();
                   }),
                   // _settingItem(
                   //     Assets.images.common.settingAbout.path, "关于", () {}),
