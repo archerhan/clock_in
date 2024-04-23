@@ -36,7 +36,7 @@ class SettingPage extends GetView<SettingController> {
                 _settingGridView([
                   if (Platform.isIOS || Platform.isMacOS)
                     _settingItem(
-                        Assets.images.common.settingSync.path, "iCloud备份",
+                        Assets.images.common.settingSync.path, "iCloud 同步",
                         () async {
                       if (StoreManager.instance.hasPurchased == false) {
                         showToast("iCloud备份为付费功能");
@@ -44,21 +44,6 @@ class SettingPage extends GetView<SettingController> {
                       }
                       await controller.syncData();
                     }),
-                  // FlipCard(
-                  //     frontWidget: _settingItem(
-                  //         Assets.images.common.settingSync.path, "iCloud备份",
-                  //         () {
-                  //       if (StoreManager.instance.hasPurchased == false) {
-                  //         showToast("iCloud备份为付费功能");
-                  //         return;
-                  //       }
-                  //       controller.syncDataController.flipcard();
-                  //     }),
-                  //     backWidget: _dataSyncBack(() {
-                  //       controller.syncDataController.flipcard();
-                  //     }),
-                  //     controller: controller.syncDataController,
-                  //     rotateSide: RotateSide.left),
                   _settingItem(
                       Assets.images.common.settingsEmailBackup.path, "备份到邮件",
                       () async {
@@ -95,11 +80,6 @@ class SettingPage extends GetView<SettingController> {
                       dismissLoading();
                       Navigator.of(Get.context!).pop();
                     });
-                  }),
-                  _settingItem(Assets.images.common.settingRestore.path, "恢复购买",
-                      () async {
-                    showLoading();
-                    await StoreManager.instance.restorePurchases();
                   }),
                 ]),
                 const SectionTitle("通用"),

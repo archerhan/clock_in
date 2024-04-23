@@ -4,11 +4,14 @@ import 'dart:async';
 
 import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/utils/logger_util.dart';
+import 'package:clock_in/utils/sp_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 class StoreManager {
-  StoreManager._privateConstructor();
+  StoreManager._privateConstructor() {
+    initInfo();
+  }
   static final StoreManager instance = StoreManager._privateConstructor();
   final List<String> _kProductIds = [AppStrings.productKey];
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
@@ -28,6 +31,10 @@ class StoreManager {
   bool _loading = true;
   bool get loading => _loading;
 
+  void initInfo() async {
+    _hasPurchased = await SPUtil.getBool(AppStrings.hasPurchasedKey);
+  }
+
   // 监听购买更新(需要尽早调用此方法进行监听)
   void listenPurchaseUpdates() {
     final Stream<List<PurchaseDetails>> purchaseUpdated =
@@ -44,7 +51,7 @@ class StoreManager {
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     if (purchaseDetailsList.isEmpty) {
-      showToast("没有购买记录~");
+      showToast("没有购买记录");
       dismissLoading();
       return;
     }
@@ -77,13 +84,14 @@ class StoreManager {
   }
 
   void _deliverProduct(PurchaseDetails purchaseDetails) {
-    showToast("会员资格已生效~");
+    showToast("会员资格已生效");
     logger.d("验证成功, 下发商品");
     _hasPurchased = true;
+    SPUtil.save(AppStrings.hasPurchasedKey, true);
   }
 
   void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
-    showToast("购买验证失败~");
+    showToast("购买验证失败");
     logger.e("handleInvalidPurchase: ${purchaseDetails.purchaseID}");
   }
 
@@ -96,7 +104,7 @@ class StoreManager {
     final isAvailable = await _inAppPurchase.isAvailable();
     _isAvailable = isAvailable;
     if (!_isAvailable) {
-      showToast("内购不可用~");
+      showToast("内购不可用");
       _products = [];
       _purchasePending = false;
       _loading = false;
@@ -105,7 +113,7 @@ class StoreManager {
     final ProductDetailsResponse productDetailResponse =
         await _inAppPurchase.queryProductDetails(_kProductIds.toSet());
     if (productDetailResponse.error != null) {
-      showToast("获取产品失败~");
+      showToast("获取产品失败");
       _products = productDetailResponse.productDetails;
       _purchasePending = false;
       _loading = false;
@@ -113,7 +121,7 @@ class StoreManager {
     }
 
     if (productDetailResponse.productDetails.isEmpty) {
-      showToast("没有找到产品~");
+      showToast("没有找到产品");
       _products = productDetailResponse.productDetails;
       _purchasePending = false;
       _loading = false;

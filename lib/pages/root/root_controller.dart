@@ -21,6 +21,7 @@ class RootController extends GetxController with WidgetsBindingObserver {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
     StoreManager.instance.listenPurchaseUpdates();
+    StoreManager.instance.restorePurchases();
   }
 
   @override

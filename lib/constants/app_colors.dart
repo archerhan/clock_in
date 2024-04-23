@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  AppColors._();
   static const primaryBlue = Color(0xff2e59a7); //主色
   static const primaryYellow = Color(0xfffed413); //辅助色
   static const brightBlue = Color(0xff0047cc); // 亮蓝色

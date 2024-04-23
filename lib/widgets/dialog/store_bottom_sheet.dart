@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/assets.gen.dart';
+import 'package:clock_in/manager/store_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -85,6 +86,20 @@ class StoreBottomSheet {
                     FilledButton(
                       onPressed: onTap,
                       child: Text("永久购买高级版 $price"),
+                    ),
+                    const SizedBox(height: 10),
+                    InkWell(
+                      onTap: () {
+                        // 恢复购买
+                        StoreManager.instance.restorePurchases();
+                      },
+                      child: Text(
+                        "恢复购买",
+                        style: TextStyle(
+                            color: AppColors.subtitle666,
+                            fontSize: 14.sp,
+                            decoration: TextDecoration.underline),
+                      ),
                     ),
                     const SizedBox(height: 10),
                     Text(

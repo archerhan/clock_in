@@ -1,4 +1,5 @@
 class AppStrings {
+  AppStrings._();
   static const website = "182.92.176.106";
   static const feedbackEmailAddress = "feedback@example.com";
   static const zhihuLink = "https://www.zhihu.com/";
@@ -11,4 +12,5 @@ class AppStrings {
   static const String autoSyncDataKey = "autoSyncDataKey";
   static const String allowNotificationKey = "allowNotificationKey";
   static const String isAgreePrivacyLey = "isAgreePrivacyLey";
+  static const String hasPurchasedKey = "hasPurchasedKey";
 }
