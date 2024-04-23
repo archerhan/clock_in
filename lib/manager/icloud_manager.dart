@@ -62,10 +62,11 @@ class ICloudManager {
       );
     } catch (e) {
       // 如果没有备份文件，直接调用 onDone继续往下走
-      if ((e as PlatformException).code == "E_NAT") {
+      final error = e as PlatformException;
+      if (error.code == "E_NAT") {
         onDone?.call();
       }
-      if ((e as PlatformException).code == "E_CTR") {
+      if (error.code == "E_CTR") {
         showToast("您的iCloud服务暂不可用, 请检查设备的iCloud设置");
       }
       logger.e("下载失败: $e");

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
@@ -37,7 +36,8 @@ class SettingPage extends GetView<SettingController> {
                 _settingGridView([
                   if (Platform.isIOS || Platform.isMacOS)
                     _settingItem(
-                        Assets.images.common.settingSync.path, "iCloud备份", () async {
+                        Assets.images.common.settingSync.path, "iCloud备份",
+                        () async {
                       if (StoreManager.instance.hasPurchased == false) {
                         showToast("iCloud备份为付费功能");
                         return;
@@ -185,72 +185,72 @@ class SettingPage extends GetView<SettingController> {
     );
   }
 
-  Widget _dataSyncBack(Function onTap) {
-    return GestureDetector(
-      onTap: () {
-        onTap();
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
-        decoration: BoxDecoration(
-          color: AppColors.mainWhite,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                    child: AutoSizeText(
-                  "自动\n备份",
-                  style:
-                      TextStyle(color: AppColors.subtitle666, fontSize: 14.sp),
-                )),
-                Transform.scale(
-                  scale: 0.8,
-                  child: Obx(() {
-                    return CupertinoSwitch(
-                      value: controller.isAutoSync.value,
-                      onChanged: (value) {
-                        Vibrate.feedback(FeedbackType.medium);
-                        controller.setAutoSync(value);
-                      },
-                      activeColor: Colors.green,
-                    );
-                  }),
-                )
-              ],
-            ),
-            // const HorizontalDivider(),
-            // Expanded(
-            //   child: Row(
-            //     children: [
-            //       Expanded(
-            //           child: Obx(() => _progressItem(
-            //                 controller.uploadProgress.value,
-            //                 "上传",
-            //                 onTap: () => controller.uploadData(),
-            //               ))),
-            //       Container(
-            //         width: 1,
-            //         height: double.infinity,
-            //         color: AppColors.dividerEEE,
-            //       ),
-            //       Expanded(
-            //           child: Obx(() => _progressItem(
-            //               controller.downloadProgress.value, "下载",
-            //               onTap: () => controller.downloadData()))),
-            //     ],
-            //   ),
-            // )
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _dataSyncBack(Function onTap) {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       onTap();
+  //     },
+  //     child: Container(
+  //       padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+  //       decoration: BoxDecoration(
+  //         color: AppColors.mainWhite,
+  //         borderRadius: BorderRadius.circular(8.r),
+  //       ),
+  //       alignment: Alignment.center,
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         crossAxisAlignment: CrossAxisAlignment.center,
+  //         children: [
+  //           Row(
+  //             children: [
+  //               Expanded(
+  //                   child: AutoSizeText(
+  //                 "自动\n备份",
+  //                 style:
+  //                     TextStyle(color: AppColors.subtitle666, fontSize: 14.sp),
+  //               )),
+  //               Transform.scale(
+  //                 scale: 0.8,
+  //                 child: Obx(() {
+  //                   return CupertinoSwitch(
+  //                     value: controller.isAutoSync.value,
+  //                     onChanged: (value) {
+  //                       Vibrate.feedback(FeedbackType.medium);
+  //                       controller.setAutoSync(value);
+  //                     },
+  //                     activeColor: Colors.green,
+  //                   );
+  //                 }),
+  //               )
+  //             ],
+  //           ),
+  //           // const HorizontalDivider(),
+  //           // Expanded(
+  //           //   child: Row(
+  //           //     children: [
+  //           //       Expanded(
+  //           //           child: Obx(() => _progressItem(
+  //           //                 controller.uploadProgress.value,
+  //           //                 "上传",
+  //           //                 onTap: () => controller.uploadData(),
+  //           //               ))),
+  //           //       Container(
+  //           //         width: 1,
+  //           //         height: double.infinity,
+  //           //         color: AppColors.dividerEEE,
+  //           //       ),
+  //           //       Expanded(
+  //           //           child: Obx(() => _progressItem(
+  //           //               controller.downloadProgress.value, "下载",
+  //           //               onTap: () => controller.downloadData()))),
+  //           //     ],
+  //           //   ),
+  //           // )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _notificationBack(Function onTap) {
     return GestureDetector(

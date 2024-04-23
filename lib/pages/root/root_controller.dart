@@ -5,7 +5,6 @@ import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/constants/privacy.dart';
 import 'package:clock_in/manager/notification_manager.dart';
 import 'package:clock_in/manager/store_manager.dart';
-import 'package:clock_in/pages/setting/setting_controller.dart';
 import 'package:clock_in/utils/sp_util.dart';
 import 'package:clock_in/widgets/buttons/two_buttons.dart';
 import 'package:flutter/material.dart';
