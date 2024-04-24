@@ -1,6 +1,6 @@
 class AppStrings {
   AppStrings._();
-  static const website = "182.92.176.106";
+  static const website = "https://example.com";
   static const feedbackEmailAddress = "feedback@example.com";
   static const zhihuLink = "https://www.zhihu.com/";
   static const weiboLink = "https://weibo.com/";
