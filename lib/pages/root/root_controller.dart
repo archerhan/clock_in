@@ -93,6 +93,8 @@ class RootController extends GetxController with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         break;
       case AppLifecycleState.resumed:
+      // 刷新整个应用
+      Get.forceAppUpdate();
         break;
       case AppLifecycleState.detached:
         break;
