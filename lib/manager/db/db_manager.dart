@@ -75,6 +75,7 @@ class DBManager {
     await db.close();
     _backupDatabase = null;
   }
+
   // 创建表
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(CheckRecordDao().createTableSql());

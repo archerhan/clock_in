@@ -2,7 +2,6 @@ class RewardModel {
   int? id;
   String? rewardName;
   int? taskId;
-  int? taskRecordId;
   String? taskName;
   int? duration;
   int? condition;
@@ -17,7 +16,6 @@ class RewardModel {
       {this.id,
       this.rewardName,
       this.taskId,
-      this.taskRecordId,
       this.taskName,
       this.duration,
       this.condition,
@@ -32,7 +30,6 @@ class RewardModel {
     id = json['id'];
     rewardName = json['rewardName'];
     taskId = json['taskId'];
-    taskRecordId = json['taskRecordId'];
     taskName = json['taskName'];
     duration = json['duration'];
     condition = json['condition'];
@@ -49,7 +46,6 @@ class RewardModel {
     data['id'] = id;
     data['rewardName'] = rewardName;
     data['taskId'] = taskId;
-    data['taskRecordId'] = taskRecordId;
     data['taskName'] = taskName;
     data['duration'] = duration;
     data['condition'] = condition;
