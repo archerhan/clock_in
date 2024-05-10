@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:clock_in/manager/db/check_record_dao.dart';
+import 'package:clock_in/manager/db/reward_dao.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:path_provider/path_provider.dart';
@@ -80,12 +81,14 @@ class DBManager {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(CheckRecordDao().createTableSql());
     await db.execute(TaskDao().createTableSql());
+    await db.execute(RewardDao().createTableSql());
   }
 
   // 创建备份数据库的表
   Future<void> _onCreateBackup(Database db, int version) async {
     await db.execute(CheckRecordDao().createTableSql());
     await db.execute(TaskDao().createTableSql());
+    await db.execute(RewardDao().createTableSql());
   }
 
   void addColumnIfNotExists(Database db, String tableName, String columnName,

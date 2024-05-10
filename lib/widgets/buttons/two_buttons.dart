@@ -1,5 +1,5 @@
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/widgets/buttons/ok%20_button.dart';
+import 'package:clock_in/widgets/buttons/ok_button.dart';
 import 'package:flutter/widgets.dart';
 
 class TwoButtons extends StatelessWidget {

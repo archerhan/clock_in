@@ -1,10 +1,10 @@
 import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/manager/store_manager.dart';
-import 'package:clock_in/pages/today/create_task/create_task_binding.dart';
-import 'package:clock_in/pages/today/create_task/create_task_page.dart';
-import 'package:clock_in/pages/today/task_list/task_list_controller.dart';
-import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/pages/create_task/create_task_binding.dart';
+import 'package:clock_in/pages/create_task/create_task_page.dart';
+import 'package:clock_in/pages/task_list/task_list_controller.dart';
+import 'package:clock_in/pages/today/task_model.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';

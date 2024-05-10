@@ -1,6 +1,6 @@
 import 'package:clock_in/manager/db/base_dao.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
-import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/pages/today/task_model.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:get/get.dart';
 
@@ -53,6 +53,16 @@ class TaskDao implements BaseDao {
   Future<List<TaskModel>> queryAllTask() async {
     var db = await DBManager.instance.database;
     List<Map<String, dynamic>> maps = await db.query(tableName());
+    return List.generate(maps.length, (i) {
+      return TaskModel.fromJson(maps[i]);
+    });
+  }
+
+  // 查询所有的有效taskModel
+  Future<List<TaskModel>> queryAllActiveTask() async {
+    var db = await DBManager.instance.database;
+    List<Map<String, dynamic>> maps =
+        await db.query(tableName(), where: 'isActive = ?', whereArgs: [1]);
     return List.generate(maps.length, (i) {
       return TaskModel.fromJson(maps[i]);
     });

@@ -3,12 +3,12 @@ import 'package:clock_in/constants/app_colors.dart';
 import 'package:clock_in/constants/assets.gen.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/manager/store_manager.dart';
-import 'package:clock_in/pages/today/create_task/create_task_binding.dart';
-import 'package:clock_in/pages/today/create_task/create_task_page.dart';
-import 'package:clock_in/pages/today/task_list/task_list_binding.dart';
-import 'package:clock_in/pages/today/task_list/task_list_page.dart';
-import 'package:clock_in/pages/today/today/custom_calendar.dart';
-import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/pages/create_task/create_task_binding.dart';
+import 'package:clock_in/pages/create_task/create_task_page.dart';
+import 'package:clock_in/pages/task_list/task_list_binding.dart';
+import 'package:clock_in/pages/task_list/task_list_page.dart';
+import 'package:clock_in/pages/today/custom_calendar.dart';
+import 'package:clock_in/pages/today/task_model.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
@@ -18,7 +18,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
-import 'package:clock_in/pages/today/today/today_controller.dart';
+import 'package:clock_in/pages/today/today_controller.dart';
 
 class TodayPage extends GetView<TodayController> {
   const TodayPage({super.key});

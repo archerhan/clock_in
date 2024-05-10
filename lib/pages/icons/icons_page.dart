@@ -1,6 +1,6 @@
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
-import 'package:clock_in/pages/today/create_task/icons_model.dart';
+import 'package:clock_in/pages/icons/icons_controller.dart';
+import 'package:clock_in/pages/icons/icons_model.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/header/section_title.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
-class IconsPage extends GetView<CreateTaskController> {
-  const IconsPage({super.key});
+class IconsPage extends GetView<IconsController> {
+  final Function(IconAssetModel)? onIconSelected;
+
+  const IconsPage({super.key, this.onIconSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,7 @@ class IconsPage extends GetView<CreateTaskController> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        controller.selectIcon(iconAssetModel);
+        onIconSelected?.call(iconAssetModel);
         Get.back();
       },
       child: Container(

@@ -1,4 +1,4 @@
-import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/pages/today/task_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

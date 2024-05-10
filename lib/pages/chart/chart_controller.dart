@@ -1,6 +1,6 @@
 import 'package:clock_in/manager/db/check_record_dao.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
-import 'package:clock_in/pages/today/today/task_model.dart';
+import 'package:clock_in/pages/today/task_model.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:get/get.dart';
 import 'package:tuple/tuple.dart';

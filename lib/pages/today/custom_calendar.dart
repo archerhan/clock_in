@@ -1,5 +1,5 @@
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/pages/today/today/today_controller.dart';
+import 'package:clock_in/pages/today/today_controller.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

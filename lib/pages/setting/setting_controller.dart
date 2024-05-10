@@ -7,7 +7,7 @@ import 'package:clock_in/manager/icloud_manager.dart';
 import 'package:clock_in/manager/db/task_dao.dart';
 import 'package:clock_in/manager/notification_manager.dart';
 import 'package:clock_in/manager/store_manager.dart';
-import 'package:clock_in/pages/today/today/today_controller.dart';
+import 'package:clock_in/pages/today/today_controller.dart';
 import 'package:clock_in/utils/sp_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';

@@ -1,12 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/pages/today/create_task/create_task_controller.dart';
-import 'package:clock_in/pages/today/create_task/icons_page.dart';
+import 'package:clock_in/pages/create_task/create_task_controller.dart';
+import 'package:clock_in/pages/icons/icons_binding.dart';
+import 'package:clock_in/pages/icons/icons_page.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
-import 'package:clock_in/widgets/buttons/ok%20_button.dart';
+import 'package:clock_in/widgets/buttons/ok_button.dart';
 import 'package:clock_in/widgets/dialog/color_picker.dart';
 import 'package:clock_in/widgets/dialog/date_picker.dart';
 import 'package:clock_in/widgets/dialog/days_picker.dart';
@@ -382,7 +383,11 @@ class CreateTaskPage extends GetView<CreateTaskController> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        Get.to(const IconsPage());
+        Get.to(IconsPage(
+          onIconSelected: (p0) {
+            controller.selectedIcon.value = p0;
+          },
+        ), binding: IconsBinding());
       },
       child: SizedBox(
         height: 60.h,

@@ -1,5 +1,10 @@
 import 'package:clock_in/constants/app_colors.dart';
+import 'package:clock_in/manager/db/reward_dao.dart';
+import 'package:clock_in/manager/store_manager.dart';
+import 'package:clock_in/pages/create_reward/create_reward_binding.dart';
+import 'package:clock_in/pages/create_reward/create_reward_page.dart';
 import 'package:clock_in/pages/reward/reward_model.dart';
+import 'package:clock_in/utils/toast_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +19,26 @@ class RewardPage extends GetView<RewardController> {
     return Scaffold(
       appBar: CustomAppBar(
         title: const Text("奖励"),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              if (StoreManager.instance.hasPurchased == false &&
+                  (await RewardDao().queryAllReward()).length >= 3) {
+                showToast("免费版最多只能创建3个任务奖励");
+                return;
+              }
+              Get.to(const CreateRewardPage(), binding: CreateRewardBinding())
+                  ?.then((value) {
+                controller.loadAllRewards();
+              });
+            },
+            icon: Icon(
+              Icons.add,
+              size: 30.w,
+            ),
+          ),
+          const SizedBox(width: 10)
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -1,11 +1,12 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:clock_in/pages/chart/chart_controller.dart';
+import 'package:clock_in/pages/reward/reward_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:clock_in/constants/app_colors.dart';
-import 'package:clock_in/pages/today/today/today_page.dart';
+import 'package:clock_in/pages/today/today_page.dart';
 import 'package:clock_in/pages/chart/chart_page.dart';
 import 'package:clock_in/pages/root/root_controller.dart';
 import 'package:clock_in/pages/setting/setting_page.dart';
@@ -21,7 +22,7 @@ class RootPage extends GetView<RootController> {
             index: controller.activeIndex.value,
             children: const [
               TodayPage(),
-              // RewardPage(),
+              RewardPage(),
               ChartPage(),
               SettingPage()
             ],
@@ -37,7 +38,7 @@ class RootPage extends GetView<RootController> {
           safeAreaValues: const SafeAreaValues(bottom: true),
           icons: const [
             CupertinoIcons.text_badge_checkmark,
-            // CupertinoIcons.settings_solid,
+            CupertinoIcons.star_fill,
             CupertinoIcons.chart_pie,
             CupertinoIcons.settings_solid,
           ],
