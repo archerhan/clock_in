@@ -40,13 +40,12 @@ class ChartController extends GetxController {
     allTasks.value = await TaskDao().queryAllTask();
     if (allTasks.isNotEmpty) {
       taskNum.value = allTasks.length;
-      longestDay.value =
-          allTasks.map((e) => e.grandTotal).reduce((a, b) => a! > b! ? a : b) ??
-              0;
+      longestDay.value = allTasks
+          .map((e) => e.grandTotal ?? 0)
+          .reduce((a, b) => a > b ? a : b);
       longestContinue.value = allTasks
-              .map((e) => e.continuousDays)
-              .reduce((a, b) => a! > b! ? a : b) ??
-          0;
+          .map((e) => e.continuousDays ?? 0)
+          .reduce((a, b) => a > b ? a : b);
     }
   }
 

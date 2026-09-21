@@ -7,6 +7,7 @@ import 'package:clock_in/pages/task_list/task_list_controller.dart';
 import 'package:clock_in/pages/today/task_model.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
+import 'package:clock_in/utils/color_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:clock_in/widgets/empty/empty_chart.dart';
@@ -57,7 +58,9 @@ class TaskListPage extends GetView<TaskListController> {
         ? ReorderableListView.builder(
             shrinkWrap: true,
             itemCount: controller.taskList.length,
-            onReorder: (oldIndex, newIndex) {
+            // onReorderItem 已经处理过"移除 oldIndex 后"的下标偏移,
+            // 因此可以直接使用 newIndex(旧的 onReorder 需要自己 -1)。
+            onReorderItem: (oldIndex, newIndex) {
               Vibrate.feedback(FeedbackType.success);
               controller.reorder(oldIndex, newIndex);
             },
@@ -91,7 +94,7 @@ class TaskListPage extends GetView<TaskListController> {
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withValues(alpha: 0.2),
                   spreadRadius: 5,
                   blurRadius: 7,
                   offset: const Offset(0, 3))
@@ -109,9 +112,9 @@ class TaskListPage extends GetView<TaskListController> {
                     topRight: Radius.circular(10.r)),
                 color: taskModel.isActive == 1
                     ? (taskModel.color != null
-                        ? Color(int.parse(taskModel.color!, radix: 16))
-                            .withOpacity(0.9)
-                        : AppColors.primaryBlue.withOpacity(1))
+                        ? ColorUtil.fromHex(taskModel.color)
+                            .withValues(alpha: 0.9)
+                        : AppColors.primaryBlue.withValues(alpha: 1))
                     : Colors.grey,
               ),
               child: Row(
@@ -154,7 +157,7 @@ class TaskListPage extends GetView<TaskListController> {
                       task.isActive = value ? 1 : 0;
                       controller.updateTask(task);
                     },
-                    activeColor: Colors.green,
+                    activeTrackColor: Colors.green,
                   )
                 ],
               ),

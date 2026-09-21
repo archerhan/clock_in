@@ -1,4 +1,5 @@
 import 'package:clock_in/constants/app_colors.dart';
+import 'package:clock_in/utils/color_util.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +22,7 @@ class ColorPicker {
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withValues(alpha: 0.2),
                     spreadRadius: 5,
                     blurRadius: 7,
                     offset: const Offset(0, 3))
@@ -47,9 +48,8 @@ class ColorPicker {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 6),
                   itemBuilder: (_, index) {
-                    final colorValue = Colors.primaries[index].value
-                        .toRadixString(16)
-                        .substring(2);
+                    final color = Colors.primaries[index];
+                    final colorValue = ColorUtil.toHex(color);
                     return GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
@@ -62,8 +62,7 @@ class ColorPicker {
                             borderRadius: BorderRadius.circular(8.r),
                             color: Colors.transparent),
                         child: CircleAvatar(
-                          backgroundColor:
-                              Colors.primaries[index].withOpacity(0.3),
+                          backgroundColor: color.withValues(alpha: 0.3),
                         ),
                       ),
                     );

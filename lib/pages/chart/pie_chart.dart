@@ -1,4 +1,5 @@
 import 'package:clock_in/pages/today/task_model.dart';
+import 'package:clock_in/utils/color_util.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +29,7 @@ class MyPieChart extends StatelessWidget {
   List<PieChartSectionData> showingSections() {
     return taskCheckProportion.map((e) {
       return PieChartSectionData(
-        color: Color(int.parse(e.item1.color!, radix: 16)).withOpacity(0.7),
+        color: ColorUtil.fromHex(e.item1.color).withValues(alpha: 0.7),
         value: e.item2.toDouble(),
         title: '${e.item2}次',
         titlePositionPercentageOffset: 0.5,
@@ -43,7 +44,7 @@ class MyPieChart extends StatelessWidget {
           e.item1.icon!,
           size: 40.w,
           borderColor:
-              Color(int.parse(e.item1.color!, radix: 16)).withOpacity(1),
+              ColorUtil.fromHex(e.item1.color).withValues(alpha: 1),
         ),
         badgePositionPercentageOffset: .98,
       );
@@ -76,7 +77,7 @@ class _Badge extends StatelessWidget {
         ),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(.5),
+            color: Colors.black.withValues(alpha: .5),
             offset: const Offset(3, 3),
             blurRadius: 3,
           ),

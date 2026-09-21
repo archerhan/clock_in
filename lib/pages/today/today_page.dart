@@ -10,6 +10,7 @@ import 'package:clock_in/pages/task_list/task_list_page.dart';
 import 'package:clock_in/pages/today/custom_calendar.dart';
 import 'package:clock_in/pages/today/task_model.dart';
 import 'package:clock_in/utils/toast_util.dart';
+import 'package:clock_in/utils/color_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/divider/horizontal_divider.dart';
 import 'package:clock_in/widgets/empty/empty_chart.dart';
@@ -151,8 +152,8 @@ class TodayPage extends GetView<TodayController> {
         margin: EdgeInsets.only(bottom: 15.h),
         decoration: BoxDecoration(
           color: taskModel.color != null
-              ? Color(int.parse(taskModel.color!, radix: 16)).withOpacity(0.2)
-              : AppColors.primaryBlue.withOpacity(0.2),
+              ? ColorUtil.fromHex(taskModel.color).withValues(alpha: 0.2)
+              : AppColors.primaryBlue.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(
@@ -232,8 +233,8 @@ class TodayPage extends GetView<TodayController> {
                 taskModel.checkCount! > 0
                     ? Icons.check
                     : Icons.check_box_outline_blank,
-                color: Color(int.parse(taskModel.color!, radix: 16))
-                    .withOpacity(1),
+                color: ColorUtil.fromHex(taskModel.color)
+                    .withValues(alpha: 1),
                 size: 28.w,
               ).animate().scale(
                 duration: const Duration(milliseconds: 200),
@@ -244,8 +245,8 @@ class TodayPage extends GetView<TodayController> {
                     : "${todayTaskModel?.checkCount}/${taskModel.checkCount}",
                 maxLines: 1,
                 style: TextStyle(
-                    color: Color(int.parse(taskModel.color!, radix: 16))
-                        .withOpacity(1),
+                    color: ColorUtil.fromHex(taskModel.color)
+                        .withValues(alpha: 1),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold),
               ),

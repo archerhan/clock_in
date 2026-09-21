@@ -6,6 +6,7 @@ import 'package:clock_in/pages/icons/icons_binding.dart';
 import 'package:clock_in/pages/icons/icons_page.dart';
 import 'package:clock_in/utils/datetime_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
+import 'package:clock_in/utils/color_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:clock_in/widgets/buttons/ok_button.dart';
 import 'package:clock_in/widgets/dialog/color_picker.dart';
@@ -52,7 +53,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withValues(alpha: 0.2),
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: const Offset(0, 3))
@@ -120,7 +121,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withValues(alpha: 0.2),
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: const Offset(0, 3))
@@ -163,7 +164,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withValues(alpha: 0.2),
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: const Offset(0, 3))
@@ -304,7 +305,7 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                   controller.notificationTimes.clear();
                 }
               },
-              activeColor: Colors.green,
+              activeTrackColor: Colors.green,
             ),
           )
         ],
@@ -347,23 +348,20 @@ class CreateTaskPage extends GetView<CreateTaskController> {
                         Positioned(
                             left: 0,
                             child: CircleAvatar(
-                                backgroundColor: Color(int.parse(
-                                        controller.selectedColor.value,
-                                        radix: 16))
-                                    .withOpacity(0.3))),
+                                backgroundColor: ColorUtil.fromHex(
+                                        controller.selectedColor.value)
+                                    .withValues(alpha: 0.3))),
                         Positioned(
                             child: CircleAvatar(
-                                backgroundColor: Color(int.parse(
-                                        controller.selectedColor.value,
-                                        radix: 16))
-                                    .withOpacity(0.6))),
+                                backgroundColor: ColorUtil.fromHex(
+                                        controller.selectedColor.value)
+                                    .withValues(alpha: 0.6))),
                         Positioned(
                             right: 0,
                             child: CircleAvatar(
-                                backgroundColor: Color(int.parse(
-                                        controller.selectedColor.value,
-                                        radix: 16))
-                                    .withOpacity(0.9)))
+                                backgroundColor: ColorUtil.fromHex(
+                                        controller.selectedColor.value)
+                                    .withValues(alpha: 0.9)))
                       ],
                     ),
                   )

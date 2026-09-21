@@ -1,5 +1,7 @@
 // 获取随机Material Color
 import 'dart:math';
+
+import 'package:clock_in/utils/color_util.dart';
 import 'package:flutter/material.dart';
 
 class RandomMaterialColor {
@@ -7,7 +9,6 @@ class RandomMaterialColor {
   static String getRandomColorValue() {
     final randomColor =
         Colors.primaries[Random().nextInt(Colors.primaries.length)];
-    final colorValue = randomColor.value.toRadixString(16).substring(2);
-    return colorValue;
+    return ColorUtil.toHex(randomColor);
   }
 }

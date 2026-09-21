@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock_in/constants/app_strings.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
 import 'package:clock_in/utils/logger_util.dart';
 import 'package:clock_in/utils/toast_util.dart';
@@ -13,7 +14,7 @@ class ICloudManager {
 
   StreamSubscription? uploadProgressSub;
   StreamSubscription? downloadProgressSub;
-  final containerId = "iCloud.com.example.clockin";
+  final containerId = AppStrings.iCloudContainerId;
 
   Future<void> uploadData(
       {Function(double)? progress, void Function()? onDone}) async {

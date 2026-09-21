@@ -5,6 +5,7 @@ import 'package:clock_in/pages/create_reward/create_reward_binding.dart';
 import 'package:clock_in/pages/create_reward/create_reward_page.dart';
 import 'package:clock_in/pages/reward/reward_model.dart';
 import 'package:clock_in/utils/toast_util.dart';
+import 'package:clock_in/utils/color_util.dart';
 import 'package:clock_in/widgets/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,8 +72,8 @@ class RewardPage extends GetView<RewardController> {
         margin: EdgeInsets.only(bottom: 15.h),
         decoration: BoxDecoration(
           color: rewardModel.color != null
-              ? Color(int.parse(rewardModel.color!, radix: 16)).withOpacity(0.2)
-              : AppColors.primaryBlue.withOpacity(0.2),
+              ? ColorUtil.fromHex(rewardModel.color).withValues(alpha: 0.2)
+              : AppColors.primaryBlue.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Column(

@@ -104,7 +104,7 @@ class ChartPage extends GetView<ChartController> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Stack(

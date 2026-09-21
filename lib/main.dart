@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:clock_in/manager/db/db_manager.dart';
+import 'package:clock_in/manager/demo_data_manager.dart';
 import 'package:clock_in/manager/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,16 +28,15 @@ void main() async {
 /// 初始化多语言(动态下发多语言),初始化设置等
 /// 里面的执行顺序不能变, 否则会出错
 Future _initServices() async {
-  // await Get.putAsync(() async => await GetStorage.init(), permanent: true);
-  // await Get.putAsync(() async => IsarService.instance);
   await NotificationManager.instance.init();
   await SharedPreferences.getInstance();
-}
-
-void _otherConfigs() async {
+  // 提前打开数据库并写入演示数据, 保证首帧就有数据可渲染
   await DBManager.instance.database;
   await DBManager.instance.backupDatabase;
+  await DemoDataManager.instance.seedIfNeeded();
+}
 
+void _otherConfigs() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,

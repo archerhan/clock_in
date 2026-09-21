@@ -41,11 +41,9 @@ class TaskListController extends GetxController {
   }
 
   /// 重新排序
+  /// [newIndex] 为移除 [oldIndex] 之后的最终位置(由 onReorderItem 提供)
   Future reorder(int oldIndex, int newIndex) async {
     logger.d("oldIndex:$oldIndex, newIndex:$newIndex");
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
     taskList.insert(newIndex, taskList.removeAt(oldIndex));
     for (var i = 0; i < taskList.length; i++) {
       taskList[i].sort = i + 1;

@@ -25,3 +25,15 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# macOS / IDE
+.DS_Store
+**/.DS_Store
+.idea/
+*.iml
+
+# Android 本地配置(包含本机 SDK 路径 / 签名信息)
+local.properties
+key.properties
+*.jks
+*.keystore

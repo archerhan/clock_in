@@ -8,7 +8,7 @@ import 'package:clock_in/manager/store_manager.dart';
 import 'package:clock_in/utils/sp_util.dart';
 import 'package:clock_in/widgets/buttons/two_buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';

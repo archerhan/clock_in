@@ -42,7 +42,7 @@ class IconsPage extends GetView<IconsController> {
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withValues(alpha: 0.2),
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: const Offset(0, 3))
@@ -77,7 +77,7 @@ class IconsPage extends GetView<IconsController> {
         padding: EdgeInsets.all(5.r),
         decoration: BoxDecoration(
             color: iconAssetModel.isSelected == true
-                ? AppColors.primaryYellow.withOpacity(0.7)
+                ? AppColors.primaryYellow.withValues(alpha: 0.7)
                 : AppColors.mainWhite,
             borderRadius: BorderRadius.circular(8.r)),
         child: iconAssetModel.assetPath.isNotEmpty == true

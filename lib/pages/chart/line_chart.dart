@@ -139,7 +139,7 @@ class CustomLineChart extends StatelessWidget {
               colors: [
                 Colors.blue,
                 Colors.purple,
-              ].map((color) => color.withOpacity(0.3)).toList(),
+              ].map((color) => color.withValues(alpha: 0.3)).toList(),
             ),
           ),
         ),

@@ -166,20 +166,45 @@ class TodayController extends GetxController {
     //   }
     // }
     logger.d("获取今日打卡记录...");
+    final todayDateString = selectedDay.value.toString().split(' ')[0];
     var todayRecord = recordsList.firstWhere(
-        (element) => element.date == selectedDay.value.toString().split(' ')[0],
+        (element) => element.date == todayDateString,
         orElse: () => CheckRecordModel());
+    // 记录可能还不存在(如历史数据/当天记录未生成), 此时先补一条今天的记录
+    if (todayRecord.id == null) {
+      todayRecord = CheckRecordModel(
+          taskId: task.id,
+          date: todayDateString,
+          note: "",
+          checkCount: 0,
+          createDT: DateTime.now().toString(),
+          updateDT: DateTime.now().toString());
+      todayRecord.id = await CheckRecordDao().insertCheckRecord(todayRecord);
+      final recordIds = [
+        ...(task.records?.isNotEmpty == true
+            ? task.records!.split(";").where((e) => e.isNotEmpty)
+            : <String>[]),
+        todayRecord.id.toString()
+      ];
+      task.records = recordIds.join(";");
+      recordsList = [...recordsList, todayRecord];
+    }
     var checkCount = 0;
-    if (todayRecord.checkCount! >= task.checkCount!) {
+    final todayCheckCount = todayRecord.checkCount ?? 0;
+    final limit = task.checkCount ?? 1;
+    if (todayCheckCount >= limit) {
       checkCount = 0;
     } else {
-      checkCount = todayRecord.checkCount! + 1;
+      checkCount = todayCheckCount + 1;
     }
     todayRecord.checkCount = checkCount;
     todayRecord.updateDT = DateTime.now().toString();
     await CheckRecordDao().updateCheckRecord(todayRecord);
 
-    var grandTotal = recordsList.length;
+    // 已持续天数 = 真正打过卡的天数, 而不是记录条数(每天都会生成一条记录)
+    var grandTotal = recordsList
+        .where((element) => (element.checkCount ?? 0) > 0)
+        .length;
     var continuousDays = calculateMaxContinuousDays(recordsList);
     task.grandTotal = grandTotal;
     task.continuousDays = continuousDays;
@@ -189,9 +214,14 @@ class TodayController extends GetxController {
 
   /// 计算最长连续打卡天数
   int calculateMaxContinuousDays(List<CheckRecordModel> records) {
-    var dateList = records.where((element) => element.checkCount != 0).map((e) {
-      return DateTime.parse(e.date!);
-    }).toList();
+    var dateList = records
+        .where((element) =>
+            (element.checkCount ?? 0) > 0 && element.date?.isNotEmpty == true)
+        .map((e) => DateTime.parse(e.date!))
+        .toList();
+    if (dateList.isEmpty) {
+      return 0;
+    }
     dateList.sort((a, b) => a.compareTo(b));
     int maxStreak = 1;
     int currentStreak = 1;

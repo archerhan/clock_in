@@ -17,17 +17,36 @@ class DBManager {
   static final DBManager instance = DBManager._privateConstructor();
 
   static Database? _database;
+  // 同时缓存打开中的 Future, 避免并发调用时重复 openDatabase
+  // (旧实现里多个页面同时取 database 会各自打开一次连接, 造成连接泄漏)
+  static Future<Database>? _databaseFuture;
+
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDatabase();
-    return _database!;
+    _databaseFuture ??= _initDatabase();
+    try {
+      _database = await _databaseFuture;
+      return _database!;
+    } catch (e) {
+      // 打开失败时允许下次重试
+      _databaseFuture = null;
+      rethrow;
+    }
   }
 
   static Database? _backupDatabase;
+  static Future<Database>? _backupDatabaseFuture;
+
   Future<Database> get backupDatabase async {
     if (_backupDatabase != null) return _backupDatabase!;
-    _backupDatabase = await _initBackupDatabase();
-    return _backupDatabase!;
+    _backupDatabaseFuture ??= _initBackupDatabase();
+    try {
+      _backupDatabase = await _backupDatabaseFuture;
+      return _backupDatabase!;
+    } catch (e) {
+      _backupDatabaseFuture = null;
+      rethrow;
+    }
   }
 
   Future<Database> _initBackupDatabase() async {
@@ -53,7 +72,7 @@ class DBManager {
     return path;
   }
 
-  _initDatabase() async {
+  Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     logger.d("数据库路径:$path");
@@ -68,6 +87,7 @@ class DBManager {
     var db = await database;
     await db.close();
     _database = null;
+    _databaseFuture = null;
   }
 
   // 关闭备份数据库
@@ -75,6 +95,7 @@ class DBManager {
     var db = await backupDatabase;
     await db.close();
     _backupDatabase = null;
+    _backupDatabaseFuture = null;
   }
 
   // 创建表

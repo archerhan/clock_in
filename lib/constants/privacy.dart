@@ -138,9 +138,9 @@ class Privacy {
 
 如果您对本隐私政策有任何疑问，您可以联系我们：
 
-*   [知乎](https://www.zhihu.com/)
-*   [微博](https://weibo.com/)
-*   [小红书](https://www.xiaohongshu.com/)
+*   知乎：<https://www.zhihu.com/>
+*   微博：<https://weibo.com/>
+*   小红书：<https://www.xiaohongshu.com/>
 
 """;
   static const String termsMarkdownString = """

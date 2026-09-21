@@ -265,7 +265,7 @@ class SettingPage extends GetView<SettingController> {
                         Vibrate.feedback(FeedbackType.medium);
                         controller.setAllowNotification(value);
                       },
-                      activeColor: Colors.green,
+                      activeTrackColor: Colors.green,
                     );
                   }),
                 )
@@ -318,7 +318,7 @@ class SettingPage extends GetView<SettingController> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20.h),
       child: Text(
-        "© 2024 clock_in",
+        "© 2024 clock_in · MIT License",
         style: TextStyle(
           color: AppColors.grey999,
           fontSize: 10.sp,
